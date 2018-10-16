@@ -5,13 +5,14 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import App from './components/containers/AppContainer';
 import Index from './components/containers/IndexContainer';
+import DiscList from './components/containers/DiscListContainer';
 import AppLayout from './components/containers/layouts/AppLayout';
 
 function AppLayoutRoute({ match }) {
-  console.log("m: " + JSON.stringify(match));
   return (
     <AppLayout>
       <Route exact path={`${match.url}/`} component={Index} />
+      <Route exact path={`${match.url}/discs`} component={DiscList} />
     </AppLayout>
   );
 }

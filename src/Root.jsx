@@ -6,6 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import App from './components/containers/AppContainer';
 import Index from './components/containers/IndexContainer';
 import DiscList from './components/containers/DiscListContainer';
+import DiscGallery from './components/containers/DiscGalleryContainer';
 import AppLayout from './components/containers/layouts/AppLayout';
 
 function AppLayoutRoute({ match }) {
@@ -13,6 +14,7 @@ function AppLayoutRoute({ match }) {
     <AppLayout>
       <Route exact path={`${match.url}/`} component={Index} />
       <Route exact path={`${match.url}/discs`} component={DiscList} />
+      <Route exact path={`${match.url}/gallery`} component={DiscGallery} />
     </AppLayout>
   );
 }

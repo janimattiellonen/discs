@@ -33,7 +33,7 @@ import registerServiceWorker from './serviceWorker';
 
 const history = createHistory();
 const store = createStore(history);
-console.log("ddd");
+
 function render(Component, rootElement) {
   ReactDOM.render(
     <AppContainer>

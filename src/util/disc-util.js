@@ -5,7 +5,7 @@ export default {
         return 'Innova';
 
       default:
-        return 'Unknown';
+        return code;
     }
   },
   getDiscMaterial: (code) => {
@@ -14,7 +14,7 @@ export default {
         return 'Star';
 
       default:
-        return 'Unknown';
+        return code;
     } 
   },
   getDiscType: (code) => {
@@ -26,7 +26,7 @@ export default {
         return 'Fairway driver';
 
       default:
-        return 'Unknown';
+        return code;
     }
   }
 

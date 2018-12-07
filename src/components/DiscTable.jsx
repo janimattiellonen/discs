@@ -1,6 +1,6 @@
 import React from 'react';
 import Reactable from 'react-table';
-
+import numeral from 'numeral';
 import discUtil from '../../src/util/disc-util';
 
 export default function DiscTable(
@@ -57,22 +57,22 @@ export default function DiscTable(
           {
             Header: 'Speed',
             'accessor': 'speed',
-            Cell: props => props.value,
+            Cell: props => numeral(props.value).format('0.[00]'),
           },
           {
             Header: 'Glide',
             'accessor': 'glide',
-            Cell: props => props.value,
+            Cell: props => numeral(props.value).format('0.[00]'),
           },
           {
             Header: 'Stability',
             'accessor': 'stability',
-            Cell: props => props.value,
+            Cell: props => numeral(props.value).format('0.[00]'),
           },
           {
             Header: 'Fade',
             'accessor': 'fade',
-            Cell: props => props.value,
+            Cell: props => numeral(props.value).format('0.[00]'),
           },
         ]}
         data={discs.toJS()}

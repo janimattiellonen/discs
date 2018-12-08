@@ -1,5 +1,6 @@
 import React from 'react';
 import Reactable from 'react-table';
+import moment from 'moment';
 import numeral from 'numeral';
 import discUtil from '../../src/util/disc-util';
 
@@ -74,6 +75,11 @@ export default function DiscTable(
             'accessor': 'fade',
             Cell: props => numeral(props.value).format('0.[00]'),
           },
+          {
+            Header: 'Sold at',
+            'accessor': 'sold_at',
+            Cell: props => props.value ? moment(props.value).format('DD.MM.YYYY') : '',
+          }
         ]}
         data={discs.toJS()}
       />

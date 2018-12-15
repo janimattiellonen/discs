@@ -22,9 +22,9 @@ import ReactDOM from 'react-dom';
 import createStore from './store';
 import Root from './Root';
 
-import './index.css';
 import 'react-table/react-table.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './index.css';
 
 import { AppContainer } from 'react-hot-loader';
 import createHistory from 'history/createBrowserHistory';

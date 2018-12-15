@@ -7,7 +7,6 @@ class DiscListPage extends React.Component {
     super(props);
 
     props.fetchDiscs();
-
   }
   render() {
     const { discs } = this.props;

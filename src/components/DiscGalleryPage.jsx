@@ -1,16 +1,24 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
+import GalleryItem from './GalleryItem';
+
 class DiscGalleryPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    props.fetchDiscs();
+  }
+
   render() {
     const { discs } = this.props;
 
     return (
-      <div className="disc-gallery-page">
+      <div className="disc-gallery-page discs">
         <Row>
           {discs.map (disc => (
             <Col key={disc.id} md={3}>
-              <img src={disc.image} />
+              <GalleryItem disc={disc} />
             </Col>
           ))}
         </Row>

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Glyphicon} from 'react-bootstrap';
 import Reactable from 'react-table';
 import moment from 'moment';
 import numeral from 'numeral';
@@ -40,21 +41,25 @@ export default function DiscTable(
             Header: 'Name',
             'accessor': 'name',
             Cell: props => <span>{props.value}</span>,
+            maxWidth: 160,
           },
           {
             Header: 'Type',
             'accessor': 'type',
             Cell: props => (renderDiscType(props.value)),
+            maxWidth: 140,
           },
           {
             Header: 'Manufacturer',
             'accessor': 'manufacturer',
             Cell: props => (renderDiscManufacturer(props.value)),
+            maxWidth: 140,
           },
           {
             Header: 'Material',
             'accessor': 'material',
             Cell: props => (renderDiscMaterial(props.value)),
+            maxWidth: 140,
           },
           {
             Header: 'Weight',
@@ -94,7 +99,43 @@ export default function DiscTable(
             maxWidth: 75,
             className: 'text-right',
             sortMethod: sortFloat
-          }
+          },
+          {
+            Header: 'Collectible',
+            'accessor': 'is_collection_item',
+            Cell: props => props.value ? <Glyphicon glyph="ok" />  : '',
+            maxWidth: 75,
+          },
+          {
+            Header: 'Sold',
+            'accessor': 'is_sold',
+            Cell: props => props.value ? <Glyphicon glyph="ok" />  : '',
+            maxWidth: 75,
+          },
+          {
+            Header: 'Sold at',
+            'accessor': 'sold_at',
+            Cell: props => props.value ? moment(props.value).format('DD.MM.YYYY') : '',
+            maxWidth: 100,
+          },
+          {
+            Header: 'Lost',
+            'accessor': 'is_missing',
+            Cell: props => props.value ? <Glyphicon glyph="ok" /> : '',
+            maxWidth: 75,
+          },
+          {
+            Header: 'Lost description',
+            'accessor': 'missing_description',
+            Cell: props => props.value,
+            maxWidth: 160,
+          },
+          {
+            Header: 'HIO at',
+            'accessor': 'hole_in_one_at',
+            Cell: props => props.value ? moment(props.value).format('DD.MM.YYYY') : '',
+            maxWidth: 100,
+          },
         ]}
         data={discs.toJS()}
       />

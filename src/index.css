@@ -24,3 +24,121 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@media (min-width: 1200px) {
+  .container {
+    width: 90%;
+  }
+}
+
+
+/* Gallery */
+
+.discs {
+  width: 100%;
+  float: left;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+.discs .disc {
+  width: 32%;
+  float: left;
+  flex-grow: 1;
+  margin-bottom: 25px;
+  padding: 5px;
+}
+.discs .disc .collection-item {
+  float: right;
+  font-weight: bold;
+}
+.discs .disc .image-div {
+  position: relative;
+  width: auto;
+}
+.discs .disc .image-div img {
+  width: 100%;
+}
+.discs .disc .image-div .lost-disc {
+  position: absolute;
+  background: red;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: opacity .5s;
+  opacity: .5;
+}
+.discs .disc .image-div .lost-disc span {
+  display: block;
+  -moz-transform: rotate(-45deg);
+  text-align: center;
+  margin-top: 40%;
+  font-size: 4em;
+}
+.discs .disc:last-child {
+  flex-grow: 0;
+}
+.discs .disc .disc-info {
+  float: left;
+  clear: both;
+  width: 100%;
+}
+.discs .disc .disc-info .col.left {
+  float: left;
+  width: 70%;
+}
+.discs .disc .disc-info .col.right {
+  float: right;
+  text-align: right;
+}
+.discs .disc .disc-info h2 {
+  margin-bottom: 0;
+}
+.discs .disc .disc-info h2, .discs .disc .disc-info p.manufacturer {
+  margin-top: 0;
+}
+.discs .disc .disc-info p.manufacturer, .discs .disc .disc-info p.material {
+  margin-bottom: 0;
+}
+.discs .disc .disc-info p.weight {
+  float: right;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: right;
+}
+.discs .disc .disc-info .type {
+  font-weight: normal;
+}
+.discs .disc .disc-info .specs {
+  float: left;
+  width: 100%;
+}
+.discs .disc .disc-info .specs .attribute {
+  float: left;
+  width: 50%;
+  height: 35%;
+}
+.discs .disc .disc-info .specs .attribute h3, .discs .disc .disc-info .specs .attribute p {
+  text-align: center;
+}
+.discs .disc .disc-info .specs .attribute h3 {
+  font-size: 1em;
+  padding: 10px 10px 5px 10px;
+}
+.discs .disc .disc-info .specs .attribute p {
+  font-size: 2em;
+  padding: 10px;
+}
+.discs .disc .disc-info .specs .attribute.speed {
+  background: #46af5c;
+}
+.discs .disc .disc-info .specs .attribute.glide {
+  background: #cd9327;
+}
+.discs .disc .disc-info .specs .attribute.stability {
+  background: #24a2dc;
+}
+.discs .disc .disc-info .specs .attribute.fade2 {
+  background: #e6de47;
+}

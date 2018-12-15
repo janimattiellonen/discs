@@ -21,6 +21,10 @@ export default function DiscTable(
     return discUtil.getDiscType(code);
   };
 
+  const sortFloat = (a, b) => {
+    return Number.parseFloat(a) > Number.parseFloat(b) ? 1 : -1;
+  };
+
   return (
     <div>
       <Reactable
@@ -28,7 +32,9 @@ export default function DiscTable(
           {
             Header: 'Id',
             accessor: 'id',
-            Cell: props => <span>{props.value}</span>,
+            Cell: props => <span>{Number(props.value)}</span>,
+            maxWidth: 45,
+            className: 'text-right',
           },
           {
             Header: 'Name',
@@ -53,32 +59,41 @@ export default function DiscTable(
           {
             Header: 'Weight',
             'accessor': 'weight',
-            Cell: props => (<span>{props.value}g</span>),
+            Cell: props => (<span>{props.value  ? `${Number(props.value)}g` : ''}</span>),
+            maxWidth: 75,
+            className: 'text-right',
           },
           {
             Header: 'Speed',
             'accessor': 'speed',
             Cell: props => numeral(props.value).format('0.[00]'),
+            maxWidth: 75,
+            className: 'text-right',
+            sortMethod: sortFloat,
           },
           {
             Header: 'Glide',
             'accessor': 'glide',
             Cell: props => numeral(props.value).format('0.[00]'),
+            maxWidth: 75,
+            className: 'text-right',
+            sortMethod: sortFloat,
           },
           {
             Header: 'Stability',
             'accessor': 'stability',
             Cell: props => numeral(props.value).format('0.[00]'),
+            maxWidth: 75,
+            className: 'text-right',
+            sortMethod: sortFloat,
           },
           {
             Header: 'Fade',
             'accessor': 'fade',
             Cell: props => numeral(props.value).format('0.[00]'),
-          },
-          {
-            Header: 'Sold at',
-            'accessor': 'sold_at',
-            Cell: props => props.value ? moment(props.value).format('DD.MM.YYYY') : '',
+            maxWidth: 75,
+            className: 'text-right',
+            sortMethod: sortFloat
           }
         ]}
         data={discs.toJS()}

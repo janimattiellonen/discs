@@ -35,10 +35,10 @@ export default ({disc}) => {
 
     let element = null;
 
-    if (_.isUndefined(disc.image) || disc.image == "") {
-      element = (<img src="/images/unknown.png" />);
+    if (_.isEmpty(disc.image_url) || disc.image_url == "") {
+      element = (<img src="/unknown.png" />);
     } else {
-      let src = 'https://testdb-8e20.restdb.io/media/' + disc.image + '?s=o';
+      let src = `https://testdb-8e20.restdb.io/media/${disc.image_url}`;
       element = <img src={src} />;
     }
 
@@ -49,12 +49,11 @@ export default ({disc}) => {
     return attribute.length !== 0 ? attribute : 'n/a';
   }
 
-
   return (
     <div className="disc">
 
       <div className="disc-image">
-
+        {renderImage(disc)}
       </div>
 
       <div className="disc-info">

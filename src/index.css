@@ -37,14 +37,8 @@ code {
 .discs {
   width: 100%;
   float: left;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
 }
 .discs .disc {
-  width: 32%;
-  float: left;
-  flex-grow: 1;
   margin-bottom: 25px;
   padding: 5px;
 }
@@ -76,14 +70,8 @@ code {
   margin-top: 40%;
   font-size: 4em;
 }
-.discs .disc:last-child {
-  flex-grow: 0;
-}
-.discs .disc .disc-info {
-  float: left;
-  clear: both;
-  width: 100%;
-}
+
+
 .discs .disc .disc-info .col.left {
   float: left;
   width: 70%;

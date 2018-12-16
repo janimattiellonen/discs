@@ -17,7 +17,7 @@ class DiscGalleryPage extends React.Component {
       <div className="disc-gallery-page discs">
         <Row>
           {discs.map (disc => (
-            <Col key={disc.id} md={3}>
+            <Col key={disc.id} xs={12} sm={6} lg={4}>
               <GalleryItem disc={disc} />
             </Col>
           ))}

@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash';
+import numeral from 'numeral';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 export default ({disc}) => {
@@ -46,7 +47,35 @@ export default ({disc}) => {
   }
 
   const renderAttribute = (attribute) => {
-    return attribute.length !== 0 ? attribute : 'n/a';
+    return attribute.length !== 0 ? numeral(attribute).format('0.[00]') : 'n/a';
+  }
+
+  const renderLostDisc = (disc) => {
+    if (disc.is_missing) {
+      let element = (<div className="disc-status"><span>Lost</span></div>);
+      return renderTooltip(disc, element);
+    }
+  }
+
+  const renderBrokenDisc = (disc) => {
+    if (disc.is_broken) {
+      let element = (<div className="disc-status"><span>Broken</span></div>);
+      return renderTooltip(disc, element);
+    }
+  }
+
+  const renderSoldDisc = (disc) => {
+    if (disc.is_sold) {
+      let element = (<div className="disc-status"><span>Sold</span></div>);
+      return renderTooltip(disc, element);
+    }
+  }
+
+  const renderHioDisc = (disc) => {
+    if (disc.hole_in_one_at) {
+      let element = (<div className="hole-in-one-disc"><span>Hole in one</span></div>);
+      return renderTooltip(disc, element);
+    }
   }
 
   return (
@@ -54,6 +83,15 @@ export default ({disc}) => {
 
       <div className="disc-image">
         {renderImage(disc)}
+
+        {renderLostDisc(disc)}
+
+        {renderSoldDisc(disc)}
+
+        {renderBrokenDisc(disc)}
+
+        {renderHioDisc(disc)}
+
       </div>
 
       <div className="disc-info">

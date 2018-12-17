@@ -2,11 +2,18 @@ import React from 'react'
 import _ from 'lodash';
 import numeral from 'numeral';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import moment from "moment";
 
 export default ({disc}) => {
-  const renderWeight = (weight) => {
-    return weight > 0 ? ', ' + weight + 'g' : '';
-  }
+  const renderWeight = (weight) => (
+    weight > 0 ? ', ' + weight + 'g' : ''
+  )
+
+  const renderOverlayTrigger = (tooltip, element) => (
+    <OverlayTrigger placement="bottom" overlay={tooltip}>
+      {element}
+    </OverlayTrigger>
+  )
 
   const renderTooltip = (disc, element) => {
     if (!disc.missing_description || disc.missing_description.length == 0) {
@@ -19,13 +26,22 @@ export default ({disc}) => {
       </Tooltip>
     );
 
-    return (
-      <OverlayTrigger placement="bottom" overlay={tooltip}>
-        {element}
-      </OverlayTrigger>
-    )
+    return renderOverlayTrigger(tooltip, element)
   }
 
+  const renderHioTooltip = (disc, element) => {
+    if (!disc.hole_in_one_at) {
+      return element;
+    }
+
+    const tooltip = (
+      <Tooltip id={"tooltip-disc-hio-" + disc.id}>
+        <span>{moment(disc.hole_in_one_at).format('DD.MM.YYYY')}</span>
+      </Tooltip>
+    );
+
+    return renderOverlayTrigger(tooltip, element)
+  }
 
   const renderImage = (disc) => {
     const tooltip = (
@@ -74,13 +90,12 @@ export default ({disc}) => {
   const renderHioDisc = (disc) => {
     if (disc.hole_in_one_at) {
       let element = (<div className="hole-in-one-disc"><span>Hole in one</span></div>);
-      return renderTooltip(disc, element);
+      return renderHioTooltip(disc, element);
     }
   }
 
   return (
     <div className="disc">
-
       <div className="disc-image">
         {renderImage(disc)}
 
@@ -91,16 +106,14 @@ export default ({disc}) => {
         {renderBrokenDisc(disc)}
 
         {renderHioDisc(disc)}
-
       </div>
 
       <div className="disc-info">
         <h2>{disc.name}&nbsp;</h2>
 
-        {
-          disc.collection_item &&
+        {disc.collection_item && (
           <p className="collection-item">Collection item</p>
-        }
+        )}
 
         <p className="manufacturer">{disc.manufacturer} {disc.material}&nbsp;</p>
         <p className="type">{disc.type}{renderWeight(disc.weight)}</p>
@@ -126,7 +139,6 @@ export default ({disc}) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

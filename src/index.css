@@ -87,7 +87,6 @@ code {
 .discs .disc .disc-image .disc-status span,
 .discs .disc .disc-image .hole-in-one-disc span{
   display: block;
-  -moz-transform: rotate(-45deg);
   text-align: center;
   font-size: 2em;
 }

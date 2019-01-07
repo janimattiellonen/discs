@@ -30,13 +30,13 @@ export default ({disc}) => {
   }
 
   const renderHioTooltip = (disc, element) => {
-    if (!disc.hole_in_one_at) {
+    if (!disc['HIO date']) {
       return element;
     }
 
     const tooltip = (
       <Tooltip id={"tooltip-disc-hio-" + disc.id}>
-        <span>{moment(disc.hole_in_one_at).format('DD.MM.YYYY')}</span>
+        <span>{moment(disc['HIO date']).format('DD.MM.YYYY')}</span>
       </Tooltip>
     );
 
@@ -52,10 +52,10 @@ export default ({disc}) => {
 
     let element = null;
 
-    if (_.isEmpty(disc.image_url) || disc.image_url == "") {
+    if (_.isEmpty(disc.image) ) {
       element = (<img src="/unknown.png" />);
     } else {
-      let src = `https://testdb-8e20.restdb.io/media/${disc.image_url}`;
+      let src = `https://testdb-8e20.restdb.io/media/${disc.image[0]}`;
       element = <img src={src} />;
     }
 
@@ -67,7 +67,7 @@ export default ({disc}) => {
   }
 
   const renderLostDisc = (disc) => {
-    if (disc.is_missing) {
+    if (disc.missing) {
       let element = (<div className="disc-status"><span>Lost</span></div>);
       return renderTooltip(disc, element);
     }
@@ -81,14 +81,14 @@ export default ({disc}) => {
   }
 
   const renderSoldDisc = (disc) => {
-    if (disc.is_sold) {
+    if (disc.sold) {
       let element = (<div className="disc-status"><span>Sold</span></div>);
       return renderTooltip(disc, element);
     }
   }
 
   const renderHioDisc = (disc) => {
-    if (disc.hole_in_one_at) {
+    if (disc['Hole in one']) {
       let element = (<div className="hole-in-one-disc"><span>Hole in one</span></div>);
       return renderHioTooltip(disc, element);
     }

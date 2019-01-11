@@ -10,6 +10,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "numeral": "^2.0.6",
+    "query-string": "^6.2.0",
     "react": "^16.5.2",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.2",

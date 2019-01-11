@@ -14,7 +14,7 @@ function AppLayoutRoute({ match }) {
     <AppLayout>
       <Route exact path={`${match.url}/`} component={Index} />
       <Route exact path={`${match.url}/discs`} component={DiscList} />
-      <Route exact path={`${match.url}/gallery`} component={DiscGallery} />
+      <Route path={`${match.url}/gallery`} component={DiscGallery} />
     </AppLayout>
   );
 }

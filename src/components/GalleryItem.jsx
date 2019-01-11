@@ -16,7 +16,7 @@ export default ({disc}) => {
   )
 
   const renderTooltip = (disc, element) => {
-    if (!disc.missing_description || disc.missing_description.length == 0) {
+    if (!disc.missing_description || disc.missing_description.length === 0) {
       return element;
     }
 

@@ -53,10 +53,10 @@ export default ({discs}) => {
         <li><Link to="/gallery?type=approach">Approach ({getApproachCount()})</Link></li>
         <li><Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link></li>
         <li><Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link></li>
-        <li>Available ({getAvailableCount()})</li>
-        <li>Lost ({getLostDiscCount()})</li>
-        <li>Sold ({getSoldDiscCount()})</li>
-        <li>Collection ({getCollectibleCount()})</li>
+        <li><Link to="/gallery?type=isAvailable">Available ({getAvailableCount()})</Link></li>
+        <li><Link to="/gallery?type=missing">Lost ({getLostDiscCount()})</Link></li>
+        <li><Link to="/gallery?type=sold">Sold ({getSoldDiscCount()})</Link></li>
+        <li><Link to="/gallery?type=isCollectible">Collection ({getCollectibleCount()})</Link></li>
       </ul>
     </div>
   );

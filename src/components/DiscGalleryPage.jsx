@@ -41,25 +41,47 @@ class DiscGalleryPage extends React.Component {
       return discs;
     }
 
-    if (filter.type == 'distanceDriver') {
+    if (filter.type === 'distanceDriver') {
       return discs.filter(disc => disc.type === 'Distance driver');
     }
 
-    if (filter.type == 'fairwayDriver') {
+    if (filter.type === 'fairwayDriver') {
       return discs.filter(disc => disc.type === 'Fairway driver');
     }
 
-    if (filter.type == 'putter') {
+    if (filter.type === 'putter') {
       return discs.filter(disc => disc.type === 'Putter');
     }
 
-    if (filter.type == 'midrange') {
+    if (filter.type === 'midrange') {
       return discs.filter(disc => disc.type === 'Mid-range');
     }
 
-    if (filter.type == 'approach') {
+    if (filter.type === 'approach') {
       return discs.filter(disc => disc.type === 'Approach');
     }
+
+    if (filter.type === 'missing') {
+      return discs.filter(disc => disc.missing === true);
+    }
+
+    if (filter.type === 'sold') {
+      return discs.filter(disc => disc.sold === true);
+    }
+
+    if (filter.type === 'isBroken') {
+      return discs.filter(disc => disc.is_broken === true);
+    }
+
+    if (filter.type === 'isCollectible') {
+      return discs.filter(disc => disc.collection_item === true);
+    }
+
+    if (filter.type === 'isAvailable') {
+      return discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true);
+    }
+
+
 
     return discs;
   }
@@ -78,6 +100,7 @@ class DiscGalleryPage extends React.Component {
     if (this.props.discs !== prevProps.discs) {
       this.setState({
         discs: this.props.discs,
+        filteredDiscs: this.props.discs,
       });
     }
   }

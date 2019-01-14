@@ -69,19 +69,21 @@ class DiscGalleryPage extends React.Component {
       return discs.filter(disc => disc.sold === true);
     }
 
-    if (filter.type === 'isBroken') {
+    if (filter.type === 'broken') {
       return discs.filter(disc => disc.is_broken === true);
     }
 
-    if (filter.type === 'isCollectible') {
+    if (filter.type === 'collection') {
       return discs.filter(disc => disc.collection_item === true);
     }
 
-    if (filter.type === 'isAvailable') {
+    if (filter.type === 'available') {
       return discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true);
     }
 
-
+    if (filter.type === 'holeInOne') {
+      return discs.filter(disc => disc['Hole in one'] === true);
+    }
 
     return discs;
   }

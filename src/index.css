@@ -164,3 +164,9 @@ code {
 .discs .disc .disc-info .specs .attribute.fade2 {
   background: #e6de47;
 }
+
+.disc-filter ul li {
+    display: inline;
+    margin-right: 20px;
+    line-height: 30px;
+}

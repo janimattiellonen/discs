@@ -40,12 +40,17 @@ export default ({discs}) => {
     discs.filter(disc => disc.collection_item === true).count()
   );
 
+  const getHoleInOneCount = () => (
+    discs.filter(disc => disc['Hole in one'] === true).count()
+  );
+
+
   if (discs.count() === 0) {
     return null;
   }
 
   return (
-    <div>
+    <div className="disc-filter">
       <ul>
         <li><Link to="/gallery">All ({getDiscCount()})</Link></li>
         <li><Link to="/gallery?type=distanceDriver">Distance drivers ({getDistanceDriverCount()})</Link></li>
@@ -53,10 +58,11 @@ export default ({discs}) => {
         <li><Link to="/gallery?type=approach">Approach ({getApproachCount()})</Link></li>
         <li><Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link></li>
         <li><Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link></li>
-        <li><Link to="/gallery?type=isAvailable">Available ({getAvailableCount()})</Link></li>
+        <li><Link to="/gallery?type=available">Available ({getAvailableCount()})</Link></li>
         <li><Link to="/gallery?type=missing">Lost ({getLostDiscCount()})</Link></li>
         <li><Link to="/gallery?type=sold">Sold ({getSoldDiscCount()})</Link></li>
-        <li><Link to="/gallery?type=isCollectible">Collection ({getCollectibleCount()})</Link></li>
+        <li><Link to="/gallery?type=collection">Collection ({getCollectibleCount()})</Link></li>
+        <li><Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link></li>
       </ul>
     </div>
   );

@@ -4,6 +4,8 @@ import numeral from 'numeral';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import moment from "moment";
 
+import styles from './GalleryItem.module.scss';
+
 export default ({disc}) => {
   const renderWeight = (weight) => (
     weight > 0 ? ', ' + weight + 'g' : ''
@@ -95,7 +97,7 @@ export default ({disc}) => {
   }
 
   return (
-    <div className="disc">
+    <div className={styles.disc}>
       <div className="disc-image">
         {renderImage(disc)}
 
@@ -108,32 +110,32 @@ export default ({disc}) => {
         {renderHioDisc(disc)}
       </div>
 
-      <div className="disc-info">
+      <div className={styles.discInfo}>
         <h2>{disc.name}&nbsp;</h2>
 
         {disc.collection_item && (
-          <p className="collection-item">Collection item</p>
+          <p className={styles.collectionItem}>Collection item</p>
         )}
 
-        <p className="manufacturer">{disc.manufacturer} {disc.material}&nbsp;</p>
-        <p className="type">{disc.type}{renderWeight(disc.weight)}</p>
+        <p className={styles.manufacturer}>{disc.manufacturer} {disc.material}&nbsp;</p>
+        <p className={styles.type}>{disc.type}{renderWeight(disc.weight)}</p>
 
-        <div className="specs">
-          <div className="attribute speed">
+        <div className={styles.discInfo.specs}>
+          <div className={`${styles.attribute} ${styles.speed}`}>
             <h3>Speed</h3>
             <p>{renderAttribute(disc.speed)}</p>
           </div>
-          <div className="attribute glide">
+          <div className={`${styles.attribute} ${styles.glide}`}>
             <h3>Glide</h3>
             <p>{renderAttribute(disc.glide)}</p>
           </div>
 
-          <div className="attribute stability">
+          <div className={`${styles.attribute} ${styles.stability}`}>
             <h3>Stability</h3>
             <p>{renderAttribute(disc.stability)}</p>
           </div>
 
-          <div className="attribute fade2">
+          <div className={`${styles.attribute} ${styles.fade2}`}>
             <h3>Fade</h3>
             <p>{renderAttribute(disc.fade)}</p>
           </div>

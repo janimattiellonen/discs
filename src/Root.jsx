@@ -12,7 +12,7 @@ import AppLayout from './components/containers/layouts/AppLayout';
 function AppLayoutRoute({ match }) {
   return (
     <AppLayout>
-      <Route exact path={`${match.url}/`} component={Index} />
+      <Route exact path={`${match.url}/`} component={DiscGallery} />
       <Route exact path={`${match.url}/discs`} component={DiscList} />
       <Route path={`${match.url}/gallery`} component={DiscGallery} />
     </AppLayout>

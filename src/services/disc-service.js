@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+import config from '../config.client';
+
 export default {
 	getDiscs() {
-		return axios.get('http://localhost:8889/discs').then(res => res.data);
+		return axios.get(`${config.server.base_url}/api/discs`).then(res => res.data);
 	}
 }

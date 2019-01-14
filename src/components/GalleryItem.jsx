@@ -70,35 +70,35 @@ export default ({disc}) => {
 
   const renderLostDisc = (disc) => {
     if (disc.missing) {
-      let element = (<div className="disc-status"><span>Lost</span></div>);
+      let element = (<div className={styles.discStatus}><span>Lost</span></div>);
       return renderTooltip(disc, element);
     }
   }
 
   const renderBrokenDisc = (disc) => {
     if (disc.is_broken) {
-      let element = (<div className="disc-status"><span>Broken</span></div>);
+      let element = (<div className={styles.discStatus}><span>Broken</span></div>);
       return renderTooltip(disc, element);
     }
   }
 
   const renderSoldDisc = (disc) => {
     if (disc.sold) {
-      let element = (<div className="disc-status"><span>Sold</span></div>);
+      let element = (<div className={styles.discStatus}><span>Sold</span></div>);
       return renderTooltip(disc, element);
     }
   }
 
   const renderHioDisc = (disc) => {
     if (disc['Hole in one']) {
-      let element = (<div className="hole-in-one-disc"><span>Hole in one</span></div>);
+      let element = (<div className={styles.HoleInOne}><span>Hole in one</span></div>);
       return renderHioTooltip(disc, element);
     }
   }
 
   return (
     <div className={styles.disc}>
-      <div className="disc-image">
+      <div className={styles.discImage}>
         {renderImage(disc)}
 
         {renderLostDisc(disc)}
@@ -110,7 +110,7 @@ export default ({disc}) => {
         {renderHioDisc(disc)}
       </div>
 
-      <div className={styles.discInfo}>
+      <div>
         <h2>{disc.name}&nbsp;</h2>
 
         {disc.collection_item && (
@@ -120,7 +120,7 @@ export default ({disc}) => {
         <p className={styles.manufacturer}>{disc.manufacturer} {disc.material}&nbsp;</p>
         <p className={styles.type}>{disc.type}{renderWeight(disc.weight)}</p>
 
-        <div className={styles.discInfo.specs}>
+        <div className={styles.specs}>
           <div className={`${styles.attribute} ${styles.speed}`}>
             <h3>Speed</h3>
             <p>{renderAttribute(disc.speed)}</p>

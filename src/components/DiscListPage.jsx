@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import DiscTable from './DiscTable';
 
@@ -13,6 +14,7 @@ class DiscListPage extends React.Component {
 
     return (
       <div>
+        <Helmet title="My discs - List" />
         <DiscTable discs={discs} />
       </div>
     );

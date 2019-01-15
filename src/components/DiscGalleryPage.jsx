@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import queryString from 'query-string';
+import { Helmet } from 'react-helmet';
 
 import GalleryItem from './GalleryItem';
 import Filter from './Filter';
@@ -111,13 +112,22 @@ class DiscGalleryPage extends React.Component {
     const queryParams = queryString.parse(this.props.location.search);
   }
 
+  search = (term) => {
+    const { discs } = this.props;
+
+    this.setState({
+      filteredDiscs: discs.filter(disc => disc.)
+    })
+  }
+
   render() {
     const { discs, filteredDiscs } = this.state;
 
     return (
       <div>
+        <Helmet title="My discs - Gallery" />
         <div className="filter-container">
-          <Filter discs={discs} />
+          <Filter discs={discs} onSearch={this.search}/>
         </div>
         <div className="disc-gallery-page discs">
           <Row>

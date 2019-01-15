@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Col, Row, FormControl } from 'react-bootstrap';
 
-export default ({discs}) => {
+export default ({discs, onSearch }) => {
   const getDiscCount = () => (discs.count());
 
   const getDistanceDriverCount = () => (
@@ -44,9 +45,12 @@ export default ({discs}) => {
     discs.filter(disc => disc['Hole in one'] === true).count()
   );
 
-
   if (discs.count() === 0) {
     return null;
+  }
+
+  const handleSearch = (e) => {
+    onSearch(e.target.value);
   }
 
   return (
@@ -64,6 +68,15 @@ export default ({discs}) => {
         <li><Link to="/gallery?type=collection">Collection ({getCollectibleCount()})</Link></li>
         <li><Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link></li>
       </ul>
+
+      <Row>
+        <Col>
+          <FormControl
+            type="text"
+            onChange={handleSearch}
+            />
+        </Col>
+      </Row>
     </div>
   );
 }

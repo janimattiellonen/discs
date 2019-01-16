@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 
 import App from './components/containers/AppContainer';
-import Index from './components/containers/IndexContainer';
 import DiscList from './components/containers/DiscListContainer';
 import DiscGallery from './components/containers/DiscGalleryContainer';
 import AppLayout from './components/containers/layouts/AppLayout';

@@ -3,6 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
+import Fuse from 'fuse.js';
 
 import GalleryItem from './GalleryItem';
 import Filter from './Filter';
@@ -90,8 +91,6 @@ class DiscGalleryPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const queryParams = queryString.parse(this.props.location.search);
-
     if (prevProps.location.search !== this.props.location.search) {
       const queryParams = queryString.parse(this.props.location.search);
 
@@ -109,15 +108,33 @@ class DiscGalleryPage extends React.Component {
   }
 
   onHistoryChange = () => {
-    const queryParams = queryString.parse(this.props.location.search);
   }
 
   search = (term) => {
-    const { discs } = this.props;
+    const {discs} = this.props;
+
+    if (term === '') {
+      this.setState({
+        filteredDiscs: discs,
+      });
+
+      return;
+    }
+
+    const options = {
+      shouldSort: true,
+      threshold: 0.2,
+      location: 0,
+      distance: 30,
+      minMatchCharLength: 1,
+      keys: ['name']
+    };
+
+    const fuse = new Fuse(discs.toArray(), options);
 
     this.setState({
-      filteredDiscs: discs.filter(disc => disc.)
-    })
+      filteredDiscs: fuse.search(term),
+    });
   }
 
   render() {

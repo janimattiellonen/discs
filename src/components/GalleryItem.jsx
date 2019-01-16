@@ -55,17 +55,17 @@ export default ({disc}) => {
     let element = null;
 
     if (_.isEmpty(disc.image) ) {
-      element = (<img src="/unknown.png" />);
+      element = (<img src="/unknown.png" alt="?" />);
     } else {
       let src = `https://testdb-8e20.restdb.io/media/${disc.image[0]}`;
-      element = <img src={src} />;
+      element = <img src={src} alt="" />;
     }
 
-    return renderTooltip(disc, element);
+    return renderTooltip(tooltip, element);
   }
 
   const renderAttribute = (attribute) => {
-    return attribute.length !== 0 ? numeral(attribute).format('0.[00]') : 'n/a';
+    return attribute && attribute.length !== 0 ? numeral(attribute).format('0.[00]') : 'n/a';
   }
 
   const renderLostDisc = (disc) => {

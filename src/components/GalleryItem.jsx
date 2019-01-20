@@ -65,7 +65,7 @@ export default ({disc}) => {
   }
 
   const renderAttribute = (attribute) => {
-    return attribute && attribute.length !== 0 ? numeral(attribute).format('0.[00]') : 'n/a';
+    return numeral(attribute).format('0.[00]');
   }
 
   const renderLostDisc = (disc) => {

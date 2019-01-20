@@ -41,6 +41,10 @@ export default ({discs, onSearch }) => {
     discs.filter(disc => disc.collection_item === true).count()
   );
 
+  const getOwnStampCount = () => (
+    discs.filter(disc => disc['Own stamp'] === true).count()
+  );
+
   const getHoleInOneCount = () => (
     discs.filter(disc => disc['Hole in one'] === true).count()
   );
@@ -66,6 +70,7 @@ export default ({discs, onSearch }) => {
         <li><Link to="/gallery?type=missing">Lost ({getLostDiscCount()})</Link></li>
         <li><Link to="/gallery?type=sold">Sold ({getSoldDiscCount()})</Link></li>
         <li><Link to="/gallery?type=collection">Collection ({getCollectibleCount()})</Link></li>
+        <li><Link to="/gallery?type=ownStamp">Own stamp ({getOwnStampCount()})</Link></li>
         <li><Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link></li>
       </ul>
 

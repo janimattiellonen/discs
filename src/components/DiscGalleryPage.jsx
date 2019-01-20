@@ -79,6 +79,10 @@ class DiscGalleryPage extends React.Component {
       return discs.filter(disc => disc.collection_item === true);
     }
 
+    if (filter.type === 'ownStamp') {
+      return discs.filter(disc => disc['Own stamp'] === true);
+    }
+
     if (filter.type === 'available') {
       return discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true);
     }

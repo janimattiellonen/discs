@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
 import Fuse from 'fuse.js';
+import { debounce } from 'throttle-debounce';
 
 import GalleryItem from './GalleryItem';
 import Filter from './Filter';
@@ -13,6 +14,8 @@ class DiscGalleryPage extends React.Component {
     super(props);
 
     props.fetchDiscs();
+
+    this.search = debounce(500, this.search);
 
     this.state = {
       unlistenHistory: f => f,
@@ -109,6 +112,7 @@ class DiscGalleryPage extends React.Component {
         filteredDiscs: this.props.discs,
       });
     }
+
   }
 
   onHistoryChange = () => {
@@ -117,9 +121,16 @@ class DiscGalleryPage extends React.Component {
   search = (term) => {
     const {discs} = this.props;
 
+    const queryParams = queryString.parse(this.props.location.search);
+
+    queryParams.term = term;
+
+    this.props.history.replace(`${this.props.location.pathname}?${queryString.stringify(queryParams)}`);
+
+
     if (term === '') {
       this.setState({
-        filteredDiscs: discs,
+        filteredDiscs: this.filterDiscs(discs, {type: queryParams.type})
       });
 
       return;
@@ -137,7 +148,7 @@ class DiscGalleryPage extends React.Component {
     const fuse = new Fuse(discs.toArray(), options);
 
     this.setState({
-      filteredDiscs: fuse.search(term),
+      filteredDiscs: this.filterDiscs(fuse.search(term), {type: queryParams.type}),
     });
   }
 

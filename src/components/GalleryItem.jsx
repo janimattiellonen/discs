@@ -18,13 +18,15 @@ export default ({disc}) => {
   )
 
   const renderTooltip = (disc, element) => {
-    if (!disc.missing_description || disc.missing_description.length === 0) {
-      return element;
+    if (
+      (!disc.missing_description || disc.missing_description.length === 0)
+      && (!disc['Donation description'] || disc['Donation description'].length === 0)) {
+      return element
     }
 
     const tooltip = (
       <Tooltip id={"tooltip-disc-" + disc.id}>
-        <span>{disc.missing_description}</span>
+        <span>{disc.missing_description || disc['Donation description']}</span>
       </Tooltip>
     );
 
@@ -46,12 +48,6 @@ export default ({disc}) => {
   }
 
   const renderImage = (disc) => {
-    const tooltip = (
-      <Tooltip id={"tooltip-disc-" + disc.id}>
-        <span>{disc.missing_description}</span>
-      </Tooltip>
-    );
-
     let element = null;
 
     if (_.isEmpty(disc.image) ) {
@@ -61,7 +57,7 @@ export default ({disc}) => {
       element = <img src={src} alt="" />;
     }
 
-    return renderTooltip(tooltip, element);
+    return renderTooltip(disc, element);
   }
 
   const renderAttribute = (attribute) => {
@@ -89,6 +85,13 @@ export default ({disc}) => {
     }
   }
 
+  const renderDonatedDisc = (disc) => {
+    if (disc.Donated) {
+      let element = (<div className={styles.discStatus}><span>Donated</span></div>);
+      return renderTooltip(disc, element);
+    }
+  }
+
   const renderHioDisc = (disc) => {
     if (disc['Hole in one']) {
       let element = (<div className={styles.HoleInOne}><span>Hole in one</span></div>);
@@ -104,6 +107,8 @@ export default ({disc}) => {
         {renderLostDisc(disc)}
 
         {renderSoldDisc(disc)}
+
+        {renderDonatedDisc(disc)}
 
         {renderBrokenDisc(disc)}
 

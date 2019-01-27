@@ -37,6 +37,11 @@ export default ({discs, onSearch }) => {
     discs.filter(disc => disc.sold === true ).count()
   );
 
+  const getDonatedDiscCount = () => (
+    discs.filter(disc => disc.Donated === true ).count()
+  );
+
+
   const getCollectibleCount = () => (
     discs.filter(disc => disc.collection_item === true).count()
   );
@@ -69,6 +74,7 @@ export default ({discs, onSearch }) => {
         <li><Link to="/gallery?type=available">Available ({getAvailableCount()})</Link></li>
         <li><Link to="/gallery?type=missing">Lost ({getLostDiscCount()})</Link></li>
         <li><Link to="/gallery?type=sold">Sold ({getSoldDiscCount()})</Link></li>
+        <li><Link to="/gallery?type=donated">Donated ({getDonatedDiscCount()})</Link></li>
         <li><Link to="/gallery?type=collection">Collection ({getCollectibleCount()})</Link></li>
         <li><Link to="/gallery?type=ownStamp">Own stamp ({getOwnStampCount()})</Link></li>
         <li><Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link></li>

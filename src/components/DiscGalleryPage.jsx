@@ -74,6 +74,10 @@ class DiscGalleryPage extends React.Component {
       return discs.filter(disc => disc.sold === true);
     }
 
+    if (filter.type === 'donated') {
+      return discs.filter(disc => disc.Donated === true);
+    }
+
     if (filter.type === 'broken') {
       return discs.filter(disc => disc.is_broken === true);
     }

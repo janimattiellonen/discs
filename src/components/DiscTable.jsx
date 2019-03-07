@@ -1,30 +1,26 @@
-import React from 'react';
-import {Glyphicon} from 'react-bootstrap';
-import Reactable from 'react-table';
-import moment from 'moment';
-import numeral from 'numeral';
-import discUtil from '../../src/util/disc-util';
+import React from 'react'
+import { Glyphicon } from 'react-bootstrap'
+import Reactable from 'react-table'
+import moment from 'moment'
+import numeral from 'numeral'
+import discUtil from '../../src/util/disc-util'
 
-export default function DiscTable(
-  {
-    discs,
+export default function DiscTable({ discs }) {
+  const renderDiscManufacturer = code => {
+    return discUtil.getManufacturer(code)
   }
-) {
-  const renderDiscManufacturer= (code) => {
-    return discUtil.getManufacturer(code);
-  };
 
-  const renderDiscMaterial = (code) => {
-    return discUtil.getDiscMaterial(code);
-  };
+  const renderDiscMaterial = code => {
+    return discUtil.getDiscMaterial(code)
+  }
 
-  const renderDiscType = (code) => {
-    return discUtil.getDiscType(code);
-  };
+  const renderDiscType = code => {
+    return discUtil.getDiscType(code)
+  }
 
   const sortFloat = (a, b) => {
-    return Number.parseFloat(a) > Number.parseFloat(b) ? 1 : -1;
-  };
+    return Number.parseFloat(a) > Number.parseFloat(b) ? 1 : -1
+  }
 
   return (
     <div>
@@ -39,38 +35,38 @@ export default function DiscTable(
           },
           {
             Header: 'Name',
-            'accessor': 'name',
+            accessor: 'name',
             Cell: props => <span>{props.value}</span>,
             maxWidth: 160,
           },
           {
             Header: 'Type',
-            'accessor': 'type',
-            Cell: props => (renderDiscType(props.value)),
+            accessor: 'type',
+            Cell: props => renderDiscType(props.value),
             maxWidth: 140,
           },
           {
             Header: 'Manufacturer',
-            'accessor': 'manufacturer',
-            Cell: props => (renderDiscManufacturer(props.value)),
+            accessor: 'manufacturer',
+            Cell: props => renderDiscManufacturer(props.value),
             maxWidth: 140,
           },
           {
             Header: 'Material',
-            'accessor': 'material',
-            Cell: props => (renderDiscMaterial(props.value)),
+            accessor: 'material',
+            Cell: props => renderDiscMaterial(props.value),
             maxWidth: 140,
           },
           {
             Header: 'Weight',
-            'accessor': 'weight',
-            Cell: props => (<span>{props.value  ? `${Number(props.value)}g` : ''}</span>),
+            accessor: 'weight',
+            Cell: props => <span>{props.value ? `${Number(props.value)}g` : ''}</span>,
             maxWidth: 75,
             className: 'text-right',
           },
           {
             Header: 'Speed',
-            'accessor': 'speed',
+            accessor: 'speed',
             Cell: props => numeral(props.value).format('0.[00]'),
             maxWidth: 75,
             className: 'text-right',
@@ -78,7 +74,7 @@ export default function DiscTable(
           },
           {
             Header: 'Glide',
-            'accessor': 'glide',
+            accessor: 'glide',
             Cell: props => numeral(props.value).format('0.[00]'),
             maxWidth: 75,
             className: 'text-right',
@@ -86,7 +82,7 @@ export default function DiscTable(
           },
           {
             Header: 'Stability',
-            'accessor': 'stability',
+            accessor: 'stability',
             Cell: props => numeral(props.value).format('0.[00]'),
             maxWidth: 75,
             className: 'text-right',
@@ -94,51 +90,51 @@ export default function DiscTable(
           },
           {
             Header: 'Fade',
-            'accessor': 'fade',
+            accessor: 'fade',
             Cell: props => numeral(props.value).format('0.[00]'),
             maxWidth: 75,
             className: 'text-right',
-            sortMethod: sortFloat
+            sortMethod: sortFloat,
           },
           {
             Header: 'Collectible',
-            'accessor': 'is_collection_item',
-            Cell: props => props.value ? <Glyphicon glyph="ok" />  : '',
+            accessor: 'is_collection_item',
+            Cell: props => (props.value ? <Glyphicon glyph="ok" /> : ''),
             maxWidth: 75,
           },
           {
             Header: 'Sold',
-            'accessor': 'is_sold',
-            Cell: props => props.value ? <Glyphicon glyph="ok" />  : '',
+            accessor: 'is_sold',
+            Cell: props => (props.value ? <Glyphicon glyph="ok" /> : ''),
             maxWidth: 75,
           },
           {
             Header: 'Sold at',
-            'accessor': 'sold_at',
-            Cell: props => props.value ? moment(props.value).format('DD.MM.YYYY') : '',
+            accessor: 'sold_at',
+            Cell: props => (props.value ? moment(props.value).format('DD.MM.YYYY') : ''),
             maxWidth: 100,
           },
           {
             Header: 'Lost',
-            'accessor': 'is_missing',
-            Cell: props => props.value ? <Glyphicon glyph="ok" /> : '',
+            accessor: 'is_missing',
+            Cell: props => (props.value ? <Glyphicon glyph="ok" /> : ''),
             maxWidth: 75,
           },
           {
             Header: 'Lost description',
-            'accessor': 'missing_description',
+            accessor: 'missing_description',
             Cell: props => props.value,
             maxWidth: 160,
           },
           {
             Header: 'HIO at',
-            'accessor': 'hole_in_one_at',
-            Cell: props => props.value ? moment(props.value).format('DD.MM.YYYY') : '',
+            accessor: 'hole_in_one_at',
+            Cell: props => (props.value ? moment(props.value).format('DD.MM.YYYY') : ''),
             maxWidth: 100,
           },
         ]}
         data={discs.toJS()}
       />
     </div>
-  );
+  )
 }

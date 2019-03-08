@@ -80,6 +80,9 @@ export default ({ discs, onSearch }) => {
         <li>
           <Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link>
         </li>
+        <li>
+          <Link to="/gallery?type=latest">Latest (10)</Link>
+        </li>
       </ul>
 
       <Row>

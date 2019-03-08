@@ -142,10 +142,7 @@ export default ({ disc }) => {
         <p className={styles.manufacturer}>
           {disc.manufacturer} {disc.material}&nbsp;
         </p>
-        <p className={styles.type}>
-          {disc.type}
-          {renderWeight(disc.weight)}
-        </p>
+        <p className={styles.type}>{disc.type}</p>
 
         <div className={styles.specs}>
           <div className={`${styles.attribute} ${styles.speed}`}>

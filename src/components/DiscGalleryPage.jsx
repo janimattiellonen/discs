@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet'
 import Fuse from 'fuse.js'
 import { debounce } from 'throttle-debounce'
 import clone from 'lodash.clonedeep'
+import moment from 'moment'
 
 import GalleryItem from './GalleryItem'
 import Filter from './Filter'
@@ -43,6 +44,18 @@ class DiscGalleryPage extends React.Component {
   }
 
   filterDiscs(discs, filter) {
+    discs = discs.sort((a, b) => {
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
+        return 1
+      }
+
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
+        return -1
+      }
+
+      return 0
+    })
+
     if (!filter) {
       return discs
     }
@@ -99,6 +112,27 @@ class DiscGalleryPage extends React.Component {
       return discs.filter(disc => disc['Hole in one'] === true)
     }
 
+    if (filter.type === 'latest') {
+      return discs
+        .sort((a, b) => {
+          if (moment(a._created).isBefore(moment(b._created))) {
+            return -1
+          }
+
+          if (moment(a._created).isAfter(moment(b._created))) {
+            return 1
+          }
+
+          if (moment(a._created).isSame(moment(b._created))) {
+            return 0
+          }
+
+          return 1
+        })
+        .takeLast(10)
+        .reverse()
+    }
+
     return discs
   }
 
@@ -112,14 +146,36 @@ class DiscGalleryPage extends React.Component {
 
       this.setState({
         discs: this.props.discs,
-        filteredDiscs: List(this.sort(this.filterDiscs(this.props.discs, queryParams))),
+        filteredDiscs: this.filterDiscs(this.props.discs, queryParams),
       })
     }
   }
 
   onHistoryChange = () => {}
 
-  sort = discs => {
+  sortByCreationDate = discs => {
+    let sortedDiscs = clone(discs)
+
+    sortedDiscs = sortedDiscs.sort((a, b) => {
+      if (moment(a._created).isAfter(moment(b._created))) {
+        return 1
+      }
+
+      if (moment(a._created).isBefore(moment(b._created))) {
+        return -1
+      }
+
+      if (moment(a._created).isSame(moment(b._created), 'day')) {
+        return 0
+      }
+
+      return -1
+    })
+
+    return sortedDiscs
+  }
+
+  sortByName = discs => {
     let sortedDiscs = clone(discs)
 
     sortedDiscs = sortedDiscs.sort((a, b) => {
@@ -148,7 +204,7 @@ class DiscGalleryPage extends React.Component {
 
     if (term === '') {
       this.setState({
-        filteredDiscs: List(this.sort(this.filterDiscs(discs, { type: queryParams.type }))),
+        filteredDiscs: this.filterDiscs(discs, { type: queryParams.type }),
       })
 
       return
@@ -166,7 +222,7 @@ class DiscGalleryPage extends React.Component {
     const fuse = new Fuse(discs.toArray(), options)
 
     this.setState({
-      filteredDiscs: List(this.sort(this.filterDiscs(fuse.search(term), { type: queryParams.type }))),
+      filteredDiscs: this.filterDiscs(fuse.search(term), { type: queryParams.type }),
     })
   }
 

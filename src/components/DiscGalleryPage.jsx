@@ -222,7 +222,7 @@ class DiscGalleryPage extends React.Component {
     const fuse = new Fuse(discs.toArray(), options)
 
     this.setState({
-      filteredDiscs: this.filterDiscs(fuse.search(term), { type: queryParams.type }),
+      filteredDiscs: this.filterDiscs(List(fuse.search(term), { type: queryParams.type })),
     })
   }
 

@@ -101,7 +101,7 @@ export default ({ discs, onSearch }) => {
         <li>
           <Link to="/gallery?type=latest">Latest (10)</Link>
         </li>
-        <li>{renderPrice()}</li>
+        {renderPrice()}
       </ul>
 
       <Row>

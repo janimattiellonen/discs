@@ -7,7 +7,7 @@ import moment from 'moment'
 import styles from './GalleryItem.module.scss'
 
 export default ({ disc }) => {
-  const renderWeight = weight => (weight > 0 ? ', ' + weight + 'g' : '')
+  const renderWeight = disc => (disc.weight > 0 ? `, ${disc.weight}g` : '')
 
   const renderOverlayTrigger = (tooltip, element) => (
     <OverlayTrigger placement="bottom" overlay={tooltip}>
@@ -15,7 +15,7 @@ export default ({ disc }) => {
     </OverlayTrigger>
   )
 
-  const renderTooltip = (disc, element) => {
+  const renderTooltip = element => {
     if (
       (!disc.missing_description || disc.missing_description.length === 0) &&
       (!disc['Donation description'] || disc['Donation description'].length === 0)
@@ -24,7 +24,7 @@ export default ({ disc }) => {
     }
 
     const tooltip = (
-      <Tooltip id={'tooltip-disc-' + disc.id}>
+      <Tooltip id={`tooltip-disc-${disc.id}`}>
         <span>{disc.missing_description || disc['Donation description']}</span>
       </Tooltip>
     )
@@ -32,13 +32,13 @@ export default ({ disc }) => {
     return renderOverlayTrigger(tooltip, element)
   }
 
-  const renderHioTooltip = (disc, element) => {
+  const renderHioTooltip = element => {
     if (!disc['HIO date']) {
       return element
     }
 
     const tooltip = (
-      <Tooltip id={'tooltip-disc-hio-' + disc.id}>
+      <Tooltip id={`tooltip-disc-hio-${disc.id}`}>
         <span>{moment(disc['HIO date']).format('DD.MM.YYYY')}</span>
       </Tooltip>
     )
@@ -46,7 +46,7 @@ export default ({ disc }) => {
     return renderOverlayTrigger(tooltip, element)
   }
 
-  const renderImage = disc => {
+  const renderImage = () => {
     let element = null
 
     if (_.isEmpty(disc.image)) {
@@ -56,69 +56,69 @@ export default ({ disc }) => {
       element = <img src={src} alt="" />
     }
 
-    return renderTooltip(disc, element)
+    return renderTooltip(element)
   }
 
   const renderAttribute = attribute => {
     return numeral(attribute).format('0.[00]')
   }
 
-  const renderLostDisc = disc => {
+  const renderLostDisc = () => {
     if (disc.missing) {
       let element = (
         <div className={styles.discStatus}>
           <span>Lost</span>
         </div>
       )
-      return renderTooltip(disc, element)
+      return renderTooltip(element)
     }
   }
 
-  const renderBrokenDisc = disc => {
+  const renderBrokenDisc = () => {
     if (disc.is_broken) {
       let element = (
         <div className={styles.discStatus}>
           <span>Broken</span>
         </div>
       )
-      return renderTooltip(disc, element)
+      return renderTooltip(element)
     }
   }
 
-  const renderSoldDisc = disc => {
+  const renderSoldDisc = () => {
     if (disc.sold) {
       let element = (
         <div className={styles.discStatus}>
           <span>Sold</span>
         </div>
       )
-      return renderTooltip(disc, element)
+      return renderTooltip(element)
     }
   }
 
-  const renderDonatedDisc = disc => {
+  const renderDonatedDisc = () => {
     if (disc.Donated) {
       let element = (
         <div className={styles.discStatus}>
           <span>Donated</span>
         </div>
       )
-      return renderTooltip(disc, element)
+      return renderTooltip(element)
     }
   }
 
-  const renderHioDisc = disc => {
+  const renderHioDisc = () => {
     if (disc['Hole in one']) {
       let element = (
         <div className={styles.HoleInOne}>
           <span>Hole in one</span>
         </div>
       )
-      return renderHioTooltip(disc, element)
+      return renderHioTooltip(element)
     }
   }
 
-  const renderPrice = discs => {
+  const renderPrice = () => {
     if (disc.price > 0) {
       return `${numeral(disc.price).format('0.00')} €`
     }
@@ -127,17 +127,17 @@ export default ({ disc }) => {
   return (
     <div className={styles.disc}>
       <div className={styles.discImage}>
-        {renderImage(disc)}
+        {renderImage()}
 
-        {renderLostDisc(disc)}
+        {renderLostDisc()}
 
-        {renderSoldDisc(disc)}
+        {renderSoldDisc()}
 
-        {renderDonatedDisc(disc)}
+        {renderDonatedDisc()}
 
-        {renderBrokenDisc(disc)}
+        {renderBrokenDisc()}
 
-        {renderHioDisc(disc)}
+        {renderHioDisc()}
       </div>
 
       <div>
@@ -147,9 +147,11 @@ export default ({ disc }) => {
 
         <div className={styles.manufacturer}>
           <p className={styles.manufacturer}>
-            {disc.manufacturer} {disc.material}&nbsp;
+            {disc.manufacturer} {disc.material}
+            {renderWeight(disc)}
           </p>
           <p className={styles.type}>{disc.type}</p>
+          <p />
         </div>
         <div className={styles.price}>{renderPrice(disc)}</div>
 

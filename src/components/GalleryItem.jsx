@@ -52,7 +52,7 @@ export default ({ disc }) => {
     if (_.isEmpty(disc.image)) {
       element = <img src="/unknown.png" alt="?" />
     } else {
-      let src = `https://testdb-8e20.restdb.io/media/${disc.image[0]}`
+      let src = `https://testdb-8e20.restdb.io/media/${disc.image[0]}?s=w`
       element = <img src={src} alt="" />
     }
 
@@ -118,6 +118,12 @@ export default ({ disc }) => {
     }
   }
 
+  const renderPrice = discs => {
+    if (disc.price > 0) {
+      return `${numeral(disc.price).format('0.00')} €`
+    }
+  }
+
   return (
     <div className={styles.disc}>
       <div className={styles.discImage}>
@@ -139,10 +145,13 @@ export default ({ disc }) => {
 
         {disc.collection_item && <p className={styles.collectionItem}>Collection item</p>}
 
-        <p className={styles.manufacturer}>
-          {disc.manufacturer} {disc.material}&nbsp;
-        </p>
-        <p className={styles.type}>{disc.type}</p>
+        <div className={styles.manufacturer}>
+          <p className={styles.manufacturer}>
+            {disc.manufacturer} {disc.material}&nbsp;
+          </p>
+          <p className={styles.type}>{disc.type}</p>
+        </div>
+        <div className={styles.price}>{renderPrice(disc)}</div>
 
         <div className={styles.specs}>
           <div className={`${styles.attribute} ${styles.speed}`}>

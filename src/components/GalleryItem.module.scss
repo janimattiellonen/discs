@@ -56,8 +56,18 @@
   width: 100%;
 }
 
+
 .type {
   font-weight: normal;
+}
+
+div.manufacturer {
+  float: left;
+}
+
+.price {
+  float: right;
+  font-size: 2em;
 }
 
 .attribute {

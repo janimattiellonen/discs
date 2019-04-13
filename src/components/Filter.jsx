@@ -1,4 +1,5 @@
 import React from 'react'
+import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import { Col, Row, FormControl } from 'react-bootstrap'
 
@@ -29,6 +30,23 @@ export default ({ discs, onSearch }) => {
   const getOwnStampCount = () => discs.filter(disc => disc['Own stamp'] === true).count()
 
   const getHoleInOneCount = () => discs.filter(disc => disc['Hole in one'] === true).count()
+
+  const getMoneySpentOnDiscs = () =>
+    numeral(discs.filter(disc => disc.price > 0).reduce((total, value) => total + value.price, 0)).format('0.00')
+
+  const getCountForDiscsWithPrice = () => discs.filter(disc => disc.price > 0).count()
+
+  const renderPrice = () => {
+    const spentMoney = getMoneySpentOnDiscs()
+    const discsWithPrice = getCountForDiscsWithPrice()
+    const discCount = getDiscCount()
+
+    return (
+      <li title={`${discsWithPrice} discs of ${discCount} has its price set.`}>
+        {spentMoney} € ({discsWithPrice} / {discCount})
+      </li>
+    )
+  }
 
   if (discs.count() === 0) {
     return null
@@ -83,6 +101,7 @@ export default ({ discs, onSearch }) => {
         <li>
           <Link to="/gallery?type=latest">Latest (10)</Link>
         </li>
+        <li>{renderPrice()}</li>
       </ul>
 
       <Row>

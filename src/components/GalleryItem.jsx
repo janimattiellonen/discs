@@ -119,7 +119,11 @@ export default ({ disc }) => {
   }
 
   const renderPrice = () => {
-    if (disc.price > 0) {
+    if (disc.price_status === 'gift') {
+      return 'Gift'
+    } else if (disc.price_status === 'price_unknown') {
+      return 'n/a'
+    } else if (disc.price > 0) {
       return `${numeral(disc.price).format('0.00')} €`
     }
   }

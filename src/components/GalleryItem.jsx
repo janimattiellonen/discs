@@ -4,8 +4,6 @@ import numeral from 'numeral'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import moment from 'moment'
 
-import styles from './GalleryItem.module.scss'
-
 export default ({ disc }) => {
   const renderWeight = disc => (disc.weight > 0 ? `, ${disc.weight}g` : '')
 
@@ -33,13 +31,13 @@ export default ({ disc }) => {
   }
 
   const renderHioTooltip = element => {
-    if (!disc['HIO date']) {
+    if (!disc.hole_in_one_date) {
       return element
     }
 
     const tooltip = (
       <Tooltip id={`tooltip-disc-hio-${disc.id}`}>
-        <span>{moment(disc['HIO date']).format('DD.MM.YYYY')}</span>
+        <span>{moment(disc.hole_in_one_date).format('DD.MM.YYYY')}</span>
       </Tooltip>
     )
 
@@ -52,7 +50,7 @@ export default ({ disc }) => {
     if (_.isEmpty(disc.image)) {
       element = <img src="/unknown.png" alt="?" />
     } else {
-      let src = `https://testdb-8e20.restdb.io/media/${disc.image[0]}?s=w`
+      let src = `http://127.0.0.1:8000/uploads/images/discs/${disc.image}`
       element = <img src={src} alt="" />
     }
 
@@ -64,9 +62,9 @@ export default ({ disc }) => {
   }
 
   const renderLostDisc = () => {
-    if (disc.missing) {
+    if (disc.is_missing) {
       let element = (
-        <div className={styles.discStatus}>
+        <div className="discStatus">
           <span>Lost</span>
         </div>
       )
@@ -77,7 +75,7 @@ export default ({ disc }) => {
   const renderBrokenDisc = () => {
     if (disc.is_broken) {
       let element = (
-        <div className={styles.discStatus}>
+        <div className="discStatus">
           <span>Broken</span>
         </div>
       )
@@ -86,9 +84,9 @@ export default ({ disc }) => {
   }
 
   const renderSoldDisc = () => {
-    if (disc.sold) {
+    if (disc.is_sold) {
       let element = (
-        <div className={styles.discStatus}>
+        <div className="discStatus">
           <span>Sold</span>
         </div>
       )
@@ -97,9 +95,9 @@ export default ({ disc }) => {
   }
 
   const renderDonatedDisc = () => {
-    if (disc.Donated) {
+    if (disc.is_donated) {
       let element = (
-        <div className={styles.discStatus}>
+        <div className="discStatus">
           <span>Donated</span>
         </div>
       )
@@ -108,9 +106,9 @@ export default ({ disc }) => {
   }
 
   const renderHioDisc = () => {
-    if (disc['Hole in one']) {
+    if (disc.is_hole_in_one) {
       let element = (
-        <div className={styles.HoleInOne}>
+        <div className="HoleInOne">
           <span>Hole in one</span>
         </div>
       )
@@ -129,8 +127,8 @@ export default ({ disc }) => {
   }
 
   return (
-    <div className={styles.disc}>
-      <div className={styles.discImage}>
+    <div>
+      <div className="discImage">
         {renderImage()}
 
         {renderLostDisc()}
@@ -147,34 +145,34 @@ export default ({ disc }) => {
       <div>
         <h2>{disc.name}&nbsp;</h2>
 
-        {disc.collection_item && <p className={styles.collectionItem}>Collection item</p>}
+        {disc.is_collection_item && <p className="collectionItem">Collection item</p>}
 
-        <div className={styles.manufacturer}>
-          <p className={styles.manufacturer}>
+        <div className="manufacturer">
+          <p className="manufacturer">
             {disc.manufacturer} {disc.material}
             {renderWeight(disc)}
           </p>
-          <p className={styles.type}>{disc.type}</p>
+          <p className="type">{disc.type}</p>
           <p />
         </div>
-        <div className={styles.price}>{renderPrice(disc)}</div>
+        <div className="price">{renderPrice(disc)}</div>
 
-        <div className={styles.specs}>
-          <div className={`${styles.attribute} ${styles.speed}`}>
+        <div className="specs">
+          <div className="attribute speed">
             <h3>Speed</h3>
             <p>{renderAttribute(disc.speed)}</p>
           </div>
-          <div className={`${styles.attribute} ${styles.glide}`}>
+          <div className="attribute glide">
             <h3>Glide</h3>
             <p>{renderAttribute(disc.glide)}</p>
           </div>
 
-          <div className={`${styles.attribute} ${styles.stability}`}>
+          <div className="attribute stability">
             <h3>Stability</h3>
             <p>{renderAttribute(disc.stability)}</p>
           </div>
 
-          <div className={`${styles.attribute} ${styles.fade2}`}>
+          <div className="attribute fade2">
             <h3>Fade</h3>
             <p>{renderAttribute(disc.fade)}</p>
           </div>

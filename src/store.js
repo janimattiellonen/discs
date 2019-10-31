@@ -1,22 +1,27 @@
+import { createBrowserHistory } from 'history'
+import thunk from 'redux-thunk'
 
-import { createStore, compose, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import rootReducer from './ducks';
+import { applyMiddleware, compose, createStore } from 'redux'
+import { routerMiddleware } from 'connected-react-router'
+import createRootReducer from './ducks'
 
-export default (history, initialState = {}) => {
-  /* eslint-disable no-underscore-dangle */
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  /* eslint-enable no-underscore-dangle */
+export const history = createBrowserHistory()
 
-  return createStore(
-    connectRouter(history)(rootReducer),
-    initialState,
-    composeEnhancers(
+export default function configureStore(preloadedState) {
+  const store = createStore(
+    createRootReducer(history), // root reducer with router state
+    preloadedState,
+    compose(
       applyMiddleware(
         thunk,
-        routerMiddleware(history),
-      )
+        routerMiddleware(history), // for dispatching history actions
+        // ... other middlewares ...
+      ),
     ),
-  );
-};
+  )
+
+  return store
+}
+
+
+

@@ -3,6 +3,8 @@ import discService from '../services/disc-service'
 
 const FETCH_DISCS = 'jme/discs/FETCH_DISCS'
 
+const ADD_DISC = 'jme/discs/ADD_DISC'
+
 const defaultState = Map({
   discs: List(),
 })
@@ -15,6 +17,10 @@ export default function(state = defaultState, action = {}) {
       return state.set('discs', List(payload))
     }
 
+    case ADD_DISC: {
+      return state
+    }
+
     default:
       return state
   }
@@ -23,5 +29,11 @@ export default function(state = defaultState, action = {}) {
 export function fetchDiscs() {
   return dispatch => {
     discService.getDiscs().then(discs => dispatch({ type: FETCH_DISCS, payload: discs }))
+  }
+}
+
+export function saveDisc(data) {
+  return dispatch => {
+    discService.addDisc(data).then(data => dispatch({ype: ADD_DISC, payload: data}))
   }
 }

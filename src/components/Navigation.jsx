@@ -1,9 +1,9 @@
 import React from 'react'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { Col, Row, FormControl } from 'react-bootstrap'
 
 export default ({ discs, onSearch }) => {
+
   const getDiscCount = () => discs.count()
 
   const getDistanceDriverCount = () => discs.filter(disc => disc.type === 'Distance driver').count()
@@ -50,10 +50,6 @@ export default ({ discs, onSearch }) => {
 
   if (discs.count() === 0) {
     return null
-  }
-
-  const handleSearch = e => {
-    onSearch(e.target.value)
   }
 
   return (
@@ -103,12 +99,6 @@ export default ({ discs, onSearch }) => {
         </li>
         {renderPrice()}
       </ul>
-
-      <Row>
-        <Col>
-          <FormControl type="text" onChange={handleSearch} />
-        </Col>
-      </Row>
     </div>
   )
 }

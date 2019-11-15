@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'connected-react-router'
 
 import Disc from './components/containers/DiscContainer'
 import DiscGallery from './components/containers/DiscGalleryContainer'
-import AppLayout from "./components/containers/layouts/AppLayout";
+import AppLayout from "./components/containers/layouts/AppLayoutContainer";
 import DiscList from "./components/containers/DiscListContainer";
 
 const Root = props => {
@@ -13,14 +13,16 @@ const Root = props => {
 
   return (
     <Provider store={store}>
-      <AppLayout>
         <ConnectedRouter history={history}>
+          <AppLayout>
+
           <Route exact path={`/`} component={DiscGallery} />
           <Route exact path={`/discs/new`} component={Disc} />
           <Route exact path={`/discs`} component={DiscList} />
           <Route path={`/gallery`} component={DiscGallery} />
+          </AppLayout>
+
         </ConnectedRouter>
-      </AppLayout>
     </Provider>
   )
 }

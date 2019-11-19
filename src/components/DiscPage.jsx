@@ -2,11 +2,11 @@ import React from 'react'
 
 import DiscForm from './DiscForm'
 
-const DiscPage = ({saveDisc}) => (
+const DiscPage = ({ saveDisc }) => (
   <div>
     <h1>Disc page</h1>
 
-    <DiscForm onSave={saveDisc}/>
+    <DiscForm onSave={saveDisc} />
   </div>
 )
 

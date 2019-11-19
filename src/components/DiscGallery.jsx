@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { Col, Row } from 'react-bootstrap'
-import GalleryItem from "./GalleryItem";
+import GalleryItem from './GalleryItem'
 
-const DiscGallery = ({discs}) => (
+const DiscGallery = ({ discs }) => (
   <Row>
     {discs.map(disc => (
       <Col key={`col-${disc.id}`} xs={12} sm={6} lg={4}>
@@ -11,6 +11,6 @@ const DiscGallery = ({discs}) => (
       </Col>
     ))}
   </Row>
-);
+)
 
 export default DiscGallery

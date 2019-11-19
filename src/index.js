@@ -20,7 +20,7 @@ import { AppContainer } from 'react-hot-loader'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import configureStore, {history} from './store'
+import configureStore, { history } from './store'
 
 import Root from './Root2'
 

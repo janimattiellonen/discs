@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 
 import { saveDisc } from '../../ducks/discs'
 
-
 export default connect(
   state => ({}),
   dispatch =>

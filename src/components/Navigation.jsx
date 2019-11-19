@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const Ul = styled.ul`
   padding: 0;
@@ -14,7 +14,6 @@ const Li = styled.li`
 `
 
 export default ({ discs, onSearch }) => {
-
   const getDiscCount = () => discs.count()
 
   const getDistanceDriverCount = () => discs.filter(disc => disc.type === 'Distance driver').count()

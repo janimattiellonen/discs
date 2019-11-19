@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 class Index extends React.Component {
   render() {
-    const { discs } = this.props;
+    const { discs } = this.props
 
     return (
       <div className="App">
@@ -14,10 +14,10 @@ class Index extends React.Component {
           {discs.map(disc => (
             <li key={disc.id}>{disc.name}</li>
           ))}
-        </ul> 
+        </ul>
       </div>
-    );
+    )
   }
 }
 
-export default Index;
+export default Index

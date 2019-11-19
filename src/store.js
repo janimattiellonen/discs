@@ -14,14 +14,11 @@ export default function configureStore(preloadedState) {
     compose(
       applyMiddleware(
         thunk,
-        routerMiddleware(history), // for dispatching history actions
+        routerMiddleware(history) // for dispatching history actions
         // ... other middlewares ...
-      ),
-    ),
+      )
+    )
   )
 
   return store
 }
-
-
-

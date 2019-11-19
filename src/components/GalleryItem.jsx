@@ -4,7 +4,7 @@ import numeral from 'numeral'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import moment from 'moment'
 
-import unknown from '../unknown.png';
+import unknown from '../unknown.png'
 
 export default ({ disc }) => {
   const renderWeight = disc => (disc.weight > 0 ? `, ${disc.weight}g` : '')

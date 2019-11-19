@@ -11,9 +11,6 @@ import AppLayout from './components/containers/layouts/AppLayout'
 
 function AppLayoutRoute({ match }) {
   let { path, url } = useRouteMatch()
-  console.log('path: ' + JSON.stringify(path))
-  console.log('url: ' + JSON.stringify(url))
-  console.log('match: ' + JSON.stringify(match))
 
   return (
     <AppLayout>

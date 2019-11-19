@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable'
-import discService from '../services/disc-service'
+import discApi from '../api/discs'
 
 const FETCH_DISCS = 'jme/discs/FETCH_DISCS'
 const FETCH_DISCS_DONE = 'jme/discs/FETCH_DISCS_DONE'
@@ -39,7 +39,7 @@ export default function(state = defaultState, action = {}) {
 export function fetchDiscs() {
   return dispatch => {
     dispatch({ type: FETCH_DISCS })
-    discService.getDiscs().then(
+    discApi.getDiscs().then(
       discs => dispatch({ type: FETCH_DISCS_DONE, payload: discs }),
       error => dispatch({ type: FETCH_DISCS_FAILED })
     )
@@ -48,6 +48,6 @@ export function fetchDiscs() {
 
 export function saveDisc(data) {
   return dispatch => {
-    discService.addDisc(data).then(data => dispatch({ ype: ADD_DISC, payload: data }))
+    discApi.addDisc(data).then(data => dispatch({ ype: ADD_DISC, payload: data }))
   }
 }

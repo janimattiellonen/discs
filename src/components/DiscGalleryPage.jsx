@@ -20,19 +20,12 @@ const FilterContainer = styled.div`
 
 const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
   const [filteredDiscs, setFilteredDiscs] = useState(discs)
-
   const [isLoaded, setIsLoaded] = useState(false)
-
   const queryParams = queryString.parse(location.search)
-
   const type = queryParams.type
 
-  console.log('type: ' + type)
-
   useEffect(() => {
-    console.log('useEffect()')
     if (discs.size > 0 || 1 === 1) {
-      console.log('calling setFilteredDiscs()')
       setFilteredDiscs(filterDiscs(discs, { type: queryParams.type }))
     } else if (discs.size === 0) {
       setFilteredDiscs(List([]))
@@ -40,8 +33,6 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
   }, [type, discs.size])
 
   const search = term => {
-    console.log('search()')
-
     const queryParams = queryString.parse(location.search)
 
     queryParams.term = term

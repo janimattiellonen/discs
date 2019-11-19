@@ -8,7 +8,6 @@ export default {
   },
 
   addDisc(data) {
-    console.log('data: ' + JSON.stringify(data))
     return axios.post(`${config.server.base_url}/api/discs`, data).then(res => res.data)
   },
 }

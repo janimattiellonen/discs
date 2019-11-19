@@ -2,6 +2,7 @@ import moment from "moment";
 
 
 export default (discs, filter) => {
+  console.log('Hep')
   discs = discs.sort((a, b) => {
     if (a.name.toLowerCase() > b.name.toLowerCase()) {
       return 1
@@ -27,6 +28,7 @@ export default (discs, filter) => {
   }
 
   if (filter.type === 'putter') {
+    console.log('putter: ' + discs.filter(disc => disc.type === 'Putter').size)
     return discs.filter(disc => disc.type === 'Putter')
   }
 
@@ -91,5 +93,6 @@ export default (discs, filter) => {
       .reverse()
   }
 
+  console.log('Filtered: ' + discs.size)
   return discs
 }

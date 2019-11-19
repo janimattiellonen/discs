@@ -2,6 +2,8 @@ import React from 'react'
 
 import { Formik, Field, Form } from 'formik';
 
+import { TextField } from 'formik-material-ui';
+
 import styled from 'styled-components'
 
 const Label = styled.label`
@@ -80,7 +82,7 @@ const DiscForm = ({onSave}) => (
         {({ isSubmitting, getFieldProps, handleChange, handleBlur, values }) => (
           <Form>
 
-            <Field name="price" label="Price" component={TextInput} />
+            <Field name="price" label="Price" component={TextField} />
 
             <Label htmlFor="price_status">
               <LabelSpan>Price status</LabelSpan>
@@ -96,7 +98,7 @@ const DiscForm = ({onSave}) => (
               </Field>
             </Label>
 
-            <Field name="name" label="Name" component={TextInput} />
+            <Field name="name" label="Name" component={TextInput} variant="outlined"/>
 
             <Label htmlFor="type">
               <LabelSpan>Type</LabelSpan>

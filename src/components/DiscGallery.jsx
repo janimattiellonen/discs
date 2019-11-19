@@ -11,6 +11,6 @@ const DiscGallery = ({discs}) => (
       </Col>
     ))}
   </Row>
-)
+);
 
 export default DiscGallery

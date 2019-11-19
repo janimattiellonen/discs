@@ -2,6 +2,17 @@ import React from 'react'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 
+import styled from 'styled-components';
+
+const Ul = styled.ul`
+  padding: 0;
+`
+const Li = styled.li`
+  display: inline;
+  margin-right: 20px;
+  line-height: 30px;
+`
+
 export default ({ discs, onSearch }) => {
 
   const getDiscCount = () => discs.count()
@@ -42,9 +53,9 @@ export default ({ discs, onSearch }) => {
     const discCount = getDiscCount()
 
     return (
-      <li title={`${discsWithPrice} discs of ${discCount} has its price set.`}>
+      <Li title={`${discsWithPrice} discs of ${discCount} has its price set.`}>
         {spentMoney} € ({discsWithPrice} / {discCount})
-      </li>
+      </Li>
     )
   }
 
@@ -54,51 +65,51 @@ export default ({ discs, onSearch }) => {
 
   return (
     <div className="disc-filter">
-      <ul>
-        <li>
+      <Ul>
+        <Li>
           <Link to="/gallery">All ({getDiscCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=distanceDriver">Distance drivers ({getDistanceDriverCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=fairwayDriver">Fairway drivers ({getFairwayDriverCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=approach">Approach ({getApproachCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=available">Available ({getAvailableCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=missing">Lost ({getLostDiscCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=sold">Sold ({getSoldDiscCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=donated">Donated ({getDonatedDiscCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=collection">Collection ({getCollectibleCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=ownStamp">Own stamp ({getOwnStampCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/gallery?type=latest">Latest (10)</Link>
-        </li>
+        </Li>
         {renderPrice()}
-      </ul>
+      </Ul>
     </div>
   )
 }

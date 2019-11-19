@@ -28,11 +28,13 @@ function AppLayout( { children, discs, fetchDiscs } = props) {
         <Box
           bgcolor="background.paper"
           fontFamily="h6.fontFamily"
-          fontSize={{ xs: 'h4.fontSize', sm: 'h4.fontSize', md: 'h3.fontSize' }}
+          fontSize={{ xs: 'h4.fontSize', sm: 'h4.fontSize', md: 'h5.fontSize' }}
           p={{ xs: 2, sm: 3, md: 4 }}
         >
           <div>
             <Navigation discs={discs}/>
+
+
             {children}
           </div>
         </Box>

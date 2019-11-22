@@ -17,9 +17,17 @@ const Box = styled.div`
   margin: 0 auto;
 `
 
-function AppLayout({ children, discs, fetchDiscs } = props) {
+function AppLayout({ children, discs, fetchDiscs, fetchManufacturers, fetchTypes } = props) {
   useEffect(() => {
     fetchDiscs()
+  }, [])
+
+  useEffect(() => {
+    fetchManufacturers()
+  }, [])
+
+  useEffect(() => {
+    fetchTypes()
   }, [])
 
   return (

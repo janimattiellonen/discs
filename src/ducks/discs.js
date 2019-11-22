@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable'
-import discApi from '../api/discs'
+import discApi from '../api/disc'
 
 const FETCH_DISCS = 'jme/discs/FETCH_DISCS'
 const FETCH_DISCS_DONE = 'jme/discs/FETCH_DISCS_DONE'

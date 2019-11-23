@@ -2,16 +2,50 @@ import React from 'react'
 
 import { Formik, Field, Form } from 'formik'
 
+import Button from '@material-ui/core/Button'
+
 import styled from 'styled-components'
 
 const Label = styled.label`
   color: black;
   display: block;
+
+  & > input {
+    width: 100%;
+  }
+
+  & > select {
+    min-width: 100%;
+  }
+
+  @media (min-width: 380px) {
+    & > input {
+      width: inherit;
+    }
+
+    & > select {
+      min-width: 200px;
+    }
+  }
+
+  & > input[type='checkbox'] {
+    width: inherit;
+  }
 `
 
 const LabelSpan = styled.span`
   display: inline-block;
-  width: 250px;
+  width: 100%;
+  display: block;
+
+  @media (min-width: 380px) {
+    display: inline-block;
+    width: 50%;
+  }
+`
+
+const Main = styled.div`
+  max-width: 900px;
 `
 
 const TextInput = ({ field, id, label, form, ...props }) => {
@@ -66,8 +100,9 @@ const defaultValues = () => ({
 })
 
 const DiscForm = ({ manufacturers, onSave, types }) => {
+  console.log('DiscForm rendered?')
   return (
-    <div>
+    <Main>
       <h2>New disc</h2>
 
       <div>
@@ -159,10 +194,10 @@ const DiscForm = ({ manufacturers, onSave, types }) => {
 
               <Field name="hole_in_one_date" label="Hole in one date" component={TextInput} />
 
-              <label htmlFor="hole_in_one_description">
+              <Label htmlFor="hole_in_one_description">
                 <LabelSpan>Hole in one description</LabelSpan>
                 <Field id="hole_in_one_description" name="hole_in_one_description" type="textarea" />
-              </label>
+              </Label>
 
               <Label htmlFor="is_collection_item">
                 <LabelSpan>Collection item</LabelSpan>
@@ -189,14 +224,14 @@ const DiscForm = ({ manufacturers, onSave, types }) => {
                 <Field name="additional" id="Additional" type="textarea" />
               </Label>
 
-              <button type="submit" disabled={isSubmitting}>
+              <Button variant="contained" type="submit" color="primary" disabled={isSubmitting}>
                 Submit
-              </button>
+              </Button>
             </Form>
           )}
         </Formik>
       </div>
-    </div>
+    </Main>
   )
 }
 

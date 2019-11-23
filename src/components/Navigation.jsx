@@ -16,18 +16,18 @@ const Li = styled.li`
 export default ({ discs, onSearch }) => {
   const getDiscCount = () => discs.count()
 
-  const getDistanceDriverCount = () => discs.filter(disc => disc.type === 'Distance driver').count()
+  const getDistanceDriverCount = () => discs.filter(disc => disc.type.id === 'distance-driver').count()
 
   const getAvailableCount = () =>
     discs.filter(disc => disc.is_sold !== true && disc.is_missing !== true && disc.is_broken !== true).count()
 
-  const getFairwayDriverCount = () => discs.filter(disc => disc.type === 'Fairway driver').count()
+  const getFairwayDriverCount = () => discs.filter(disc => disc.type.id === 'fairway-driver').count()
 
-  const getApproachCount = () => discs.filter(disc => disc.type === 'Approach').count()
+  const getApproachCount = () => discs.filter(disc => disc.type.id === 'approach').count()
 
-  const getMidrangeCount = () => discs.filter(disc => disc.type === 'Mid-range').count()
+  const getMidrangeCount = () => discs.filter(disc => disc.type.id === 'mid-range').count()
 
-  const getPutterCount = () => discs.filter(disc => disc.type === 'Putter').count()
+  const getPutterCount = () => discs.filter(disc => disc.type.id === 'putter').count()
 
   const getLostDiscCount = () => discs.filter(disc => disc.is_missing === true).count()
 

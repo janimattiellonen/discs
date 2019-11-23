@@ -151,10 +151,10 @@ export default ({ disc }) => {
 
         <div className="manufacturer">
           <p className="manufacturer">
-            {disc.manufacturer} {disc.material}
+            {disc.manufacturer.name} {disc.material}
             {renderWeight(disc)}
           </p>
-          <p className="type">{disc.type}</p>
+          <p className="type">{disc.type.name}</p>
           <p />
         </div>
         <div className="price">{renderPrice(disc)}</div>

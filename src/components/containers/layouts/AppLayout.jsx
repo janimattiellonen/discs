@@ -22,23 +22,10 @@ function AppLayout({ children, discs, fetchDiscs, fetchManufacturers, fetchTypes
     fetchDiscs()
   }, [])
 
-  useEffect(() => {
-    fetchManufacturers()
-  }, [])
-
-  useEffect(() => {
-    fetchTypes()
-  }, [])
-
   return (
     <NoSsr>
       <ThemeProvider theme={theme}>
-        <Box
-          bgcolor="background.paper"
-          fontFamily="h6.fontFamily"
-          fontSize={{ xs: 'h4.fontSize', sm: 'h4.fontSize', md: 'h5.fontSize' }}
-          p={{ xs: 2, sm: 3, md: 4 }}
-        >
+        <Box bgcolor="background.paper" fontFamily="h6.fontFamily" p={{ xs: 2, sm: 3, md: 4 }}>
           <div>
             <Navigation discs={discs} />
 

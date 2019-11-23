@@ -18,23 +18,23 @@ export default (discs, filter) => {
   }
 
   if (filter.type === 'distanceDriver') {
-    return discs.filter(disc => disc.type === 'Distance driver')
+    return discs.filter(disc => disc.type.id === 'distance-driver')
   }
 
   if (filter.type === 'fairwayDriver') {
-    return discs.filter(disc => disc.type === 'Fairway driver')
+    return discs.filter(disc => disc.type.id === 'fairway-driver')
   }
 
   if (filter.type === 'putter') {
-    return discs.filter(disc => disc.type === 'Putter')
+    return discs.filter(disc => disc.type.id === 'putter')
   }
 
   if (filter.type === 'midrange') {
-    return discs.filter(disc => disc.type === 'Mid-range')
+    return discs.filter(disc => disc.type.id === 'mid-range')
   }
 
   if (filter.type === 'approach') {
-    return discs.filter(disc => disc.type === 'Approach')
+    return discs.filter(disc => disc.type.id === 'approach')
   }
 
   if (filter.type === 'missing') {

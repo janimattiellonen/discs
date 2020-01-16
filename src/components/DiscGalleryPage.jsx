@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { List } from 'immutable'
 import queryString from 'query-string'
@@ -10,9 +10,12 @@ import moment from 'moment'
 import filterDiscs from '../util/filter'
 import DiscGallery from './DiscGallery'
 import Fuse from 'fuse.js'
-import { debounce } from 'throttle-debounce'
 import { Col, Row } from 'react-bootstrap'
 import styled from 'styled-components'
+
+import cookies from 'react-cookies'
+
+import { Auth0Context } from '../contexts/Auth0Context'
 
 const FilterContainer = styled.div`
   margin: 15px;
@@ -23,6 +26,11 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const queryParams = queryString.parse(location.search)
   const type = queryParams.type
+  const auth0 = useContext(Auth0Context)
+
+  const token = cookies.load('Authorization')
+
+  console.log('token now: ' + token)
 
   useEffect(() => {
     if (discs.size > 0 || 1 === 1) {
@@ -117,6 +125,14 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
   return (
     <div>
       <Helmet title="My discs - Gallery" />
+
+      <p>{auth0.message}</p>
+
+      <p>
+        <button onClick={auth0.loginWithRedirect} className="button is-danger">
+          Login
+        </button>
+      </p>
 
       <FilterContainer className="filter-container">
         <Row>

@@ -23,6 +23,9 @@ export const Auth0Provider = ({ children }) => {
     async function initializeAuth0() {
       const client = await createAuth0Client(config)
       const isAuthenticated = await client.isAuthenticated() // <-- new
+      const user = isAuthenticated ? await client.getUser() : null // <-- new
+
+      console.log('user: ' + JSON.stringify(user))
 
       setAuth0Client(client)
       setIsAuthenticated(isAuthenticated)
@@ -45,3 +48,5 @@ export const Auth0Provider = ({ children }) => {
 
   return <Auth0Context.Provider value={configObject}>{children}</Auth0Context.Provider>
 }
+
+// https://auth0.com/blog/authenticating-your-first-react-app/#Configuring-Our-Auth0-Account

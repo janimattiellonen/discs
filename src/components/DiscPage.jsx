@@ -1,10 +1,21 @@
 import React, { useEffect } from 'react'
 
+import { useAuth0 } from '../contexts/Auth0Context'
+
 import DiscForm from './DiscForm'
 
 const DiscPage = ({ fetchManufacturers, fetchTypes, manufacturers, saveDisc, types }) => {
+  const { getTokenSilently } = useAuth0()
+
   useEffect(() => {
-    fetchManufacturers()
+    const foo = async () => {
+      const token = await getTokenSilently()
+
+      console.log('ttt: ' + token)
+      fetchManufacturers()
+    }
+
+    foo()
   }, [])
 
   useEffect(() => {

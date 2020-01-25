@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
@@ -12,7 +13,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
   return prev
 }, {})
 
-module.exports = {
+const certPath = (module.exports = {
   mode: 'development',
   entry: {
     app: './src/index.js',
@@ -21,6 +22,11 @@ module.exports = {
   devServer: {
     /*contentBase: './dist',*/
     historyApiFallback: true,
+    https: {
+      key: fs.readFileSync(path.join(__dirname, 'cert', 'nginx-selfsigned.key')),
+      cert: fs.readFileSync(path.join(__dirname, 'cert', 'nginx-selfsigned.crt')),
+      ca: fs.readFileSync(path.join(__dirname, 'cert', 'dhparam.pem')),
+    },
   },
   module: {
     rules: [
@@ -81,4 +87,4 @@ module.exports = {
     alias: { 'react-dom': '@hot-loader/react-dom' },
     extensions: ['*', '.js', '.jsx'],
   },
-}
+})

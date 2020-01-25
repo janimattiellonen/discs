@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
-//import history from './utils/history'
+import history from './util/history'
 
 const DEFAULT_REDIRECT_CALLBACK = () => window.history.replaceState({}, document.title, window.location.pathname)
 
@@ -18,7 +18,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = DEFAULT_REDIRECT_
       const auth0FromHook = await createAuth0Client(initOptions)
       setAuth0(auth0FromHook)
 
-      if (window.location.search.includes('code=')) {
+      if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
         const { appState } = await auth0FromHook.handleRedirectCallback()
         onRedirectCallback(appState)
       }
@@ -60,7 +60,6 @@ export const Auth0Provider = ({ children, onRedirectCallback = DEFAULT_REDIRECT_
     setIsAuthenticated(true)
     setUser(user)
   }
-
   return (
     <Auth0Context.Provider
       value={{

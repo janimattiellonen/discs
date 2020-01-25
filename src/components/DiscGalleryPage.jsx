@@ -13,9 +13,7 @@ import Fuse from 'fuse.js'
 import { Col, Row } from 'react-bootstrap'
 import styled from 'styled-components'
 
-import cookies from 'react-cookies'
-
-import { Auth0Context } from '../contexts/Auth0Context'
+import { useAuth0 } from '../react-auth0-spa'
 
 const FilterContainer = styled.div`
   margin: 15px;
@@ -26,11 +24,9 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const queryParams = queryString.parse(location.search)
   const type = queryParams.type
-  const auth0 = useContext(Auth0Context)
+  const { isLoading, user, loginWithRedirect, logout, getTokenSilently } = useAuth0()
 
-  const token = cookies.load('Authorization')
-
-  console.log('token now: ' + token)
+  console.log('token now: ' + JSON.stringify(getTokenSilently(), null, 2))
 
   useEffect(() => {
     if (discs.size > 0 || 1 === 1) {
@@ -122,17 +118,29 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
     return <div>Loading...</div>
   }
 
+  if (user) {
+    console.log('USER: ' + JSON.stringify(user, null, 2))
+  }
+
   return (
     <div>
       <Helmet title="My discs - Gallery" />
 
-      <p>{auth0.message}</p>
+      {!isLoading && !user && (
+        <p>
+          <button onClick={loginWithRedirect} className="button is-danger">
+            Login
+          </button>
+        </p>
+      )}
 
-      <p>
-        <button onClick={auth0.loginWithRedirect} className="button is-danger">
-          Login
-        </button>
-      </p>
+      {!isLoading && user && (
+        <p>
+          <button onClick={logout} className="button is-danger">
+            Logout
+          </button>
+        </p>
+      )}
 
       <FilterContainer className="filter-container">
         <Row>

@@ -1,34 +1,32 @@
 export default {
-  getManufacturer: (code) => {
+  getManufacturer: code => {
     switch (code) {
       case 'innova':
-        return 'Innova';
+        return 'Innova'
 
       default:
-        return code;
+        return code
     }
   },
-  getDiscMaterial: (code) => {
+  getDiscMaterial: code => {
     switch (code) {
       case 'star':
-        return 'Star';
+        return 'Star'
 
       default:
-        return code;
-    } 
+        return code
+    }
   },
-  getDiscType: (code) => {
+  getDiscType: code => {
     switch (code) {
       case 'midrange':
-        return 'Mid-range';
+        return 'Mid-range'
 
       case 'fairwayDriver':
-        return 'Fairway driver';
+        return 'Fairway driver'
 
       default:
-        return code;
+        return code
     }
-  }
-
-
-};
+  },
+}

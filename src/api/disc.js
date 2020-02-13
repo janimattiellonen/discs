@@ -20,17 +20,20 @@ const getToken = async () => {
 const token = getToken()
 console.log('======Token: ' + JSON.stringify(token))
 */
+
 export default {
   getDiscs() {
-    return axios.get(`${config.server.base_url}/api/discs`).then(res => res.data)
+    return axios.get(`${config.server.base_url}/api/discs`).then(res => {console.log('data: ' + JSON.stringify(res, null, 2));return res.data})
   },
 
-  addDisc(data) {
+
+  addDisc(data, token) {
     console.log('About to add a new disc: ')
+
     return axios
       .post(`${config.server.base_url}/api/discs`, data, {
         headers: {
-          Authorization: 'Bearer ',
+          Authorization: 'Bearer ' + token,
         },
       })
       .then(res => res.data)

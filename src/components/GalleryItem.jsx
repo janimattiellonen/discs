@@ -33,13 +33,13 @@ export default ({ disc }) => {
   }
 
   const renderHioTooltip = element => {
-    if (!disc.hole_in_one_date) {
+    if (!disc['HIO date']) {
       return element
     }
 
     const tooltip = (
       <Tooltip id={`tooltip-disc-hio-${disc.id}`}>
-        <span>{moment(disc.hole_in_one_date).format('DD.MM.YYYY')}</span>
+        <span>{moment(disc['HIO date']).format('DD.MM.YYYY')}</span>
       </Tooltip>
     )
 
@@ -52,7 +52,7 @@ export default ({ disc }) => {
     if (_.isEmpty(disc.image)) {
       element = <img src={unknown} alt="?" />
     } else {
-      let src = `http://127.0.0.1:8000/uploads/images/discs/${disc.image}`
+      let src = `https://testdb-8e20.restdb.io/media/${disc.image[0]}`
       element = <img src={src} alt="" />
     }
 
@@ -64,7 +64,7 @@ export default ({ disc }) => {
   }
 
   const renderLostDisc = () => {
-    if (disc.is_missing) {
+    if (disc.missing) {
       let element = (
         <div className="discStatus">
           <span>Lost</span>
@@ -75,7 +75,7 @@ export default ({ disc }) => {
   }
 
   const renderBrokenDisc = () => {
-    if (disc.is_broken) {
+    if (disc.broken) {
       let element = (
         <div className="discStatus">
           <span>Broken</span>
@@ -86,7 +86,7 @@ export default ({ disc }) => {
   }
 
   const renderSoldDisc = () => {
-    if (disc.is_sold) {
+    if (disc.sold) {
       let element = (
         <div className="discStatus">
           <span>Sold</span>
@@ -97,7 +97,7 @@ export default ({ disc }) => {
   }
 
   const renderDonatedDisc = () => {
-    if (disc.is_donated) {
+    if (disc.Donated) {
       let element = (
         <div className="discStatus">
           <span>Donated</span>
@@ -108,7 +108,7 @@ export default ({ disc }) => {
   }
 
   const renderHioDisc = () => {
-    if (disc.is_hole_in_one) {
+    if (disc['Hole in one']) {
       let element = (
         <div className="HoleInOne">
           <span>Hole in one</span>

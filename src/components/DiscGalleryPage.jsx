@@ -24,7 +24,7 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
   const type = queryParams.type
 
   useEffect(() => {
-    if (discs.size > 0 || 1 === 1) {
+    if (discs.size > 0) {
       setFilteredDiscs(filterDiscs(discs, { type: queryParams.type }))
     } else if (discs.size === 0) {
       setFilteredDiscs(List([]))

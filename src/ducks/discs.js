@@ -48,6 +48,6 @@ export function fetchDiscs() {
 
 export function saveDisc(data, token) {
   return dispatch => {
-    discApi.addDisc(data, token).then(data => dispatch({ type: ADD_DISC, payload: data }))
+    //discApi.addDisc(data, token).then(data => dispatch({ type: ADD_DISC, payload: data }))
   }
 }

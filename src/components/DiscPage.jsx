@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from 'react'
-
-import { useAuth0 } from '../react-auth0-spa'
+import React, { useEffect } from 'react'
 
 import DiscForm from './DiscForm'
 
-
 const DiscPage = ({ fetchManufacturers, fetchTypes, manufacturers, saveDisc, types }) => {
-  const { getTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState(null);
-
-  const doSaveDisc = (values) => {
-    saveDisc(values, token);
-  }
+  const doSaveDisc = values => {}
 
   useEffect(() => {
     const foo = async () => {
-      const token = await getTokenSilently()
-
-      setToken(token);
-      console.log('ttt: ' + token)
       fetchManufacturers()
     }
 

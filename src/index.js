@@ -24,15 +24,6 @@ import configureStore, { history } from './store'
 
 import Root from './Root2'
 
-import { Auth0Provider } from './react-auth0-spa'
-
-const config = {
-  domain: process.env.REACT_APP_AUTH0_DOMAIN,
-  client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  audience: process.env.REACT_APP_AUTH0_AUDIENCE,
-  redirect_uri: window.location.origin,
-}
-
 import 'react-table/react-table.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Index.scss'
@@ -51,17 +42,9 @@ const onRedirectCallback = appState => {
 
 function render(Component, rootElement) {
   ReactDOM.render(
-    <Auth0Provider
-      domain={config.domain}
-      client_id={config.client_id}
-      audience={config.audience}
-      redirect_uri={window.location.origin}
-      onRedirectCallback={onRedirectCallback}
-    >
-      <AppContainer>
-        <Component store={store} history={history} />
-      </AppContainer>
-    </Auth0Provider>,
+    <AppContainer>
+      <Component store={store} history={history} />
+    </AppContainer>,
     rootElement
   )
 }

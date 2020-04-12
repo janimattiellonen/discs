@@ -13,8 +13,6 @@ import Fuse from 'fuse.js'
 import { Col, Row } from 'react-bootstrap'
 import styled from 'styled-components'
 
-import { useAuth0 } from '../react-auth0-spa'
-
 const FilterContainer = styled.div`
   margin: 15px;
 `
@@ -24,9 +22,6 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const queryParams = queryString.parse(location.search)
   const type = queryParams.type
-  const { isLoading, user, loginWithRedirect, logout, getTokenSilently } = useAuth0()
-
-  console.log('token now: ' + JSON.stringify(getTokenSilently(), null, 2))
 
   useEffect(() => {
     if (discs.size > 0 || 1 === 1) {
@@ -118,29 +113,9 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
     return <div>Loading...</div>
   }
 
-  if (user) {
-    console.log('USER: ' + JSON.stringify(user, null, 2))
-  }
-
   return (
     <div>
       <Helmet title="My discs - Gallery" />
-
-      {!isLoading && !user && (
-        <p>
-          <button onClick={loginWithRedirect} className="button is-danger">
-            Login
-          </button>
-        </p>
-      )}
-
-      {!isLoading && user && (
-        <p>
-          <button onClick={logout} className="button is-danger">
-            Logout
-          </button>
-        </p>
-      )}
 
       <FilterContainer className="filter-container">
         <Row>

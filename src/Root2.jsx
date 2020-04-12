@@ -3,23 +3,13 @@ import { BrowserRouter as Router, Link, Route, useRouteMatch } from 'react-route
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
-import Login from './components/containers/LoginContainer'
 import Disc from './components/containers/DiscContainer'
 import DiscGallery from './components/containers/DiscGalleryContainer'
 import AppLayout from './components/containers/layouts/AppLayoutContainer'
 import DiscList from './components/containers/DiscListContainer'
-import Loading from './components/Loading'
-
-import { useAuth0 } from './react-auth0-spa'
 
 const Root = props => {
   const { store, history } = props
-
-  const { loading } = useAuth0()
-
-  if (loading) {
-    return <Loading />
-  }
 
   return (
     <Provider store={store}>
@@ -29,7 +19,6 @@ const Root = props => {
           <Route exact path={`/discs/new`} component={Disc} />
           <Route exact path={`/discs`} component={DiscList} />
           <Route path={`/gallery`} component={DiscGallery} />
-          <Route path={`/login`} component={Login} />
         </AppLayout>
       </ConnectedRouter>
     </Provider>

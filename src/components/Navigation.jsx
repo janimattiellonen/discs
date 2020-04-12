@@ -59,30 +59,69 @@ export default ({ discs, onSearch }) => {
 
   const getDiscCount = () => discs.count()
 
-  const getDistanceDriverCount = () => discs.filter(disc => disc.type.id === 'distance-driver').count()
+  const getDistanceDriverCount = () => discs.filter(disc => disc.type === 'Distance driver').count()
 
   const getAvailableCount = () =>
-    discs.filter(disc => disc.is_sold !== true && disc.is_missing !== true && disc.is_broken !== true).count()
+    discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true).count()
 
-  const getFairwayDriverCount = () => discs.filter(disc => disc.type.id === 'fairway-driver').count()
+  const getFairwayDriverCount = () => discs.filter(disc => disc.type === 'Fairway driver').count()
 
-  const getApproachCount = () => discs.filter(disc => disc.type.id === 'approach').count()
+  const getApproachCount = () => discs.filter(disc => disc.type === 'Approach').count()
 
-  const getMidrangeCount = () => discs.filter(disc => disc.type.id === 'mid-range').count()
+  const getMidrangeCount = () => discs.filter(disc => disc.type === 'Mid-range').count()
 
-  const getPutterCount = () => discs.filter(disc => disc.type.id === 'putter').count()
+  const getPutterCount = () => discs.filter(disc => disc.type === 'Putter').count()
 
-  const getLostDiscCount = () => discs.filter(disc => disc.is_missing === true).count()
+  const getLostDiscCount = () => discs.filter(disc => disc.missing === true).count()
 
-  const getSoldDiscCount = () => discs.filter(disc => disc.is_sold === true).count()
+  const getSoldDiscCount = () => discs.filter(disc => disc.sold === true).count()
 
-  const getDonatedDiscCount = () => discs.filter(disc => disc.is_donated === true).count()
+  const getDonatedDiscCount = () => discs.filter(disc => disc.Donated === true).count()
 
-  const getCollectibleCount = () => discs.filter(disc => disc.is_collection_item === true).count()
+  const getCollectibleCount = () => discs.filter(disc => disc.collection_item === true).count()
 
-  const getOwnStampCount = () => discs.filter(disc => disc.is_own_stamp === true).count()
+  const getOwnStampCount = () => discs.filter(disc => disc['Own stamp'] === true).count()
 
-  const getHoleInOneCount = () => discs.filter(disc => disc.is_hole_in_one === true).count()
+  const getHoleInOneCount = () => discs.filter(disc => disc['Hole in one'] === true).count()
+
+  /*
+
+  const getDistanceDriverCount = () => (
+    discs.filter(disc => disc.type === 'Distance driver').count()
+  );
+
+  const getAvailableCount = () => (
+    discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true).count()
+  );
+
+  const getFairwayDriverCount = () => (
+    discs.filter(disc => disc.type === 'Fairway driver').count()
+  );
+
+  const getApproachCount = () => (
+    discs.filter(disc => disc.type === 'Approach').count()
+  );
+
+  const getMidrangeCount = () => (
+    discs.filter(disc => disc.type === 'Mid-range').count()
+  );
+
+  const getPutterCount = () => (
+    discs.filter(disc => disc.type === 'Putter').count()
+  );
+
+  const getLostDiscCount = () => (
+    discs.filter(disc => disc.missing === true).count()
+  );
+
+  const getSoldDiscCount = () => (
+    discs.filter(disc => disc.sold === true ).count()
+  );
+
+  const getCollectibleCount = () => (
+    discs.filter(disc => disc.collection_item === true).count()
+  );
+   */
 
   const getMoneySpentOnDiscs = () =>
     numeral(discs.filter(disc => disc.price > 0).reduce((total, value) => total + value.price, 0)).format('0.00')

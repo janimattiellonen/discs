@@ -39,6 +39,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = DEFAULT_REDIRECT_
   }, [])
 
   const loginWithPopup = async (params = {}) => {
+    console.log('dsdgdfgdfghdfsssh')
     setPopupOpen(true)
     try {
       await auth0Client.loginWithPopup(params)

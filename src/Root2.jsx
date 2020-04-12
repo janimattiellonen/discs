@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
 import Login from './components/containers/LoginContainer'
+import PrivateRoute from './components/PrivateRoute'
 import Disc from './components/containers/DiscContainer'
 import DiscGallery from './components/containers/DiscGalleryContainer'
 import AppLayout from './components/containers/layouts/AppLayoutContainer'
@@ -26,7 +27,7 @@ const Root = props => {
       <ConnectedRouter history={history}>
         <AppLayout>
           <Route exact path={`/`} component={DiscGallery} />
-          <Route exact path={`/discs/new`} component={Disc} />
+          <PrivateRoute exact path={`/discs/new`} component={Disc} />
           <Route exact path={`/discs`} component={DiscList} />
           <Route path={`/gallery`} component={DiscGallery} />
           <Route path={`/login`} component={Login} />

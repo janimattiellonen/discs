@@ -28,6 +28,8 @@ const DiscGalleryPage = ({ discs, history, loadingDiscs, location }) => {
 
   console.log('token now: ' + JSON.stringify(getTokenSilently(), null, 2))
 
+  console.log('SAAPPIRAKKO')
+
   useEffect(() => {
     if (discs.size > 0 || 1 === 1) {
       setFilteredDiscs(filterDiscs(discs, { type: queryParams.type }))

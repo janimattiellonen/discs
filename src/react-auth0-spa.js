@@ -14,6 +14,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = DEFAULT_REDIRECT_
   const [popupOpen, setPopupOpen] = useState(false)
 
   useEffect(() => {
+    console.log('Kakku')
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions)
       setAuth0(auth0FromHook)
@@ -39,6 +40,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = DEFAULT_REDIRECT_
   }, [])
 
   const loginWithPopup = async (params = {}) => {
+    console.log('seppo')
     setPopupOpen(true)
     try {
       await auth0Client.loginWithPopup(params)

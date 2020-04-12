@@ -23,9 +23,11 @@ console.log('======Token: ' + JSON.stringify(token))
 
 export default {
   getDiscs() {
-    return axios.get(`${config.server.base_url}/api/discs`).then(res => {console.log('data: ' + JSON.stringify(res, null, 2));return res.data})
+    return axios.get(`${config.server.base_url}/api/discs`).then(res => {
+      console.log('data: ' + JSON.stringify(res, null, 2))
+      return res.data
+    })
   },
-
 
   addDisc(data, token) {
     console.log('About to add a new disc: ')

@@ -43,6 +43,8 @@ initFontAwesome()
 import registerServiceWorker from './serviceWorker'
 import { ConnectedRouter } from 'connected-react-router'
 
+console.log('dasfbgnhjkgfds')
+
 const store = configureStore()
 
 const onRedirectCallback = appState => {

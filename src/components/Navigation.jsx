@@ -17,7 +17,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import styled from 'styled-components'
 
-export default ({ discs, onSearch }) => {
+export default ({ stats, onSearch }) => {
   const showSideNav = useMediaQuery('(min-width:600px)')
 
   const Ul = styled.ul`
@@ -57,77 +57,41 @@ export default ({ discs, onSearch }) => {
 
   const classes = useStyles()
 
-  const getDiscCount = () => discs.count()
-
-  const getDistanceDriverCount = () => discs.filter(disc => disc.type === 'Distance driver').count()
-
-  const getAvailableCount = () =>
-    discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true).count()
-
-  const getFairwayDriverCount = () => discs.filter(disc => disc.type === 'Fairway driver').count()
-
-  const getApproachCount = () => discs.filter(disc => disc.type === 'Approach').count()
-
-  const getMidrangeCount = () => discs.filter(disc => disc.type === 'Mid-range').count()
-
-  const getPutterCount = () => discs.filter(disc => disc.type === 'Putter').count()
-
-  const getLostDiscCount = () => discs.filter(disc => disc.missing === true).count()
-
-  const getSoldDiscCount = () => discs.filter(disc => disc.sold === true).count()
-
-  const getDonatedDiscCount = () => discs.filter(disc => disc.Donated === true).count()
-
-  const getCollectibleCount = () => discs.filter(disc => disc.collection_item === true).count()
-
-  const getOwnStampCount = () => discs.filter(disc => disc['Own stamp'] === true).count()
-
-  const getHoleInOneCount = () => discs.filter(disc => disc['Hole in one'] === true).count()
+  const getStats = key => {
+    return stats.has(key) ? stats.get(key) : 0
+  }
 
   /*
-
-  const getDistanceDriverCount = () => (
-    discs.filter(disc => disc.type === 'Distance driver').count()
-  );
-
-  const getAvailableCount = () => (
-    discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true).count()
-  );
-
-  const getFairwayDriverCount = () => (
-    discs.filter(disc => disc.type === 'Fairway driver').count()
-  );
-
-  const getApproachCount = () => (
-    discs.filter(disc => disc.type === 'Approach').count()
-  );
-
-  const getMidrangeCount = () => (
-    discs.filter(disc => disc.type === 'Mid-range').count()
-  );
-
-  const getPutterCount = () => (
-    discs.filter(disc => disc.type === 'Putter').count()
-  );
-
-  const getLostDiscCount = () => (
-    discs.filter(disc => disc.missing === true).count()
-  );
-
-  const getSoldDiscCount = () => (
-    discs.filter(disc => disc.sold === true ).count()
-  );
-
-  const getCollectibleCount = () => (
-    discs.filter(disc => disc.collection_item === true).count()
-  );
+  availableCount: 205
    */
+  const getDiscCount = () => getStats('allCount')
 
-  const getMoneySpentOnDiscs = () =>
-    numeral(discs.filter(disc => disc.price > 0).reduce((total, value) => total + value.price, 0)).format('0.00')
+  const getDistanceDriverCount = () => getStats('distanceDriverCount')
 
-  const getCountForDiscsWithPrice = () => discs.filter(disc => disc.price > 0).count()
+  const getAvailableCount = () => getStats('availableCount')
 
+  const getFairwayDriverCount = () => getStats('fairwayDriverCount')
+
+  const getMidrangeCount = () => getStats('midrangeCount')
+
+  const getPutterCount = () => getStats('putterCount')
+
+  const getLostDiscCount = () => getStats('missingCount')
+
+  const getSoldDiscCount = () => getStats('soldCount')
+
+  const getDonatedDiscCount = () => getStats('donatedCount')
+
+  const getCollectibleCount = () => getStats('collectionCount')
+
+  const getOwnStampCount = () => getStats('ownStampCount')
+
+  const getHoleInOneCount = () => getStats('aceCount')
+
+  //const getMoneySpentOnDiscs = () => numeral(getStats('spentMoney')).format('0.00')
+
+  //const getCountForDiscsWithPrice = () => discs.filter(disc => disc.price > 0).count()
+  /*
   const getPrice = () => {
     const spentMoney = getMoneySpentOnDiscs()
     const discsWithPrice = getCountForDiscsWithPrice()
@@ -139,11 +103,7 @@ export default ({ discs, onSearch }) => {
       </span>
     )
   }
-
-  if (discs.count() === 0) {
-    return null
-  }
-
+*/
   return (
     <div>
       {showSideNav && (
@@ -166,9 +126,6 @@ export default ({ discs, onSearch }) => {
 
             <ListItem>
               <Link to="/gallery?type=fairwayDriver">Fairway drivers ({getFairwayDriverCount()})</Link>
-            </ListItem>
-            <ListItem>
-              <Link to="/gallery?type=approach">Approach ({getApproachCount()})</Link>
             </ListItem>
             <ListItem>
               <Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link>
@@ -200,7 +157,7 @@ export default ({ discs, onSearch }) => {
             <ListItem>
               <Link to="/gallery?type=latest">Latest (10)</Link>
             </ListItem>
-            <ListItem>{getPrice()}</ListItem>
+            {/*<ListItem>{getPrice()}</ListItem>*/}
           </UiList>
         </Drawer>
       )}
@@ -218,9 +175,6 @@ export default ({ discs, onSearch }) => {
                 </Li>
                 <Li>
                   <Link to="/gallery?type=fairwayDriver">Fairway drivers ({getFairwayDriverCount()})</Link>
-                </Li>
-                <Li>
-                  <Link to="/gallery?type=approach">Approach ({getApproachCount()})</Link>
                 </Li>
                 <Li>
                   <Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link>
@@ -252,7 +206,7 @@ export default ({ discs, onSearch }) => {
                 <Li>
                   <Link to="/gallery?type=latest">Latest (10)</Link>
                 </Li>
-                <Li>{getPrice()}</Li>
+                {/*<Li>{getPrice()}</Li>*/}
               </Ul>
             </Toolbar>
           </AppBar>

@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 export default (discs, filter) => {
+  /*
   discs = discs.sort((a, b) => {
     if (a.name.toLowerCase() > b.name.toLowerCase()) {
       return 1
@@ -12,6 +13,7 @@ export default (discs, filter) => {
 
     return 0
   })
+  */
 
   if (!filter) {
     return discs
@@ -72,15 +74,15 @@ export default (discs, filter) => {
   if (filter.type === 'latest') {
     return discs
       .sort((a, b) => {
-        if (moment(a.created_at).isBefore(moment(b.created_at))) {
+        if (moment(a.created_at).isBefore(moment(b._created))) {
           return -1
         }
 
-        if (moment(a.created_at).isAfter(moment(b.created_at))) {
+        if (moment(a.created_at).isAfter(moment(b._created))) {
           return 1
         }
 
-        if (moment(a.created_at).isSame(moment(b.created_at))) {
+        if (moment(a.created_at).isSame(moment(b._created))) {
           return 0
         }
 

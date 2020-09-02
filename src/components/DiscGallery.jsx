@@ -1,16 +1,17 @@
 import React from 'react'
 
-import { Col, Row } from 'react-bootstrap'
+import Grid from '@material-ui/core/Grid'
+
 import GalleryItem from './GalleryItem'
 
 const DiscGallery = ({ discs }) => (
-  <Row>
+  <Grid container spacing={2}>
     {discs.map(disc => (
-      <Col key={`col-${disc._id}`} xs={12} sm={6} lg={4}>
+      <Grid item key={`col-${disc._id}`} xs={12} sm={6} lg={4}>
         <GalleryItem disc={disc} />
-      </Col>
+      </Grid>
     ))}
-  </Row>
+  </Grid>
 )
 
 export default DiscGallery

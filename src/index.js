@@ -22,7 +22,7 @@ import ReactDOM from 'react-dom'
 
 import configureStore, { history } from './store'
 
-import Root from './Root2'
+import Root from './Root3'
 
 import 'react-table/react-table.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -36,17 +36,14 @@ import { ConnectedRouter } from 'connected-react-router'
 
 const store = configureStore()
 
+import createRootReducer from './ducks'
+
 const onRedirectCallback = appState => {
   history.push(appState && appState.targetUrl ? appState.targetUrl : window.location.pathname)
 }
 
 function render(Component, rootElement) {
-  ReactDOM.render(
-    <AppContainer>
-      <Component store={store} history={history} />
-    </AppContainer>,
-    rootElement
-  )
+  ReactDOM.render(<Component store={store} history={history} />, rootElement)
 }
 
 const rootElement = document.getElementById('root')
@@ -63,7 +60,7 @@ if (module.hot) {
        ]
     */
     render()
-    store.replaceReducer(rootReducer(history))
+    store.replaceReducer(createRootReducer(history))
 
     /* For Webpack 1.x
     const NextApp = require('./App').default

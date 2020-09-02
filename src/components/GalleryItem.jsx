@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import numeral from 'numeral'
-import { Tooltip, OverlayTrigger } from 'react-bootstrap'
+import Tooltip from '@material-ui/core/Tooltip'
 import moment from 'moment'
 
 import unknown from '../unknown.png'
@@ -9,11 +9,7 @@ import unknown from '../unknown.png'
 export default ({ disc }) => {
   const renderWeight = disc => (disc.weight > 0 ? `, ${disc.weight}g` : '')
 
-  const renderOverlayTrigger = (tooltip, element) => (
-    <OverlayTrigger placement="bottom" overlay={tooltip}>
-      {element}
-    </OverlayTrigger>
-  )
+  const renderOverlayTrigger = (tooltip, element) => element
 
   const renderTooltip = element => {
     if (
@@ -24,7 +20,7 @@ export default ({ disc }) => {
     }
 
     const tooltip = (
-      <Tooltip id={`tooltip-disc-${disc.id}`}>
+      <Tooltip id={`tooltip-disc-${disc.id}`} placement="bottom">
         <span>{disc.missing_description || disc['Donation description']}</span>
       </Tooltip>
     )
@@ -145,9 +141,9 @@ export default ({ disc }) => {
       </div>
 
       <div>
-        <h2>{disc.name}&nbsp;</h2>
-
-        {disc.collection_item && <p className="collectionItem">Collection item</p>}
+        <h2>
+          {disc.name}&nbsp;{disc.collection_item && <p className="collectionItem">Collection item</p>}
+        </h2>
 
         <div className="manufacturer">
           <p className="manufacturer">

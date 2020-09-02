@@ -1,6 +1,8 @@
 
 module.exports = {
   server: {
-      	base_url: 'http://127.0.0.1:8889'
+      	base_url: 'http://127.0.0.1:8889',
+      	api_key: '',
+      	rest_base_url: ''
   }
 };

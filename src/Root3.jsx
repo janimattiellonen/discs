@@ -14,9 +14,11 @@ const Root = props => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <Route exact path={`/`} component={DiscGallery} />
-        <Route exact path={`/discs/new`} component={Disc} />
-        <Route exact path={`/discs`} component={DiscList} />
+        <AppLayout>
+          <Route exact path={`/`} component={DiscGallery} />
+          <Route exact path={`/discs/new`} component={Disc} />
+          <Route exact path={`/discs`} component={DiscList} />
+        </AppLayout>
       </ConnectedRouter>
     </Provider>
   )

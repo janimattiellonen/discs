@@ -3,7 +3,7 @@ import AppLayout from './AppLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { fetchDiscs } from '../../../ducks/discs'
+import { fetchDiscs, fetchDiscStats } from '../../../ducks/discs'
 import { fetchManufacturers } from '../../../ducks/manufacturers'
 import { fetchTypes } from '../../../ducks/types'
 
@@ -12,6 +12,8 @@ export default connect(
     discs: state.discs.get('discs'),
     loadingDiscs: state.discs.get('loadingDiscs'),
     loadingDiscsFailed: state.discs.get('loadingDiscsFailed'),
+    stats: state.discs.get('stats'),
+
     /*
     manufacturers: state.manufacturers.get('manufacturers'),
     loadingManufacturers: state.manufacturers.get('loadingManufacturers'),
@@ -26,6 +28,7 @@ export default connect(
     bindActionCreators(
       {
         fetchDiscs,
+        fetchDiscStats,
         fetchManufacturers,
         fetchTypes,
       },

@@ -137,19 +137,19 @@ export default ({ stats, onSearch }) => {
               <Link to="/gallery?type=available">Available ({getAvailableCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=missing">Lost ({getLostDiscCount()})</Link>
+              <Link to="/gallery?missing=true">Lost ({getLostDiscCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=sold">Sold ({getSoldDiscCount()})</Link>
+              <Link to="/gallery?sold=true">Sold ({getSoldDiscCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=donated">Donated ({getDonatedDiscCount()})</Link>
+              <Link to="/gallery?donated=true">Donated ({getDonatedDiscCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=collection">Collection ({getCollectibleCount()})</Link>
+              <Link to="/gallery?collection=true">Collection ({getCollectibleCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=ownStamp">Own stamp ({getOwnStampCount()})</Link>
+              <Link to="/gallery?ownStamp=true">Own stamp ({getOwnStampCount()})</Link>
             </ListItem>
             <ListItem>
               <Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link>

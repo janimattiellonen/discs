@@ -30,13 +30,16 @@ export default function(state = defaultState, action = {}) {
       return state.withMutations(map => map.set('loadingDiscs', true).set('loadingDiscsFailed', false))
 
     case FETCH_DISCS_DONE:
+      const limit = parseInt(payload.limit, 10)
+      const offset = parseInt(payload.offset, 10)
+
       return state.withMutations(map =>
         map
           .set('loadingDiscs', false)
           .set('loadingDiscsFailed', false)
-          .set('discs', map.get('discs').concat(List(payload.discs)))
-          .set('limit', parseInt(payload.limit, 10))
-          .set('offset', parseInt(payload.offset, 10))
+          .set('discs', offset === 0 ? List(payload.discs) : map.get('discs').concat(List(payload.discs)))
+          .set('limit', limit)
+          .set('offset', offset)
       )
 
     case FETCH_DISC_STATS:

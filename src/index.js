@@ -22,7 +22,7 @@ import ReactDOM from 'react-dom'
 
 import configureStore, { history } from './store'
 
-import Root from './Root3'
+import Root from './Root2'
 
 import 'react-table/react-table.css'
 import 'bootstrap/dist/css/bootstrap.min.css'

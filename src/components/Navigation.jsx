@@ -134,7 +134,7 @@ export default ({ stats, onSearch }) => {
               <Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=available">Available ({getAvailableCount()})</Link>
+              <Link to="/gallery?available=true">Available ({getAvailableCount()})</Link>
             </ListItem>
             <ListItem>
               <Link to="/gallery?missing=true">Lost ({getLostDiscCount()})</Link>
@@ -152,10 +152,10 @@ export default ({ stats, onSearch }) => {
               <Link to="/gallery?ownStamp=true">Own stamp ({getOwnStampCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link>
+              <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gallery?type=latest">Latest (10)</Link>
+              <Link to="/gallery?latest=true">Latest (10)</Link>
             </ListItem>
             {/*<ListItem>{getPrice()}</ListItem>*/}
           </UiList>
@@ -183,28 +183,28 @@ export default ({ stats, onSearch }) => {
                   <Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=available">Available ({getAvailableCount()})</Link>
+                  <Link to="/gallery?available=true">Available ({getAvailableCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=missing">Lost ({getLostDiscCount()})</Link>
+                  <Link to="/gallery?missing=true">Lost ({getLostDiscCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=sold">Sold ({getSoldDiscCount()})</Link>
+                  <Link to="/gallery?sold=true">Sold ({getSoldDiscCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=donated">Donated ({getDonatedDiscCount()})</Link>
+                  <Link to="/gallery?donated=true">Donated ({getDonatedDiscCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=collection">Collection ({getCollectibleCount()})</Link>
+                  <Link to="/gallery?collection=true">Collection ({getCollectibleCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=ownStamp">Own stamp ({getOwnStampCount()})</Link>
+                  <Link to="/gallery?ownStamp=true">Own stamp ({getOwnStampCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=holeInOne">Hole in one ({getHoleInOneCount()})</Link>
+                  <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
                 </Li>
                 <Li>
-                  <Link to="/gallery?type=latest">Latest (10)</Link>
+                  <Link to="/gallery?latest=true">Latest (10)</Link>
                 </Li>
                 {/*<Li>{getPrice()}</Li>*/}
               </Ul>

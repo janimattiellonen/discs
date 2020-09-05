@@ -34,7 +34,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
 
   //return output.join('&')
 
-  const hints = []
+  let hints = []
 
   if (!order) {
     hints.push('"$orderby": {"$moment._created": 1, "name": 1}')
@@ -42,7 +42,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
     const col = order.column
     const mode = order.mode.toUpperCase()
 
-    hints.push('"$orderby": {"' + col + '": ' + (mode === 'ASC' ? 0 : 1) + '}')
+    hints.push('"$orderby": {"' + col + '": ' + (mode === 'ASC' ? 1 : -1) + '}')
   }
 
   const queryParams = []
@@ -75,18 +75,30 @@ export const createQueryString = ({ query, limit, offset, order }) => {
     if (query.ownStamp && query.ownStamp.length) {
       queryParams.push(`"Own stamp": ${query.ownStamp}`)
     }
+
+    if (query.holeInOne && query.holeInOne.length) {
+      queryParams.push(`"Hole in one": ${query.holeInOne}`)
+    }
+
+    if (query.available && query.available.length) {
+      const availableQuery = []
+
+      availableQuery.push('{"$not": {"Donated": true}}')
+      availableQuery.push('{"$not": {"missing": true}}')
+      availableQuery.push('{"$not": {"sold": true}}')
+
+      queryParams.push('"$and": [' + availableQuery.join(',') + ']')
+    }
+
+    if (!!query.latest) {
+      hints = []
+      hints.push('"$orderby": {"_created": -1}')
+      limit = 10
+    }
   }
 
-  const hintsStr = hints.length > 0 ? 'h={' + hints.join(',') + '}' : ''
-
-  const ret = [output.join('&'), hintsStr].join('&')
-
-  console.log(`output: ${JSON.stringify(ret, null, 2)}`)
-
-  console.log(`ret: ${JSON.stringify(ret, null, 2)}`)
-
-  // return 'max=4&skip=0&q={}&h={"$orderby": {"$moment._created": 1}}'
-  return `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={"$orderby": {"_created": -1}}'
+  //return `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={"$orderby": {"_created": -1}}'
+  return `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={' + hints.join(',') + '}'
 
   // &max=${limit}&skip=${offset}&h={"$orderby": {"_created": 1, "name": 1}}
 }

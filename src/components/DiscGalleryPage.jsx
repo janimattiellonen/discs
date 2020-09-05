@@ -23,14 +23,18 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
   //const [discOffset, setDiscOffset] = useState(offset)
   const queryParams = queryString.parse(location.search)
 
-  const limit = queryParams.limit || 2
+  const limit = queryParams.limit || 25
   const offset = queryParams.offset || 0
   const type = queryParams.type || null
+
+  const available = queryParams.available || null
   const missing = queryParams.missing || null
   const sold = queryParams.sold || null
   const donated = queryParams.donated || null
   const collection = queryParams.collection || null
   const ownStamp = queryParams.ownStamp || null
+  const holeInOne = queryParams.holeInOne || null
+  const latest = queryParams.latest || null
 
   const loadMore = () => {
     console.log(JSON.stringify(queryParams, null, 2))
@@ -42,11 +46,14 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
       `${location.pathname}?${queryString.stringify({
         type,
         limit,
+        available,
         missing,
         sold,
         donated,
         collection,
         ownStamp,
+        holeInOne,
+        latest,
         offset: parseInt(offset, 10) + parseInt(limit, 10),
       })}`
     )
@@ -54,8 +61,12 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
 
   useEffect(() => {
     //history.replace(`${location.pathname}?${url}`)
-    fetchDiscs({ query: { type, missing, sold, donated, collection, ownStamp }, limit, offset: offset })
-  }, [limit, offset, type, missing, sold, donated, collection, ownStamp])
+    fetchDiscs({
+      query: { type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest },
+      limit,
+      offset: offset,
+    })
+  }, [limit, offset, type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest])
   /*
   const search = term => {
     const queryParams = queryString.parse(location.search)

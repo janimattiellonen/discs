@@ -18,7 +18,7 @@ const defaultState = Map({
   loadingDiscsFailed: false,
   loadingStats: false,
   loadingStatsFailed: false,
-  limit: 2,
+  limit: 25,
   offset: 0,
 })
 

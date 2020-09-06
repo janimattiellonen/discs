@@ -1,252 +1,140 @@
-import React from 'react'
-import { Col, Row } from 'react-bootstrap'
-import { List } from 'immutable'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
+import styled from '@emotion/styled'
+
+import debounce from 'lodash.debounce'
+
 import queryString from 'query-string'
 import { Helmet } from 'react-helmet'
-import Fuse from 'fuse.js'
-import { debounce } from 'throttle-debounce'
-import clone from 'lodash.clonedeep'
-import moment from 'moment'
 
-import GalleryItem from './GalleryItem'
-import Filter from './Filter'
+import Grid from '@material-ui/core/Grid'
 
-class DiscGalleryPage extends React.Component {
-  constructor(props) {
-    super(props)
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 
-    props.fetchDiscs()
+import DiscGallery from './DiscGallery'
 
-    this.search = debounce(500, this.search)
+const FilterContainer = styled.div({
+  margin: '15px',
+})
 
-    this.state = {
-      unlistenHistory: f => f,
-      discs: props.discs,
-      filteredDiscs: List(),
-    }
+const SearchField = styled(TextField)({
+  margin: '20px',
+  width: 'calc(100% - 40px)',
+  '&. MuiTextField-root': {
+    margin: '10px',
+  },
+})
+
+const MorePanel = styled('div')({
+  width: '50%',
+  margin: '0 auto',
+  marginTop: '20px',
+  marginBottom: '20px',
+  clear: 'both',
+  textAlign: 'center',
+})
+
+const DiscsPanel = styled('div')({
+  padding: '0 20px 20px 20px',
+})
+
+const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location }) => {
+  const pageEndRef = useRef(null)
+  const queryParams = queryString.parse(location.search)
+
+  const limit = queryParams.limit || 25
+  const offset = queryParams.offset || 0
+  const type = queryParams.type || null
+
+  const available = queryParams.available || null
+  const missing = queryParams.missing || null
+  const sold = queryParams.sold || null
+  const donated = queryParams.donated || null
+  const collection = queryParams.collection || null
+  const ownStamp = queryParams.ownStamp || null
+  const holeInOne = queryParams.holeInOne || null
+  const latest = queryParams.latest || null
+  const name = queryParams.name || null
+
+  const scrollToBottom = () => {
+    pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
 
-  componentWillMount() {
-    const { history } = this.props
-    const unlistenHistory = history.listen(this.onHistoryChange)
-
-    this.setState({ unlistenHistory })
-  }
-
-  componentDidMount() {
-    this.onHistoryChange()
-  }
-
-  componentWillUnmount() {
-    const { unlistenHistory } = this.state
-
-    unlistenHistory()
-  }
-
-  filterDiscs(discs, filter) {
-    discs = discs.sort((a, b) => {
-      if (a.name.toLowerCase() > b.name.toLowerCase()) {
-        return 1
-      }
-
-      if (a.name.toLowerCase() < b.name.toLowerCase()) {
-        return -1
-      }
-
-      return 0
-    })
-
-    if (!filter) {
-      return discs
-    }
-
-    if (filter.type === 'distanceDriver') {
-      return discs.filter(disc => disc.type === 'Distance driver')
-    }
-
-    if (filter.type === 'fairwayDriver') {
-      return discs.filter(disc => disc.type === 'Fairway driver')
-    }
-
-    if (filter.type === 'putter') {
-      return discs.filter(disc => disc.type === 'Putter')
-    }
-
-    if (filter.type === 'midrange') {
-      return discs.filter(disc => disc.type === 'Mid-range')
-    }
-
-    if (filter.type === 'approach') {
-      return discs.filter(disc => disc.type === 'Approach')
-    }
-
-    if (filter.type === 'missing') {
-      return discs.filter(disc => disc.missing === true)
-    }
-
-    if (filter.type === 'sold') {
-      return discs.filter(disc => disc.sold === true)
-    }
-
-    if (filter.type === 'donated') {
-      return discs.filter(disc => disc.Donated === true)
-    }
-
-    if (filter.type === 'broken') {
-      return discs.filter(disc => disc.is_broken === true)
-    }
-
-    if (filter.type === 'collection') {
-      return discs.filter(disc => disc.collection_item === true)
-    }
-
-    if (filter.type === 'ownStamp') {
-      return discs.filter(disc => disc['Own stamp'] === true)
-    }
-
-    if (filter.type === 'available') {
-      return discs.filter(disc => disc.sold !== true && disc.missing !== true && disc.broken !== true)
-    }
-
-    if (filter.type === 'holeInOne') {
-      return discs.filter(disc => disc['Hole in one'] === true)
-    }
-
-    if (filter.type === 'latest') {
-      return discs
-        .sort((a, b) => {
-          if (moment(a._created).isBefore(moment(b._created))) {
-            return -1
-          }
-
-          if (moment(a._created).isAfter(moment(b._created))) {
-            return 1
-          }
-
-          if (moment(a._created).isSame(moment(b._created))) {
-            return 0
-          }
-
-          return 1
-        })
-        .takeLast(10)
-        .reverse()
-    }
-
-    return discs
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      !this.state.filteredDiscs ||
-      !this.state.filteredDiscs.count() ||
-      prevProps.location.search !== this.props.location.search
-    ) {
-      const queryParams = queryString.parse(this.props.location.search)
-
-      this.setState({
-        discs: this.props.discs,
-        filteredDiscs: this.filterDiscs(this.props.discs, queryParams),
-      })
-    }
-  }
-
-  onHistoryChange = () => {}
-
-  sortByCreationDate = discs => {
-    let sortedDiscs = clone(discs)
-
-    sortedDiscs = sortedDiscs.sort((a, b) => {
-      if (moment(a._created).isAfter(moment(b._created))) {
-        return 1
-      }
-
-      if (moment(a._created).isBefore(moment(b._created))) {
-        return -1
-      }
-
-      if (moment(a._created).isSame(moment(b._created), 'day')) {
-        return 0
-      }
-
-      return -1
-    })
-
-    return sortedDiscs
-  }
-
-  sortByName = discs => {
-    let sortedDiscs = clone(discs)
-
-    sortedDiscs = sortedDiscs.sort((a, b) => {
-      if (a.name.toLowerCase() > b.name.toLowerCase()) {
-        return 1
-      }
-
-      if (a.name.toLowerCase() < b.name.toLowerCase()) {
-        return -1
-      }
-
-      return 0
-    })
-
-    return sortedDiscs
-  }
-
-  search = term => {
-    const { discs } = this.props
-
-    const queryParams = queryString.parse(this.props.location.search)
-
-    queryParams.term = term
-
-    this.props.history.replace(`${this.props.location.pathname}?${queryString.stringify(queryParams)}`)
-
-    if (term === '') {
-      this.setState({
-        filteredDiscs: this.filterDiscs(discs, { type: queryParams.type }),
-      })
-
-      return
-    }
-
-    const options = {
-      shouldSort: true,
-      threshold: 0.2,
-      location: 0,
-      distance: 30,
-      minMatchCharLength: 1,
-      keys: ['name'],
-    }
-
-    const fuse = new Fuse(discs.toArray(), options)
-
-    this.setState({
-      filteredDiscs: this.filterDiscs(List(fuse.search(term), { type: queryParams.type })),
-    })
-  }
-
-  render() {
-    const { discs, filteredDiscs } = this.state
-
-    return (
-      <div>
-        <Helmet title="My discs - Gallery" />
-        <div className="filter-container">
-          <Filter discs={discs} onSearch={this.search} />
-        </div>
-        <div className="disc-gallery-page discs">
-          <Row>
-            {filteredDiscs.map(disc => (
-              <Col key={`col-${disc._id}`} xs={12} sm={6} lg={4}>
-                <GalleryItem disc={disc} />
-              </Col>
-            ))}
-          </Row>
-        </div>
-      </div>
+  const loadMore = () => {
+    history.replace(
+      `${location.pathname}?${queryString.stringify({
+        type,
+        limit,
+        available,
+        missing,
+        sold,
+        donated,
+        collection,
+        ownStamp,
+        holeInOne,
+        latest,
+        name,
+        offset: parseInt(offset, 10) + parseInt(limit, 10),
+      })}`
     )
   }
+
+  useEffect(() => {
+    fetchDiscs({
+      query: { type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest, name },
+      limit,
+      offset: offset,
+    })
+  }, [limit, offset, type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest, name])
+
+  const search = name => {
+    const queryParams = queryString.parse(location.search)
+
+    queryParams.name = name
+    queryParams.offset = 0
+
+    history.replace(`${location.pathname}?${queryString.stringify(queryParams)}`)
+  }
+
+  const debounceSearch = useCallback(
+    debounce(nextValue => search(nextValue), 300),
+    []
+  )
+
+  const handleChange = value => {
+    debounceSearch(value)
+  }
+
+  return (
+    <div>
+      <Helmet title="My discs - Gallery" />
+
+      <Grid container>
+        <Grid item xs={12}>
+          <SearchField
+            id="standard-search"
+            label=""
+            type="search"
+            variant="outlined"
+            onKeyUp={e => handleChange(e.target.value)}
+          />
+        </Grid>
+      </Grid>
+
+      <DiscsPanel className="disc-gallery-page discs" ef={pageEndRef}>
+        <DiscGallery discs={discs} />
+      </DiscsPanel>
+      {discs.count() > 0 && (
+        <MorePanel>
+          <div>
+            <Button size="large" variant="contained" color="primary" onClick={() => loadMore()} disabled={loadingDiscs}>
+              {loadingDiscs ? 'Loading...' : 'More...'}
+            </Button>
+          </div>
+        </MorePanel>
+      )}
+    </div>
+  )
 }
 
 export default DiscGalleryPage

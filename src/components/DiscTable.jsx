@@ -104,7 +104,7 @@ export default function DiscTable({ discs }) {
           },
           {
             Header: 'Sold',
-            accessor: 'is_sold',
+            accessor: 'isSold',
             Cell: props => (props.value ? <Glyphicon glyph="ok" /> : ''),
             maxWidth: 75,
           },

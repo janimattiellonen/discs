@@ -7,7 +7,6 @@ body {
 }
 
 #root {
-  margin-top: 100px;
 }
 
 .disc-gallery-page .row img {
@@ -35,8 +34,124 @@ code {
 
 }
 
-.disc-filter ul li {
-  display: inline;
-  margin-right: 20px;
-  line-height: 30px;
+
+.disc {
+  margin-bottom: 25px;
+  padding: 5px;
+}
+
+.discImage {
+  position: relative;
+  width: auto;
+
+  img {
+    width: 100%;
+  }
+
+  .discStatus {
+    position: absolute;
+    background: red;
+    width: 100%;
+    height: 50px;
+    bottom: 0;
+    left: 0;
+    transition: opacity .5s;
+    opacity: .7;
+
+    span {
+      display: block;
+      text-align: center;
+      font-size: 2em;
+    }
+  }
+
+  .HoleInOne {
+    position: absolute;
+    background: gold;
+    width: 100%;
+    height: 50px;
+    top: 0;
+    left: 0;
+    transition: opacity .5s;
+    opacity: .7;
+
+    span {
+      display: block;
+      text-align: center;
+      font-size: 2em;
+    }
+  }
+}
+
+.collectionItem {
+  float: right;
+  font-weight: bold;
+  font-size: 0.6em;
+  margin-top: 8px;
+}
+
+.specs {
+  float: left;
+  width: 100%;
+}
+
+
+.type {
+  font-weight: normal;
+}
+
+div.manufacturer {
+  float: left;
+}
+
+.price {
+  float: right;
+  font-size: 2em;
+}
+
+.attribute {
+  float: left;
+  width: 50%;
+  height: 35%;
+  h3, p {
+    text-align: center;
+  }
+  h3 {
+    font-size: 1em;
+    padding: 10px 10px 5px 10px;
+  }
+  p {
+    font-size: 2em;
+    padding: 10px;
+  }
+  &.speed {
+    background: #46af5c;
+  }
+  &.glide {
+    background: #cd9327;
+  }
+  &.stability {
+    background: #24a2dc;
+  }
+  &.fade2 {
+    background: #e6de47;
+  }
+}
+
+p {
+  &.manufacturer {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  &.material {
+    margin-bottom: 0;
+  }
+
+  &.weight {
+    float: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: right;
+  }
 }

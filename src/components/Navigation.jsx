@@ -5,14 +5,10 @@ import { Link } from 'react-router-dom'
 import Drawer from '@material-ui/core/Drawer'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import { createMuiTheme, List as UiList, makeStyles } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
+import { List as UiList, makeStyles } from '@material-ui/core'
+
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
+
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import styled from 'styled-components'
@@ -29,7 +25,6 @@ export default ({ stats, onSearch }) => {
     line-height: 30px;
   `
 
-  const theme = createMuiTheme()
   const drawerWidth = showSideNav ? 180 : 0
 
   const useStyles = makeStyles(theme => ({
@@ -61,9 +56,8 @@ export default ({ stats, onSearch }) => {
     return stats.has(key) ? stats.get(key) : 0
   }
 
-  /*
-  availableCount: 205
-   */
+  const spentMoney = numeral(getStats('spentMoney')).format('0.00')
+
   const getDiscCount = () => getStats('allCount')
 
   const getDistanceDriverCount = () => getStats('distanceDriverCount')
@@ -88,22 +82,10 @@ export default ({ stats, onSearch }) => {
 
   const getHoleInOneCount = () => getStats('aceCount')
 
-  //const getMoneySpentOnDiscs = () => numeral(getStats('spentMoney')).format('0.00')
-
-  //const getCountForDiscsWithPrice = () => discs.filter(disc => disc.price > 0).count()
-  /*
   const getPrice = () => {
-    const spentMoney = getMoneySpentOnDiscs()
-    const discsWithPrice = getCountForDiscsWithPrice()
-    const discCount = getDiscCount()
-
-    return (
-      <span>
-        {spentMoney} € ({discsWithPrice} / {discCount})
-      </span>
-    )
+    return <span>{spentMoney} €</span>
   }
-*/
+
   return (
     <div>
       {showSideNav && (
@@ -157,7 +139,7 @@ export default ({ stats, onSearch }) => {
             <ListItem>
               <Link to="/gallery?latest=true">Latest (10)</Link>
             </ListItem>
-            {/*<ListItem>{getPrice()}</ListItem>*/}
+            {spentMoney > 0 && <ListItem>{getPrice()}</ListItem>}
           </UiList>
         </Drawer>
       )}
@@ -206,7 +188,7 @@ export default ({ stats, onSearch }) => {
                 <Li>
                   <Link to="/gallery?latest=true">Latest (10)</Link>
                 </Li>
-                {/*<Li>{getPrice()}</Li>*/}
+                {spentMoney > 0 && <Li>{getPrice()}</Li>}
               </Ul>
             </Toolbar>
           </AppBar>

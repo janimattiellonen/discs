@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import styled from '@emotion/styled'
+
+import debounce from 'lodash.debounce'
 
 import queryString from 'query-string'
 import { Helmet } from 'react-helmet'
 
+import Grid from '@material-ui/core/Grid'
+
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 
 import DiscGallery from './DiscGallery'
 
@@ -12,15 +17,29 @@ const FilterContainer = styled.div({
   margin: '15px',
 })
 
-const MorePanel = styled('div')({ width: '50%', margin: '0 auto', clear: 'both', textAlign: 'center' })
+const SearchField = styled(TextField)({
+  margin: '20px',
+  width: 'calc(100% - 40px)',
+  '&. MuiTextField-root': {
+    margin: '10px',
+  },
+})
+
+const MorePanel = styled('div')({
+  width: '50%',
+  margin: '0 auto',
+  marginTop: '20px',
+  marginBottom: '20px',
+  clear: 'both',
+  textAlign: 'center',
+})
 
 const DiscsPanel = styled('div')({
   padding: '0 20px 20px 20px',
 })
 
 const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location }) => {
-  //const [discLimit, setDiscLimit] = useState(limit)
-  //const [discOffset, setDiscOffset] = useState(offset)
+  const pageEndRef = useRef(null)
   const queryParams = queryString.parse(location.search)
 
   const limit = queryParams.limit || 25
@@ -35,13 +54,13 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
   const ownStamp = queryParams.ownStamp || null
   const holeInOne = queryParams.holeInOne || null
   const latest = queryParams.latest || null
+  const name = queryParams.name || null
+
+  const scrollToBottom = () => {
+    pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
 
   const loadMore = () => {
-    console.log(JSON.stringify(queryParams, null, 2))
-    console.log(`type: ${type}`)
-    //fetchDiscs({ query: { type }, limit, offset: offset + limit, order: { column: '_created', mode: 'ASC' } })
-    //setDiscOffset(discOffset + discLimit)
-
     history.replace(
       `${location.pathname}?${queryString.stringify({
         type,
@@ -54,42 +73,55 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
         ownStamp,
         holeInOne,
         latest,
+        name,
         offset: parseInt(offset, 10) + parseInt(limit, 10),
       })}`
     )
   }
 
   useEffect(() => {
-    //history.replace(`${location.pathname}?${url}`)
     fetchDiscs({
-      query: { type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest },
+      query: { type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest, name },
       limit,
       offset: offset,
     })
-  }, [limit, offset, type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest])
-  /*
-  const search = term => {
+  }, [limit, offset, type, available, missing, sold, donated, collection, ownStamp, holeInOne, latest, name])
+
+  const search = name => {
     const queryParams = queryString.parse(location.search)
 
-    queryParams.term = term
+    queryParams.name = name
+    queryParams.offset = 0
 
     history.replace(`${location.pathname}?${queryString.stringify(queryParams)}`)
   }
-  */
+
+  const debounceSearch = useCallback(
+    debounce(nextValue => search(nextValue), 300),
+    []
+  )
+
+  const handleChange = value => {
+    debounceSearch(value)
+  }
+
   return (
     <div>
       <Helmet title="My discs - Gallery" />
 
-      <MorePanel>
-        <div>
-          <Button size="large" variant="contained" color="primary" onClick={() => loadMore()} disabled={loadingDiscs}>
-            {loadingDiscs ? 'Loading...' : 'More...'}
-          </Button>
-        </div>
-      </MorePanel>
+      <Grid container>
+        <Grid item xs={12}>
+          <SearchField
+            id="standard-search"
+            label=""
+            type="search"
+            variant="outlined"
+            onKeyUp={e => handleChange(e.target.value)}
+          />
+        </Grid>
+      </Grid>
 
-      <FilterContainer className="filter-container"></FilterContainer>
-      <DiscsPanel className="disc-gallery-page discs">
+      <DiscsPanel className="disc-gallery-page discs" ef={pageEndRef}>
         <DiscGallery discs={discs} />
       </DiscsPanel>
       {discs.count() > 0 && (

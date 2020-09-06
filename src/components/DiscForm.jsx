@@ -100,7 +100,6 @@ const defaultValues = () => ({
 })
 
 const DiscForm = ({ manufacturers, onSave, types }) => {
-  console.log('DiscForm rendered?')
   return (
     <Main>
       <h2>New disc</h2>

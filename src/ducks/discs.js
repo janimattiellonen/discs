@@ -46,11 +46,6 @@ export default function(state = defaultState, action = {}) {
       return state.withMutations(map => map.set('loadingStats', false).set('loadingStatsFailed', false))
 
     case FETCH_DISC_STATS_DONE:
-      console.log('stats: ' + JSON.stringify(payload, null, 2))
-
-      const y = Map(payload)
-
-      console.log('allCount: ' + y.get('allCount'))
       return state.withMutations(map =>
         map
           .set('loadingStats', false)
@@ -67,8 +62,6 @@ export default function(state = defaultState, action = {}) {
 }
 
 export function fetchDiscs(params) {
-  console.log(`PARAMS: ${JSON.stringify(params, null, 2)}`)
-
   return dispatch => {
     dispatch({ type: FETCH_DISCS })
     discApi.getDiscs(params).then(

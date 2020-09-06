@@ -19,9 +19,6 @@ const mapType = type => {
 }
 
 export const createQueryString = ({ query, limit, offset, order }) => {
-  console.log(`QUERY IS NOW: ${JSON.stringify(query, null, 2)}`)
-  console.log(`ORDER IS NOW: ${JSON.stringify(order, null, 2)}`)
-  console.log(`ORDER? ${!order}`)
   const output = []
 
   if (limit) {
@@ -31,8 +28,6 @@ export const createQueryString = ({ query, limit, offset, order }) => {
   if (offset) {
     output.push(`skip=${offset}`)
   }
-
-  //return output.join('&')
 
   let hints = []
 
@@ -48,7 +43,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
   const queryParams = []
 
   if (query) {
-    if (query.name && query.name.length) {
+    if (query.name && query.name.length >= 2) {
       queryParams.push('"name": {"$regex": "^' + query.name + '"}')
     }
 

@@ -1,36 +1,77 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-console.log('PATH: ' + __dirname);
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
+const dotenv = require('dotenv')
+const webpack = require('webpack')
+
+const env = dotenv.config().parsed
+
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next])
+  return prev
+}, {})
 
 module.exports = {
-  mode: 'development',
-  entry: {'app2': './src/index.js'},
+  mode: 'production',
+  entry: { app: './src/index.js' },
   plugins: [
-      new CleanWebpackPlugin()
+    new webpack.DefinePlugin(envKeys),
+    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
+    new CopyWebpackPlugin([{ from: './src/assets' }]),
   ],
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    crossOriginLoading: "anonymous",
+    filename: 'js/[name].js',
+    path: path.join(__dirname, 'build', 'assets'),
+    publicPath: '/',
+    crossOriginLoading: 'anonymous',
   },
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+      },
+      {
+        test: /\.s[ac]ss$/i,
         use: [
+          // Creates `style` nodes from JS strings
           'style-loader',
-          'css-loader'
-        ]
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
+        use: ['file-loader'],
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
-          'file-loader'
-        ]
-      }
-    ]
-  }
-};
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  resolve: {
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    //alias: { 'react-dom': '@hot-loader/react-dom' },
+    extensions: ['*', '.js', '.jsx'],
+  },
+}

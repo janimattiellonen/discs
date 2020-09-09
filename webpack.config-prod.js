@@ -1,4 +1,6 @@
 const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -28,12 +30,31 @@ module.exports = {
       filename: 'index.html',
       template: './index.html',
     }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash:8].css',
+      chunkFilename: 'css/[name].[contenthash:8].chunk.css',
+    }),
   ],
   output: {
-    filename: 'js/[name].js',
+    //filename: 'js/[name].js',
+    filename: 'js/[name].[contenthash:8].js',
     path: path.join(__dirname, 'build', 'assets'),
     publicPath: '/',
     crossOriginLoading: 'anonymous',
+  },
+  optimization: {
+    minimize: true,
+    moduleIds: 'hashed',
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   module: {
     rules: [
@@ -55,7 +76,14 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { publicPath: '/' },
+          },
+          'css-loader',
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -67,7 +95,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]',
+              name: 'fonts/[name].[hash:8].[ext]',
               outputPath: 'fonts/',
             },
           },

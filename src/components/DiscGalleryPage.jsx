@@ -31,15 +31,12 @@ const MorePanel = styled('div')({
   clear: 'both',
   textAlign: 'center',
 })
-/*
-padding: 8px 22px;
-font-size: 0.9375rem;
- */
+
 const MoreButton = styled(Button)({
   '&.MuiButtonBase-root': {
     padding: '15px 30px',
     fontSize: '1em',
-    [theme.mq('600')]: {
+    [theme.mq('1000')]: {
       padding: '8px 22px',
       fontSize: '0.9375rem',
     },

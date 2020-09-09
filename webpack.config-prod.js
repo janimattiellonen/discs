@@ -16,12 +16,18 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
   mode: 'production',
+  devtool: 'source-map',
   entry: { app: './src/index.js' },
   plugins: [
     new webpack.DefinePlugin(envKeys),
     new CleanWebpackPlugin(),
     // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
     new CopyWebpackPlugin([{ from: './src/assets' }]),
+    new HtmlWebpackPlugin({
+      title: 'My discs',
+      filename: 'index.html',
+      template: './index.html',
+    }),
   ],
   output: {
     filename: 'js/[name].js',
@@ -72,6 +78,6 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     //alias: { 'react-dom': '@hot-loader/react-dom' },
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['.jsx', '.js', '.scss', '.sass', '.css'],
   },
 }

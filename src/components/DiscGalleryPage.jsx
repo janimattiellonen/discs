@@ -26,8 +26,8 @@ const SearchField = styled(TextField)({
 const MorePanel = styled('div')({
   width: '50%',
   margin: '0 auto',
-  marginTop: '20px',
-  marginBottom: '20px',
+  paddingTop: '40px',
+  marginBottom: '80px',
   clear: 'both',
   textAlign: 'center',
 })

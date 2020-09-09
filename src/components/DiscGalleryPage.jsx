@@ -13,9 +13,7 @@ import TextField from '@material-ui/core/TextField'
 
 import DiscGallery from './DiscGallery'
 
-const FilterContainer = styled.div({
-  margin: '15px',
-})
+import { theme } from '../util/theme'
 
 const SearchField = styled(TextField)({
   margin: '20px',
@@ -32,6 +30,20 @@ const MorePanel = styled('div')({
   marginBottom: '20px',
   clear: 'both',
   textAlign: 'center',
+})
+/*
+padding: 8px 22px;
+font-size: 0.9375rem;
+ */
+const MoreButton = styled(Button)({
+  '&.MuiButtonBase-root': {
+    padding: '15px 30px',
+    fontSize: '1em',
+    [theme.mq('600')]: {
+      padding: '8px 22px',
+      fontSize: '0.9375rem',
+    },
+  },
 })
 
 const DiscsPanel = styled('div')({
@@ -117,6 +129,7 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
             type="search"
             variant="outlined"
             onKeyUp={e => handleChange(e.target.value)}
+            aria-label="Search field"
           />
         </Grid>
       </Grid>
@@ -127,9 +140,15 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
       {discs.count() > 0 && (
         <MorePanel>
           <div>
-            <Button size="large" variant="contained" color="primary" onClick={() => loadMore()} disabled={loadingDiscs}>
+            <MoreButton
+              size="large"
+              variant="contained"
+              color="primary"
+              onClick={() => loadMore()}
+              disabled={loadingDiscs}
+            >
               {loadingDiscs ? 'Loading...' : 'More...'}
-            </Button>
+            </MoreButton>
           </div>
         </MorePanel>
       )}

@@ -1,6 +1,8 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+const CompressionPlugin = require('compression-webpack-plugin')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -23,6 +25,9 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin(envKeys),
     new CleanWebpackPlugin(),
+    new CompressionPlugin({
+      test: /\.js(\?.*)?$/i,
+    }),
     // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
     new CopyWebpackPlugin([{ from: './src/assets' }]),
     new HtmlWebpackPlugin({
@@ -50,6 +55,7 @@ module.exports = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
+          //test: /node_modules\/(?!axios\/)(?!formik\/)(?!moment\/)(?!numeral\/).*/,
           name: 'vendors',
           chunks: 'all',
         },

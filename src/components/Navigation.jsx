@@ -13,6 +13,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import styled from 'styled-components'
 
+const getAsCurrency = value => {
+  return <span>{value} €</span>
+}
+
 export default ({ stats, onSearch }) => {
   const showSideNav = useMediaQuery('(min-width:600px)')
 
@@ -82,9 +86,7 @@ export default ({ stats, onSearch }) => {
 
   const getHoleInOneCount = () => getStats('aceCount')
 
-  const getPrice = () => {
-    return <span>{spentMoney} €</span>
-  }
+  const sales = numeral(getStats('sales')).format('0.00')
 
   return (
     <div>
@@ -139,7 +141,14 @@ export default ({ stats, onSearch }) => {
             <ListItem>
               <Link to="/gallery?latest=true">Latest (10)</Link>
             </ListItem>
-            {spentMoney > 0 && <ListItem>{getPrice()}</ListItem>}
+            {spentMoney > 0 && <ListItem>{getAsCurrency(spentMoney)}</ListItem>}
+            {sales > 0 && (
+              <ListItem>
+                {getAsCurrency(sales)}
+                <span style={{ paddingLeft: 5 }}> </span>
+                (sales)
+              </ListItem>
+            )}
           </UiList>
         </Drawer>
       )}
@@ -188,7 +197,8 @@ export default ({ stats, onSearch }) => {
                 <Li>
                   <Link to="/gallery?latest=true">Latest (10)</Link>
                 </Li>
-                {spentMoney > 0 && <Li>{getPrice()}</Li>}
+                {spentMoney > 0 && <Li>{getAsCurrency(spentMoney)}</Li>}
+                {sales > 0 && <Li>{getAsCurrency(sales)} (sales)</Li>}
               </Ul>
             </Toolbar>
           </AppBar>

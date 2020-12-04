@@ -18,8 +18,10 @@ import { theme } from '../util/theme'
 const SearchField = styled(TextField)({
   margin: '20px',
   width: 'calc(100% - 40px)',
-  '&. MuiTextField-root': {
-    margin: '10px',
+  '&.MuiTextField-root': {
+    '.MuiInputBase-input': {
+      fontSize: '2em',
+    },
   },
 })
 

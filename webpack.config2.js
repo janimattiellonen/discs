@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const dotenv = require('dotenv')
 const webpack = require('webpack')
@@ -13,20 +14,25 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
   return prev
 }, {})
 
-const certPath = (module.exports = {
+module.exports = {
   mode: 'development',
-  entry: {
-    app: './src/index.js',
-  },
-  devtool: 'inline-source-map',
+  entry: [
+    'webpack-dev-server/client?http://localhost:9091',
+    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+    './src/index.js',
+  ],
+  devtool: 'eval-source-map',
   devServer: {
-    /*contentBase: './dist',*/
+    port: 9091,
+    disableHostCheck: true,
+    publicPath: `http://localhost:9091/`,
     historyApiFallback: true,
     https: {
       key: fs.readFileSync(path.join(__dirname, 'cert', 'nginx-selfsigned.key')),
       cert: fs.readFileSync(path.join(__dirname, 'cert', 'nginx-selfsigned.crt')),
       ca: fs.readFileSync(path.join(__dirname, 'cert', 'dhparam.pem')),
     },
+    hot: true,
   },
   module: {
     rules: [
@@ -72,19 +78,24 @@ const certPath = (module.exports = {
   plugins: [
     new webpack.DefinePlugin(envKeys),
     // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
+    new CopyWebpackPlugin([{ from: './src/assets' }]),
     new HtmlWebpackPlugin({
-      title: 'Development',
-      template: 'index.html',
+      title: 'My discs',
+      filename: 'index.html',
+      template: './index.html',
     }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'js/[name].js',
+    //path: path.resolve(__dirname, 'dist'),
+    path: path.join(__dirname, 'build', 'assets'),
     publicPath: '/',
   },
   resolve: {
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     alias: { 'react-dom': '@hot-loader/react-dom' },
     extensions: ['*', '.js', '.jsx'],
   },
-})
+}

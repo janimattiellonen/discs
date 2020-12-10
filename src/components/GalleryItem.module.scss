@@ -67,8 +67,19 @@ div.manufacturer {
 
 .price {
   float: right;
-  font-size: 2em;
+  font-size: 1em;
+  font-weight: bold;
+  color: red;
 }
+
+@media screen and (min-width: 768px) {
+  .price {
+    font-size: 2em;
+    font-weight: normal;
+    color: green;
+  }
+}
+
 
 .attribute {
   float: left;

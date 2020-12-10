@@ -3,10 +3,18 @@ import _ from 'lodash'
 import numeral from 'numeral'
 import Tooltip from '@material-ui/core/Tooltip'
 import moment from 'moment'
+import styled from 'styled-components'
 
 import { DiscStatus } from './DiscStatus'
 
 import unknown from '../unknown.png'
+
+const CollectionItem = styled.div({
+  float: 'right',
+  fontWeight: 'bold',
+  fontSize: '0.6em',
+  marginTop: '8px',
+})
 
 export default ({ disc }) => {
   const renderWeight = disc => (disc.weight > 0 ? `, ${disc.weight}g` : '')
@@ -128,7 +136,7 @@ export default ({ disc }) => {
 
       <div>
         <h2>
-          {disc.name}&nbsp;{disc.collection_item && <p className="collectionItem">Collection item</p>}
+          {disc.name}&nbsp;{disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
         </h2>
 
         <div className="manufacturer">

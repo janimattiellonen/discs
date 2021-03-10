@@ -20,6 +20,12 @@ const getAsCurrency = value => {
 export default ({ stats, onSearch }) => {
   const showSideNav = useMediaQuery('(min-width:600px)')
 
+  const StyledTopNav = styled.div({
+    header: {
+      backgroundColor: 'white',
+    },
+  })
+
   const Ul = styled.ul`
     padding: 0;
   `
@@ -154,7 +160,7 @@ export default ({ stats, onSearch }) => {
       )}
 
       {!showSideNav && (
-        <div className="disc-filter">
+        <StyledTopNav>
           <AppBar position="relative" className={classes.appBar}>
             <Toolbar>
               <Ul>
@@ -202,7 +208,7 @@ export default ({ stats, onSearch }) => {
               </Ul>
             </Toolbar>
           </AppBar>
-        </div>
+        </StyledTopNav>
       )}
     </div>
   )

@@ -3,8 +3,18 @@ import _ from 'lodash'
 import numeral from 'numeral'
 import Tooltip from '@material-ui/core/Tooltip'
 import moment from 'moment'
+import styled from 'styled-components'
+
+import { DiscStatus } from './DiscStatus'
 
 import unknown from '../unknown.png'
+
+const CollectionItem = styled.div({
+  float: 'right',
+  fontWeight: 'bold',
+  fontSize: '0.6em',
+  marginTop: '8px',
+})
 
 export default ({ disc }) => {
   const renderWeight = disc => (disc.weight > 0 ? `, ${disc.weight}g` : '')
@@ -61,45 +71,29 @@ export default ({ disc }) => {
 
   const renderLostDisc = () => {
     if (disc.missing) {
-      let element = (
-        <div className="discStatus">
-          <span>Lost</span>
-        </div>
-      )
-      return renderTooltip(element)
+      return renderTooltip(<DiscStatus label={'Lost'} />)
     }
   }
 
   const renderBrokenDisc = () => {
     if (disc.broken) {
-      let element = (
-        <div className="discStatus">
-          <span>Broken</span>
-        </div>
-      )
-      return renderTooltip(element)
+      return renderTooltip(<DiscStatus label={'Broken'} />)
     }
   }
 
   const renderSoldDisc = () => {
     if (disc.sold) {
-      let element = (
-        <div className="discStatus">
-          <span>Sold</span>
-        </div>
+      return renderTooltip(
+        <DiscStatus
+          label={`Sold ${!!disc.sold_for && disc.sold_for > 0 ? ` (${numeral(disc.sold_for).format('0.00')}€)` : ''}`}
+        />
       )
-      return renderTooltip(element)
     }
   }
 
   const renderDonatedDisc = () => {
     if (disc.Donated) {
-      let element = (
-        <div className="discStatus">
-          <span>Donated</span>
-        </div>
-      )
-      return renderTooltip(element)
+      return renderTooltip(<DiscStatus label={'Donated'} />)
     }
   }
 
@@ -142,7 +136,7 @@ export default ({ disc }) => {
 
       <div>
         <h2>
-          {disc.name}&nbsp;{disc.collection_item && <p className="collectionItem">Collection item</p>}
+          {disc.name}&nbsp;{disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
         </h2>
 
         <div className="manufacturer">

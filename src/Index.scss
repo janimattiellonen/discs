@@ -48,23 +48,6 @@ code {
     width: 100%;
   }
 
-  .discStatus {
-    position: absolute;
-    background: red;
-    width: 100%;
-    height: 50px;
-    bottom: 0;
-    left: 0;
-    transition: opacity .5s;
-    opacity: .7;
-
-    span {
-      display: block;
-      text-align: center;
-      font-size: 2em;
-    }
-  }
-
   .HoleInOne {
     position: absolute;
     background: gold;
@@ -81,13 +64,6 @@ code {
       font-size: 2em;
     }
   }
-}
-
-.collectionItem {
-  float: right;
-  font-weight: bold;
-  font-size: 0.6em;
-  margin-top: 8px;
 }
 
 .specs {
@@ -107,6 +83,14 @@ div.manufacturer {
 .price {
   float: right;
   font-size: 2em;
+  font-weight: normal;
+}
+
+@media screen and (min-width: 600px) and (max-width: 768px) {
+  .price {
+    font-size: 1em;
+    font-weight: bold;
+  }
 }
 
 .attribute {

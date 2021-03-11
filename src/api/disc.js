@@ -7,7 +7,9 @@ export default {
     const queryString = createQueryString({ query, filter, limit, offset, order })
 
     return axios
-      .get(`${process.env.BASE_URL}/rest/discs?metafields=true&apikey=${process.env.API_KEY}&${queryString}`)
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/rest/discs?metafields=true&apikey=${process.env.REACT_APP_API_KEY}&${queryString}`
+      )
       .then(res => {
         return res.data
       })
@@ -18,14 +20,16 @@ export default {
     const queryString = 'q={"name": {"$regex": "^mako3"}}&h={}&totals=true&count=true'
 
     return axios
-      .get(`${process.env.BASE_URL}/rest/discs?metafields=true&apikey=${process.env.API_KEY}&${queryString}`)
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/rest/discs?metafields=true&apikey=${process.env.REACT_APP_API_KEY}&${queryString}`
+      )
       .then(res => {
         return res.data
       })
   },
 
   getStats() {
-    return axios.get(`${process.env.BASE_URL}/stats`).then(res => {
+    return axios.get(`${process.env.REACT_APP_BASE_URL}/stats`).then(res => {
       return res.data
     })
   },

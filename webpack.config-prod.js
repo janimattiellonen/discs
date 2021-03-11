@@ -41,6 +41,7 @@ module.exports = {
       chunkFilename: 'css/[name].[contenthash:8].chunk.css',
     }),
   ],
+
   output: {
     //filename: 'js/[name].js',
     filename: 'js/[name].[contenthash:8].js',

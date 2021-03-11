@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-//import config from '../config.client'
-
 import { createQueryString } from '../util/restDbQuery'
 
 export default {

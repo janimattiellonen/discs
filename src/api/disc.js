@@ -29,7 +29,7 @@ export default {
   },
 
   getStats() {
-    return axios.get(`${process.env.REACT_APP_BASE_URL}/stats`).then(res => {
+    return axios.get(`${process.env.REACT_APP_STATS_BASE_URL}/stats`).then(res => {
       return res.data
     })
   },

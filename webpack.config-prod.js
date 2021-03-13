@@ -13,6 +13,7 @@ const webpack = require('webpack')
 
 //const env = dotenv.config().parsed
 const env = process.env
+console.log(`env: ${JSON.stringify(env, null, 2)}`)
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next])

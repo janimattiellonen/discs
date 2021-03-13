@@ -65,16 +65,25 @@ export function fetchDiscs(params) {
   return dispatch => {
     dispatch({ type: FETCH_DISCS })
 
-    Promise.all([discApi.getDiscs(params)]).then(results => {
-      console.log(JSON.stringify(results, null, 2))
-      console.log(`data: ${JSON.stringify(results[0], null, 2)}`)
-      console.log(`discs: ${JSON.stringify(results[1], null, 2)}`)
-
+    discApi.getDiscs(params).then(results => {
       return dispatch({
         type: FETCH_DISCS_DONE,
-        payload: { discs: results[1], limit: params.limit, offset: params.offset },
+        payload: { discs: results, limit: params.limit, offset: params.offset },
       })
     })
+    /*
+    discApi.getFoo().then(data => {
+      console.log(`data: ${JSON.stringify(data, null, 2)}`)
+    })
+  */
+    /*
+    discApi.getDiscs(params).then(
+      discs => {
+        dispatch({ type: FETCH_DISCS_DONE, payload: { discs, limit: params.limit, offset: params.offset } })
+      },
+      () => dispatch({ type: FETCH_DISCS_FAILED })
+    )
+    */
   }
 }
 

@@ -10,20 +10,21 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const dotenv = require('dotenv')
 const webpack = require('webpack')
-/*
-const env = dotenv.config().parsed
+
+//const env = dotenv.config().parsed
+const env = process.env
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next])
   return prev
 }, {})
-*/
+
 module.exports = {
   mode: 'production',
   devtool: 'source-map',
   entry: { app: './src/index.js' },
   plugins: [
-    new webpack.DefinePlugin([]),
+    new webpack.DefinePlugin(envKeys),
     new CleanWebpackPlugin(),
     new CompressionPlugin({
       test: /\.js(\?.*)?$/i,
@@ -40,6 +41,7 @@ module.exports = {
       chunkFilename: 'css/[name].[contenthash:8].chunk.css',
     }),
   ],
+
   output: {
     //filename: 'js/[name].js',
     filename: 'js/[name].[contenthash:8].js',

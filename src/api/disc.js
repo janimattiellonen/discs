@@ -15,19 +15,6 @@ export default {
       })
   },
 
-  getFoo() {
-    // // q={"name": {"$regex": "^mako3"}}&h={}&totals=true&count=true
-    const queryString = 'q={"name": {"$regex": "^mako3"}}&h={}&totals=true&count=true'
-
-    return axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/rest/discs?metafields=true&apikey=${process.env.REACT_APP_API_KEY}&${queryString}`
-      )
-      .then(res => {
-        return res.data
-      })
-  },
-
   getStats() {
     return axios.get(`${process.env.REACT_APP_STATS_BASE_URL}/stats`).then(res => {
       return res.data

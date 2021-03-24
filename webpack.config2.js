@@ -27,11 +27,13 @@ module.exports = {
     disableHostCheck: true,
     publicPath: `http://localhost:9091/`,
     historyApiFallback: true,
-    https: {
+    /*
+      https: {
       key: fs.readFileSync(path.join(__dirname, 'cert', 'nginx-selfsigned.key')),
       cert: fs.readFileSync(path.join(__dirname, 'cert', 'nginx-selfsigned.crt')),
       ca: fs.readFileSync(path.join(__dirname, 'cert', 'dhparam.pem')),
     },
+    */
     hot: true,
   },
   module: {

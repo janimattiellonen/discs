@@ -4,8 +4,7 @@
   "description": "Test",
   "scripts": {
     "build": "webpack --config webpack.config-prod.js",
-    "start": "webpack-dev-server --mode development --hot --config webpack.config.js",
-    "start2": "webpack-dev-server --mode development --hot --config webpack.config2.js",
+    "start": "webpack-dev-server --mode development --hot --config webpack.config2.js",
     "lint:js": "eslint \"src/**/*.{js,jsx}\""
   },
   "private": true,

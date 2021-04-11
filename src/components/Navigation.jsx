@@ -91,6 +91,7 @@ export default ({ stats, onSearch }) => {
   const getOwnStampCount = () => getStats('ownStampCount')
 
   const getHoleInOneCount = () => getStats('aceCount')
+  const getBrokenCount = () => getStats('brokenCount')
 
   const sales = numeral(getStats('sales')).format('0.00')
 
@@ -143,6 +144,9 @@ export default ({ stats, onSearch }) => {
             </ListItem>
             <ListItem>
               <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
+            </ListItem>
+            <ListItem>
+              <Link to="/gallery?broken=true">Broken ({getBrokenCount()})</Link>
             </ListItem>
             <ListItem>
               <Link to="/gallery?latest=true">Latest (10)</Link>
@@ -199,6 +203,9 @@ export default ({ stats, onSearch }) => {
                 </Li>
                 <Li>
                   <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
+                </Li>
+                <Li>
+                  <Link to="/gallery?broken=true">Broken ({getBrokenCount()})</Link>
                 </Li>
                 <Li>
                   <Link to="/gallery?latest=true">Latest (10)</Link>

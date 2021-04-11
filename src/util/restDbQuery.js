@@ -75,6 +75,10 @@ export const createQueryString = ({ query, limit, offset, order }) => {
       queryParams.push(`"Hole in one": ${query.holeInOne}`)
     }
 
+    if (query.broken && query.broken.length) {
+      queryParams.push(`"broken": ${query.broken}`)
+    }
+
     if (query.available && query.available.length) {
       const availableQuery = []
 

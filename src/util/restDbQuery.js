@@ -60,7 +60,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
     }
 
     if (query.donated && query.donated.length) {
-      queryParams.push(`"Donated": ${query.donated}`)
+      queryParams.push(`"donated": ${query.donated}`)
     }
 
     if (query.collection && query.collection.length) {
@@ -68,11 +68,11 @@ export const createQueryString = ({ query, limit, offset, order }) => {
     }
 
     if (query.ownStamp && query.ownStamp.length) {
-      queryParams.push(`"Own stamp": ${query.ownStamp}`)
+      queryParams.push(`"own_stamp": ${query.ownStamp}`)
     }
 
     if (query.holeInOne && query.holeInOne.length) {
-      queryParams.push(`"Hole in one": ${query.holeInOne}`)
+      queryParams.push(`"hole_in_one": ${query.holeInOne}`)
     }
 
     if (query.broken && query.broken.length) {
@@ -82,7 +82,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
     if (query.available && query.available.length) {
       const availableQuery = []
 
-      availableQuery.push('{"Donated": {"$not": true}}')
+      availableQuery.push('{"donated": {"$not": true}}')
       availableQuery.push('{"missing": {"$not": true}}')
       availableQuery.push('{"sold": {"$not": true}}')
 

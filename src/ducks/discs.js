@@ -20,6 +20,9 @@ const defaultState = Map({
   loadingStatsFailed: false,
   limit: 25,
   offset: 0,
+  total: 0,
+  count: 0,
+  skip: 0,
 })
 
 export default function(state = defaultState, action = {}) {
@@ -32,6 +35,9 @@ export default function(state = defaultState, action = {}) {
     case FETCH_DISCS_DONE:
       const limit = parseInt(payload.limit, 10)
       const offset = parseInt(payload.offset, 10)
+      const total = parseInt(payload.total, 10)
+      const count = parseInt(payload.count, 10)
+      const skip = parseInt(payload.skip, 10)
 
       return state.withMutations(map =>
         map
@@ -40,6 +46,9 @@ export default function(state = defaultState, action = {}) {
           .set('discs', offset === 0 ? List(payload.discs) : map.get('discs').concat(List(payload.discs)))
           .set('limit', limit)
           .set('offset', offset)
+          .set('count', count)
+          .set('total', total)
+          .set('skip', skip)
       )
 
     case FETCH_DISC_STATS:
@@ -68,7 +77,14 @@ export function fetchDiscs(params) {
     discApi.getDiscs(params).then(results => {
       return dispatch({
         type: FETCH_DISCS_DONE,
-        payload: { discs: results, limit: params.limit, offset: params.offset },
+        payload: {
+          discs: results.data,
+          total: results.totals.total,
+          limit: params.limit,
+          offset: params.offset,
+          count: results.totals.count,
+          skip: results.totals.skip,
+        },
       })
     })
     /*

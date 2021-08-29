@@ -11,6 +11,9 @@ export default connect(
     loadingDiscs: state.discs.get('loadingDiscs'),
     limit: state.discs.get('limit'),
     offset: state.discs.get('offset'),
+    total: state.discs.get('total'),
+    count: state.discs.get('count'),
+    skip: state.discs.get('skip'),
   }),
   dispatch =>
     bindActionCreators(

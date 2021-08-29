@@ -49,7 +49,12 @@ const DiscsPanel = styled('div')({
   padding: '0 20px 20px 20px',
 })
 
-const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location }) => {
+const CenterP = styled.p({
+  display: 'flex',
+  justifyContent: 'center',
+})
+
+const DiscGalleryPage = ({ skip, count, discs, total, history, fetchDiscs, loadingDiscs, location }) => {
   const pageEndRef = useRef(null)
   const queryParams = queryString.parse(location.search)
 
@@ -121,7 +126,6 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
   return (
     <div>
       <Helmet title="My discs - Gallery" />
-
       <Grid container>
         <Grid item xs={12}>
           <SearchField
@@ -136,6 +140,9 @@ const DiscGalleryPage = ({ discs, history, fetchDiscs, loadingDiscs, location })
       </Grid>
 
       <DiscsPanel className="disc-gallery-page discs" ef={pageEndRef}>
+        <CenterP>
+          {parseInt(count, 10) + parseInt(skip, 10)} / {total}
+        </CenterP>
         <DiscGallery discs={discs} />
       </DiscsPanel>
       {discs.count() > 0 && (

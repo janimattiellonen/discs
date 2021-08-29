@@ -97,7 +97,9 @@ export const createQueryString = ({ query, limit, offset, order }) => {
   }
 
   //return `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={"$orderby": {"_created": -1}}'
-  return `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={' + hints.join(',') + '}'
+  return (
+    `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={' + hints.join(',') + '}&totals=true'
+  )
 
   // &max=${limit}&skip=${offset}&h={"$orderby": {"_created": 1, "name": 1}}
 }

@@ -123,6 +123,8 @@ const DiscGalleryPage = ({ skip, count, discs, total, history, fetchDiscs, loadi
     debounceSearch(value)
   }
 
+  const discCount = parseInt(count, 10) + parseInt(skip, 10)
+
   return (
     <div>
       <Helmet title="My discs - Gallery" />
@@ -141,7 +143,7 @@ const DiscGalleryPage = ({ skip, count, discs, total, history, fetchDiscs, loadi
 
       <DiscsPanel className="disc-gallery-page discs" ef={pageEndRef}>
         <CenterP>
-          {parseInt(count, 10) + parseInt(skip, 10)} / {total}
+          {discCount < total ? discCount : total} / {total}
         </CenterP>
         <DiscGallery discs={discs} />
       </DiscsPanel>

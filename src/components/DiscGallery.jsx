@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid'
 
 import styled from '@emotion/styled'
 
-import GalleryItem from './GalleryItem'
+import { GalleryItem } from './GalleryItem'
 
 const StyledGrid = styled(Grid)({ marginBottom: '30px' })
 

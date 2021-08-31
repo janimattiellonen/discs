@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import numeral from 'numeral'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -16,7 +16,43 @@ const CollectionItem = styled.div({
   marginTop: '8px',
 })
 
-export default ({ disc }) => {
+const ImageIndex = styled.div({
+  display: 'inline-block',
+  background: 'red',
+  height: '50px',
+  fontSize: '2em',
+  width: '50px',
+  textAlign: 'center',
+  verticalAlign: 'middle',
+  position: 'relative',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  '&:hover': {
+    cursor: 'pointer',
+  },
+  transition: 'opacity .5s',
+  opacity: 0.7,
+})
+
+const VerticalBar = styled.div({
+  bottom: 0,
+  position: 'absolute',
+  height: '100%',
+  zIndex: 9999,
+  width: '50px',
+})
+
+const LeftBar = styled(VerticalBar)({
+  left: 0,
+})
+
+const RightBar = styled(VerticalBar)({
+  right: 0,
+})
+
+export const GalleryItem = ({ disc }) => {
+  const [selectedImage, setSelectedImage] = useState(0)
+
   const renderWeight = disc => (disc.weight > 0 ? `, ${disc.weight}g` : '')
 
   const renderOverlayTrigger = (tooltip, element) => element
@@ -58,11 +94,25 @@ export default ({ disc }) => {
     if (_.isEmpty(disc.image)) {
       element = <img src={unknown} alt="?" />
     } else {
-      let src = `https://testdb-8e20.restdb.io/media/${disc.image[0]}`
+      let src = `https://testdb-8e20.restdb.io/media/${disc.image[selectedImage]}`
       element = <img src={src} alt="" />
     }
 
-    return renderTooltip(element)
+    return (
+      <>
+        {renderTooltip(element)}{' '}
+        {!!disc.image && disc.image.length > 1 && (
+          <>
+            <LeftBar>
+              <ImageIndex onClick={() => setSelectedImage(0)}>1</ImageIndex>
+            </LeftBar>
+            <RightBar>
+              <ImageIndex onClick={() => setSelectedImage(1)}>2</ImageIndex>
+            </RightBar>
+          </>
+        )}
+      </>
+    )
   }
 
   const renderAttribute = attribute => {

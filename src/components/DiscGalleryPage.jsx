@@ -142,9 +142,11 @@ const DiscGalleryPage = ({ skip, count, discs, total, history, fetchDiscs, loadi
       </Grid>
 
       <DiscsPanel className="disc-gallery-page discs" ef={pageEndRef}>
-        <CenterP>
-          {discCount < total ? discCount : total} / {total}
-        </CenterP>
+        {!!total && (
+          <CenterP>
+            {discCount < total ? discCount : total} / {total}
+          </CenterP>
+        )}
         <DiscGallery discs={discs} />
       </DiscsPanel>
       {discs.count() > 0 && (

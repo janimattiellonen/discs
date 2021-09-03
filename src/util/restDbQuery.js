@@ -44,7 +44,9 @@ export const createQueryString = ({ query, limit, offset, order }) => {
 
   if (query) {
     if (query.name && query.name.length >= 2) {
-      queryParams.push('"name": {"$regex": "^' + query.name + '"}')
+      const orRegex = [`{"name": {"$regex": "^${query.name}"}}`, `{"additional": {"$regex": "^${query.name}"}}`]
+
+      queryParams.push(`{"$or": [${orRegex.join(',')}]}`)
     }
 
     if (query.type && query.type.length) {
@@ -86,7 +88,10 @@ export const createQueryString = ({ query, limit, offset, order }) => {
       availableQuery.push('{"missing": {"$not": true}}')
       availableQuery.push('{"sold": {"$not": true}}')
 
-      queryParams.push('"$and": [' + availableQuery.join(',') + ']')
+      //queryParams.push('"$and": [' + availableQuery.join(',') + ']')
+      //queryParams.push(`"$and": [${availableQuery.join(',')}]`)
+
+      queryParams.push(availableQuery.join(','))
     }
 
     if (!!query.latest) {
@@ -96,14 +101,13 @@ export const createQueryString = ({ query, limit, offset, order }) => {
     }
   }
 
-  //return `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={"$orderby": {"_created": -1}}'
   return (
-    `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={' + hints.join(',') + '}&totals=true'
+    `max=${limit}&skip=${offset}&q=` +
+    '{"$and": [' +
+    queryParams.join(',') +
+    ']}' +
+    '&h={' +
+    hints.join(',') +
+    '}&totals=true'
   )
-
-  // &max=${limit}&skip=${offset}&h={"$orderby": {"_created": 1, "name": 1}}
 }
-
-//getDiscs({ limit: 5, offset: 0, query: { name: 'Fop' }, order: { column: '_created', mode: 'ASC|DESC' } })
-
-// https://testdb-8e20.restdb.io/rest/discs?metafields=true&apikey=5e98ae5a436377171a0c24a0&max=4&skip=4&h={"$orderby": "{_created": 1}}

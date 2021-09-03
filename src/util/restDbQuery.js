@@ -44,7 +44,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
 
   if (query) {
     if (query.name && query.name.length >= 2) {
-      const orRegex = [`{"name": {"$regex": "^${query.name}"}}`, `{"additional": {"$regex": "^${query.name}"}}`]
+      const orRegex = [`{"name": {"$regex": "${query.name}"}}`, `{"additional": {"$regex": "${query.name}"}}`]
 
       queryParams.push(`{"$or": [${orRegex.join(',')}]}`)
     }

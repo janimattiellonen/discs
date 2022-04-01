@@ -65,6 +65,7 @@ const DiscGalleryPage = ({ skip, count, discs, total, history, fetchDiscs, loadi
   const available = queryParams.available || null
   const missing = queryParams.missing || null
   const sold = queryParams.sold || null
+  const forSale = queryParams.forSale || null
   const broken = queryParams.broken || null
   const donated = queryParams.donated || null
   const collection = queryParams.collection || null
@@ -85,6 +86,7 @@ const DiscGalleryPage = ({ skip, count, discs, total, history, fetchDiscs, loadi
         available,
         missing,
         sold,
+        forSale,
         broken,
         donated,
         collection,
@@ -99,11 +101,39 @@ const DiscGalleryPage = ({ skip, count, discs, total, history, fetchDiscs, loadi
 
   useEffect(() => {
     fetchDiscs({
-      query: { type, available, missing, sold, broken, donated, collection, ownStamp, holeInOne, latest, name },
+      query: {
+        type,
+        available,
+        missing,
+        sold,
+        forSale,
+        broken,
+        donated,
+        collection,
+        ownStamp,
+        holeInOne,
+        latest,
+        name,
+      },
       limit,
       offset: offset,
     })
-  }, [limit, offset, type, available, missing, sold, broken, donated, collection, ownStamp, holeInOne, latest, name])
+  }, [
+    limit,
+    offset,
+    type,
+    available,
+    missing,
+    sold,
+    forSale,
+    broken,
+    donated,
+    collection,
+    ownStamp,
+    holeInOne,
+    latest,
+    name,
+  ])
 
   const search = name => {
     const queryParams = queryString.parse(location.search)

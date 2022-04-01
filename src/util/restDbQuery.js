@@ -41,7 +41,6 @@ export const createQueryString = ({ query, limit, offset, order }) => {
   }
 
   const queryParams = []
-
   if (query) {
     if (query.name && query.name.length >= 2) {
       queryParams.push('"name": {"$regex": "^' + query.name + '"}')
@@ -57,6 +56,10 @@ export const createQueryString = ({ query, limit, offset, order }) => {
 
     if (query.sold && query.sold.length) {
       queryParams.push(`"sold": ${query.sold}`)
+    }
+
+    if (query.forSale && query.forSale.length) {
+      queryParams.push(`"for_sale": ${query.forSale}`)
     }
 
     if (query.donated && query.donated.length) {

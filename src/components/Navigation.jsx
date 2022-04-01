@@ -84,6 +84,8 @@ export default ({ stats, onSearch }) => {
 
   const getSoldDiscCount = () => getStats('soldCount')
 
+  const getDiscsForSaleCount = () => getStats('forSaleCount')
+
   const getDonatedDiscCount = () => getStats('donatedCount')
 
   const getCollectibleCount = () => getStats('collectionCount')
@@ -94,6 +96,8 @@ export default ({ stats, onSearch }) => {
   const getBrokenCount = () => getStats('brokenCount')
 
   const sales = numeral(getStats('sales')).format('0.00')
+
+  const forSaleCount = getDiscsForSaleCount()
 
   return (
     <div>
@@ -133,6 +137,12 @@ export default ({ stats, onSearch }) => {
             <ListItem>
               <Link to="/gallery?sold=true">Sold ({getSoldDiscCount()})</Link>
             </ListItem>
+
+            {
+              <ListItem>
+                <Link to="/gallery?forSale=true">For sale ({forSaleCount})</Link>
+              </ListItem>
+            }
             <ListItem>
               <Link to="/gallery?donated=true">Donated ({getDonatedDiscCount()})</Link>
             </ListItem>
@@ -191,6 +201,9 @@ export default ({ stats, onSearch }) => {
                 </Li>
                 <Li>
                   <Link to="/gallery?sold=true">Sold ({getSoldDiscCount()})</Link>
+                </Li>
+                <Li>
+                  <Link to="/gallery?forSale=true">For sale ({forSaleCount})</Link>
                 </Li>
                 <Li>
                   <Link to="/gallery?donated=true">Donated ({getDonatedDiscCount()})</Link>

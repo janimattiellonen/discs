@@ -47,6 +47,10 @@ export default (discs, filter) => {
     return discs.filter(disc => disc.is_sold === true)
   }
 
+  if (filter.type === 'forSale') {
+    return discs.filter(disc => disc.for_sale === true)
+  }
+
   if (filter.type === 'donated') {
     return discs.filter(disc => disc.is_donated === true)
   }

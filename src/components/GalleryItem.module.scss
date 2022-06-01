@@ -1,129 +1,128 @@
 .disc {
-  margin-bottom: 25px;
-  padding: 5px;
+    margin-bottom: 25px;
+    padding: 5px;
 }
 
 .discImage {
-  position: relative;
-  width: auto;
+    position: relative;
+    width: auto;
 
-  img {
-    width: 100%;
-  }
-
-  .discStatus {
-    position: absolute;
-    background: red;
-    width: 100%;
-    height: 50px;
-    bottom: 0;
-    left: 0;
-    transition: opacity .5s;
-    opacity: .7;
-
-    span {
-      display: block;
-      text-align: center;
-      font-size: 2em;
+    img {
+        width: 100%;
     }
-  }
 
-  .HoleInOne {
-    position: absolute;
-    background: gold;
-    width: 100%;
-    height: 50px;
-    top: 0;
-    left: 0;
-    transition: opacity .5s;
-    opacity: .7;
+    .discStatus {
+        position: absolute;
+        background: red;
+        width: 100%;
+        height: 50px;
+        bottom: 0;
+        left: 0;
+        transition: opacity 0.5s;
+        opacity: 0.7;
 
-    span {
-      display: block;
-      text-align: center;
-      font-size: 2em;
+        span {
+            display: block;
+            text-align: center;
+            font-size: 2em;
+        }
     }
-  }
+
+    .HoleInOne {
+        position: absolute;
+        background: gold;
+        width: 100%;
+        height: 50px;
+        top: 0;
+        left: 0;
+        transition: opacity 0.5s;
+        opacity: 0.7;
+
+        span {
+            display: block;
+            text-align: center;
+            font-size: 2em;
+        }
+    }
 }
 
 .collectionItem {
-  float: right;
-  font-weight: bold;
+    float: right;
+    font-weight: bold;
 }
 
 .specs {
-  float: left;
-  width: 100%;
+    float: left;
+    width: 100%;
 }
 
-
 .type {
-  font-weight: normal;
+    font-weight: normal;
 }
 
 div.manufacturer {
-  float: left;
+    float: left;
 }
 
 .price {
-  float: right;
-  font-size: 1em;
-  font-weight: bold;
-  color: red;
+    float: right;
+    font-size: 1em;
+    font-weight: bold;
+    color: red;
 }
 
 @media screen and (min-width: 768px) {
-  .price {
-    font-size: 2em;
-    font-weight: normal;
-    color: green;
-  }
+    .price {
+        font-size: 2em;
+        font-weight: normal;
+        color: green;
+    }
 }
 
-
 .attribute {
-  float: left;
-  width: 50%;
-  height: 35%;
-  h3, p {
-    text-align: center;
-  }
-  h3 {
-    font-size: 1em;
-    padding: 10px 10px 5px 10px;
-  }
-  p {
-    font-size: 2em;
-    padding: 10px;
-  }
-  &.speed {
-    background: #46af5c;
-  }
-  &.glide {
-    background: #cd9327;
-  }
-  &.stability {
-    background: #24a2dc;
-  }
-  &.fade2 {
-    background: #e6de47;
-  }
+    float: left;
+    width: 50%;
+    height: 35%;
+    h3,
+    p {
+        text-align: center;
+    }
+    h3 {
+        font-size: 1em;
+        padding: 10px 10px 5px 10px;
+    }
+    p {
+        font-size: 2em;
+        padding: 10px;
+    }
+    &.speed {
+        background: #46af5c;
+    }
+    &.glide {
+        background: #cd9327;
+    }
+    &.stability {
+        background: #24a2dc;
+    }
+    &.fade2 {
+        background: #e6de47;
+    }
 }
 
 p {
-  &.manufacturer {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
+    &.manufacturer {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
 
-  &.material {
-    margin-bottom: 0;
-  }
+    &.material {
+        margin-bottom: 0;
+    }
 
-  &.weight {
-    float: right;
-    font-size: 1.5em;
-    font-weight: bold;
-    text-align: right;
-  }
+    &.weight {
+        float: right;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: right;
+    }
 }

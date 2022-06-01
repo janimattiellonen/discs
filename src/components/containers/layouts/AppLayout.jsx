@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import NoSsr from '@mui/base/NoSsr';
-import Navigation from '../../Navigation';
+import { Navigation } from '../../Navigation';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 

@@ -9,7 +9,7 @@ import ListItem from '@mui/material/ListItem';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { number } from '../util/numbers';
+import { number, currency } from '../util/numbers';
 
 import styled from '@emotion/styled';
 
@@ -17,58 +17,34 @@ const getAsCurrency = (value) => {
     return <span>{value} €</span>;
 };
 
-export default ({ stats, onSearch }) => {
+const StyledListItem = styled(ListItem)({
+    a: { color: '#337ab7' },
+});
+
+const StyledTopNav = styled.div({
+    header: {
+        backgroundColor: 'white',
+    },
+});
+
+const Ul = styled.ul({ padding: 0 });
+const Li = styled.li({
+    display: 'inline-block',
+    marginRight: '20px',
+    lineHeight: '30px',
+    a: { color: '#337ab7' },
+});
+
+export const Navigation = ({ stats, onSearch }) => {
     const showSideNav = useMediaQuery('(min-width:600px)');
 
-    const StyledTopNav = styled.div({
-        header: {
-            backgroundColor: 'white',
-        },
-    });
-
-    if (1 == 1) {
-        //return <div>NAV</div>
-    }
-
-    const Ul = styled.ul`
-        padding: 0;
-    `;
-    const Li = styled.li`
-        display: inline-block;
-        margin-right: 20px;
-        line-height: 30px;
-    `;
-
     const drawerWidth = showSideNav ? 180 : 0;
-    /*
-  const useStyles = makeStyles(theme => ({
-    root: {
-      display: 'flex',
-    },
-    appBar: {
-      width: '100%',
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-      minHeight: '24px',
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    toolbar: theme.mixins.toolbar,
-    content: {
-      flexGrow: 1,
-      backgroundColor: theme.palette.background.default,
-      padding: theme.spacing(3),
-    },
-  }))
-*/
-    //const classes = useStyles()
-
+    //console.log(`stats: ${JSON.stringify(stats, null, 2)}`);
     const getStats = (key) => {
         for (const [k, v] of Object.entries(stats)) {
+            //console.log(`key: ${key}, k: ${k}`);
             if (k === key) {
+                console.log(`MATCH: k: ${k}, v: ${v}`);
                 return v;
             }
         }
@@ -76,7 +52,7 @@ export default ({ stats, onSearch }) => {
         return null;
     };
 
-    const spentMoney = number(getStats('spentMoney'));
+    const spentMoney = getStats('spentMoney');
 
     const getDiscCount = () => getStats('allCount');
 
@@ -105,7 +81,7 @@ export default ({ stats, onSearch }) => {
     const getHoleInOneCount = () => getStats('aceCount');
     const getBrokenCount = () => getStats('brokenCount');
 
-    const sales = number(getStats('sales'));
+    const sales = getStats('sales');
 
     const forSaleCount = getDiscsForSaleCount();
 
@@ -115,62 +91,62 @@ export default ({ stats, onSearch }) => {
                 <Drawer variant="permanent" anchor="left">
                     <div />
                     <UiList>
-                        <ListItem>
+                        <StyledListItem>
                             <Link to="/gallery">All ({getDiscCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?type=distanceDriver">Distance drivers ({getDistanceDriverCount()})</Link>
-                        </ListItem>
+                        </StyledListItem>
 
-                        <ListItem>
+                        <StyledListItem>
                             <Link to="/gallery?type=fairwayDriver">Fairway drivers ({getFairwayDriverCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?available=true">Available ({getAvailableCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?missing=true">Lost ({getLostDiscCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?sold=true">Sold ({getSoldDiscCount()})</Link>
-                        </ListItem>
+                        </StyledListItem>
 
-                        {
-                            <ListItem>
-                                <Link to="/gallery?forSale=true">For sale ({forSaleCount})</Link>
-                            </ListItem>
-                        }
-                        <ListItem>
+                        <StyledListItem>
+                            <Link to="/gallery?forSale=true">For sale ({forSaleCount})</Link>
+                        </StyledListItem>
+
+                        <StyledListItem>
                             <Link to="/gallery?donated=true">Donated ({getDonatedDiscCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?collection=true">Collection ({getCollectibleCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?ownStamp=true">Own stamp ({getOwnStampCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?broken=true">Broken ({getBrokenCount()})</Link>
-                        </ListItem>
-                        <ListItem>
+                        </StyledListItem>
+                        <StyledListItem>
                             <Link to="/gallery?latest=true">Latest (10)</Link>
-                        </ListItem>
-                        {spentMoney > 0 && <ListItem>{getAsCurrency(spentMoney)}</ListItem>}
+                        </StyledListItem>
+                        {spentMoney > 0 && <StyledListItem>{currency(spentMoney)}</StyledListItem>}
+
                         {sales > 0 && (
-                            <ListItem>
-                                {getAsCurrency(sales)}
+                            <StyledListItem>
+                                {currency(sales)}
                                 <span style={{ paddingLeft: 5 }}> </span>
                                 (sales)
-                            </ListItem>
+                            </StyledListItem>
                         )}
                     </UiList>
                 </Drawer>
@@ -230,8 +206,8 @@ export default ({ stats, onSearch }) => {
                                 <Li>
                                     <Link to="/gallery?latest=true">Latest (10)</Link>
                                 </Li>
-                                {spentMoney > 0 && <Li>{getAsCurrency(spentMoney)}</Li>}
-                                {sales > 0 && <Li>{getAsCurrency(sales)} (sales)</Li>}
+                                {spentMoney > 0 && <Li>{currency(spentMoney)}</Li>}
+                                {sales > 0 && <Li>{currency(sales)} (sales)</Li>}
                             </Ul>
                         </Toolbar>
                     </AppBar>

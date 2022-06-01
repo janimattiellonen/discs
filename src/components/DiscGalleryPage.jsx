@@ -20,7 +20,8 @@ const SearchField = styled(TextField)({
     width: 'calc(100% - 40px)',
     '&.MuiTextField-root': {
         '.MuiInputBase-input': {
-            fontSize: '2em',
+            fontSize: '1em',
+            padding: '5px 12px',
         },
     },
 });

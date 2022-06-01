@@ -39,12 +39,10 @@ export const Navigation = ({ stats, onSearch }) => {
     const showSideNav = useMediaQuery('(min-width:600px)');
 
     const drawerWidth = showSideNav ? 180 : 0;
-    //console.log(`stats: ${JSON.stringify(stats, null, 2)}`);
+
     const getStats = (key) => {
         for (const [k, v] of Object.entries(stats)) {
-            //console.log(`key: ${key}, k: ${k}`);
             if (k === key) {
-                console.log(`MATCH: k: ${k}, v: ${v}`);
                 return v;
             }
         }

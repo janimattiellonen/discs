@@ -51,7 +51,7 @@ const RightBar = styled(VerticalBar)({
     right: 0,
 });
 
-const DiscImage = styled.div({});
+const DiscImage = styled.img({ width: '100%' });
 
 const DiscName = styled.h2({
     display: 'flex',
@@ -108,10 +108,10 @@ export const GalleryItem = ({ disc }) => {
         let element = null;
 
         if (_.isEmpty(disc.image)) {
-            element = <img src={unknown} alt="?" />;
+            element = <DiscImage src={unknown} alt="?" />;
         } else {
             let src = `https://testdb-8e20.restdb.io/media/${disc.image[selectedImage]}`;
-            element = <img src={src} alt="" />;
+            element = <DiscImage src={src} alt="" />;
         }
 
         return (
@@ -120,10 +120,26 @@ export const GalleryItem = ({ disc }) => {
                 {!!disc.image && disc.image.length > 1 && (
                     <>
                         <LeftBar>
-                            <ImageIndex onClick={() => setSelectedImage(0)}>1</ImageIndex>
+                            <ImageIndex
+                                onClick={() => {
+                                    if (selectedImage > 0) {
+                                        setSelectedImage(selectedImage - 1);
+                                    }
+                                }}
+                            >
+                                &lt;
+                            </ImageIndex>
                         </LeftBar>
                         <RightBar>
-                            <ImageIndex onClick={() => setSelectedImage(1)}>2</ImageIndex>
+                            <ImageIndex
+                                onClick={() => {
+                                    if (selectedImage < disc.image.length - 1) {
+                                        setSelectedImage(selectedImage + 1);
+                                    }
+                                }}
+                            >
+                                &gt;
+                            </ImageIndex>
                         </RightBar>
                     </>
                 )}
@@ -185,7 +201,7 @@ export const GalleryItem = ({ disc }) => {
     };
 
     return (
-        <div>
+        <>
             <div className="flex w-auto relative">
                 {renderImage()}
 
@@ -205,18 +221,21 @@ export const GalleryItem = ({ disc }) => {
                     {disc.name}&nbsp;{disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
                 </DiscName>
 
-                <div className="float-left">
-                    <p className="manufacturer">
-                        {disc.manufacturer} {disc.material}
-                        {renderWeight(disc)}
-                    </p>
-                    <p className="type">{disc.type}</p>
-                    <p />
+                <div className="flex justify-between">
+                    <div>
+                        <p className="manufacturer">
+                            {disc.manufacturer} {disc.material}
+                            {renderWeight(disc)}
+                        </p>
+                        <p className="type">{disc.type}</p>
+                        <p />
+                    </div>
+
+                    <Price>{renderPrice(disc)}</Price>
                 </div>
-                <Price>{renderPrice(disc)}</Price>
 
                 <Specs disc={disc} />
             </div>
-        </div>
+        </>
     );
 };

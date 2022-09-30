@@ -88,6 +88,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
             availableQuery.push('{"donated": {"$not": true}}');
             availableQuery.push('{"missing": {"$not": true}}');
             availableQuery.push('{"sold": {"$not": true}}');
+            availableQuery.push('{"broken": {"$not": true}}');
 
             queryParams.push('"$and": [' + availableQuery.join(',') + ']');
         }

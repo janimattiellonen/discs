@@ -1,0 +1,21 @@
+
+- Kiekkojen yläpuolelle otsikoksi valittu kategoria, Esim. "Distance drivers"
+
+- Tietyt ominaisuudet erillisiksi filttereiksi, jotta voi hakea esim. myytyjä Distance drivereita
+  - lost
+  - missing
+  - donated
+  - own stamp
+  - broken
+  - collection
+  - hole in one
+  - for sale
+
+
+
+Seuraavat eivät voi olla samaan aikaan valittuina:
+  - sold
+  - lost
+  - broken
+  - donated
+  - for sale

@@ -13,6 +13,8 @@ import TextField from '@mui/material/TextField';
 
 import DiscGallery from './DiscGallery';
 
+import { Filter } from './Filter';
+
 import { theme } from '../util/theme';
 
 const SearchField = styled(TextField)({
@@ -47,7 +49,7 @@ const MoreButton = styled(Button)({
 });
 
 const DiscsPanel = styled('div')({
-    padding: '0 20px 20px 20px',
+    padding: '0 20px 30px 30px',
 });
 
 const CenterP = styled.p({
@@ -150,7 +152,6 @@ export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
 
         queryParams.name = name;
         queryParams.offset = 0;
-
         navigate(`${location.pathname}?${queryString.stringify(queryParams)}`, { replace: true });
     };
 
@@ -160,7 +161,10 @@ export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
     );
 
     const handleChange = (value) => {
-        debounceSearch(value);
+        // debounceSearch(value);
+        console.log(`query: ${value}`);
+
+        navigate(`${location.pathname}?${value}`, { replace: true });
     };
 
     const discCount = parseInt(count, 10) + parseInt(skip, 10);
@@ -173,14 +177,7 @@ export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
         <div>
             <Grid container>
                 <Grid item xs={12}>
-                    <SearchField
-                        id="standard-search"
-                        label=""
-                        type="search"
-                        variant="outlined"
-                        onKeyUp={(e) => handleChange(e.target.value)}
-                        aria-label="Search field"
-                    />
+                    <Filter handleChange={(url) => handleChange(url)} />
                 </Grid>
             </Grid>
 

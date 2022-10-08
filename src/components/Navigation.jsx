@@ -24,6 +24,11 @@ const StyledListItem = styled(ListItem)({
 const StyledTopNav = styled.div({
     header: {
         backgroundColor: 'white',
+        paddingTop: '10px',
+        paddingBottom: '10px',
+    },
+    li: {
+        color: 'black',
     },
 });
 
@@ -176,30 +181,6 @@ export const Navigation = ({ stats, onSearch }) => {
                                 </Li>
                                 <Li>
                                     <Link to="/gallery?available=true">Available ({getAvailableCount()})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?missing=true">Lost ({getLostDiscCount()})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?sold=true">Sold ({getSoldDiscCount()})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?forSale=true">For sale ({forSaleCount})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?donated=true">Donated ({getDonatedDiscCount()})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?collection=true">Collection ({getCollectibleCount()})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?ownStamp=true">Own stamp ({getOwnStampCount()})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
-                                </Li>
-                                <Li>
-                                    <Link to="/gallery?broken=true">Broken ({getBrokenCount()})</Link>
                                 </Li>
                                 <Li>
                                     <Link to="/gallery?latest=true">Latest (10)</Link>

@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import typeApi from '../api/type';
+import { getTypes } from '../api/type';
 
 const FETCH_TYPES = 'jme/discs/FETCH_TYPES';
 const FETCH_TYPES_DONE = 'jme/discs/FETCH_TYPES_DONE';
@@ -31,7 +31,7 @@ export default function (state = defaultState, action = {}) {
 export function fetchTypes() {
     return (dispatch) => {
         dispatch({ type: FETCH_TYPES });
-        typeApi.getTypes().then(
+        getTypes().then(
             (types) => dispatch({ type: FETCH_TYPES_DONE, payload: types }),
             (error) => dispatch({ type: FETCH_TYPES_FAILED }),
         );

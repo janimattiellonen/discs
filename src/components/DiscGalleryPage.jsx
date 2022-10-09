@@ -57,7 +57,7 @@ const CenterP = styled.p({
     justifyContent: 'center',
 });
 
-export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
+export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDiscs }) => {
     const discsState = useSelector((state) => state.discs);
 
     const { count, discs, skip, total } = discsState;
@@ -82,8 +82,7 @@ export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
     const holeInOne = queryParams.holeInOne || null;
     const latest = queryParams.latest || null;
     const name = queryParams.name || null;
-
-    //console.log(`discs: ${JSON.stringify(discs,null,2)}`)
+    const manufacturer = queryParams.manufacturer || null;
 
     const scrollToBottom = () => {
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -105,11 +104,16 @@ export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
                 holeInOne,
                 latest,
                 name,
+                manufacturer,
                 offset: parseInt(offset, 10) + parseInt(limit, 10),
             })}`,
             { replace: true },
         );
     };
+
+    useEffect(() => {
+        fetchDiscData();
+    }, []);
 
     useEffect(() => {
         fetchDiscs({
@@ -126,6 +130,7 @@ export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
                 holeInOne,
                 latest,
                 name,
+                manufacturer,
             },
             limit,
             offset: offset,
@@ -145,6 +150,7 @@ export const DiscGalleryPage = ({ fetchDiscs, history, loadingDiscs }) => {
         holeInOne,
         latest,
         name,
+        manufacturer,
     ]);
 
     const search = (name) => {

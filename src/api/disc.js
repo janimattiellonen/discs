@@ -20,4 +20,8 @@ export default {
             return res.data;
         });
     },
+
+    getData() {
+        return axios.get(`https://www-testdb-8e20.restdb.io/data`).then((res) => res.data);
+    },
 };

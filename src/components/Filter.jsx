@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 import debounce from 'lodash.debounce';
 import queryString from 'query-string';
@@ -14,6 +15,11 @@ import Link from '@mui/material/Link';
 
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
+
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 import Paper from '@mui/material/Paper';
 
@@ -91,6 +97,8 @@ const ControlledTextField2 = ({ name, label, labelPlacement, control, handleOnCh
 );
 
 export const Filter = ({ handleChange }) => {
+    const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
+
     const {
         control,
         register,
@@ -102,6 +110,8 @@ export const Filter = ({ handleChange }) => {
         formState: { errors },
     } = useForm({
         defaultValues: {
+            type: '',
+            manufacturer: '',
             lastName: '',
             forSale: '',
             holeInOne: '',
@@ -152,6 +162,61 @@ export const Filter = ({ handleChange }) => {
                     control={control}
                     handleOnChange={handleOnChange}
                 />
+
+                <Paper elevation={3} style={{ marginBottom: '20px', marginRight: '20px', padding: '10px' }}>
+                    <Controller
+                        name={'type'}
+                        control={control}
+                        render={({ field: { onChange, onBlur, name, value } }) => (
+                            <FormControl style={{ width: '150px', marginRight: '60px', marginBottom: '20px' }}>
+                                <InputLabel id="demo-simple-select-label">Disc type</InputLabel>
+                                <Select
+                                    name={name}
+                                    label="Disc type"
+                                    value={value}
+                                    onBlur={onBlur}
+                                    onChange={(e) => {
+                                        onChange(e);
+                                        handleOnChange();
+                                    }}
+                                >
+                                    <MenuItem value={''}>Select...</MenuItem>
+                                    <MenuItem value={'putter'}>Putters</MenuItem>
+                                    <MenuItem value={'midrange'}>Midranges</MenuItem>
+                                    <MenuItem value={'fairwayDriver'}>Fairway drivers</MenuItem>
+                                    <MenuItem value={'distanceDriver'}>Distance drivers</MenuItem>
+                                </Select>
+                            </FormControl>
+                        )}
+                    />
+
+                    <Controller
+                        name={'manufacturer'}
+                        control={control}
+                        render={({ field: { onChange, onBlur, name, value } }) => (
+                            <FormControl style={{ width: '150px' }}>
+                                <InputLabel id="demo-simple-select-label">Manufacturer</InputLabel>
+                                <Select
+                                    name={name}
+                                    label="Manufacturer"
+                                    value={value}
+                                    onBlur={onBlur}
+                                    onChange={(e) => {
+                                        onChange(e);
+                                        handleOnChange();
+                                    }}
+                                >
+                                    <MenuItem value={''}>Select...</MenuItem>
+                                    {manufacturers.map((manufacturer, i) => (
+                                        <MenuItem key={`manufacturer-${i}`} value={manufacturer}>
+                                            {manufacturer}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )}
+                    />
+                </Paper>
 
                 <Paper elevation={3} style={{ marginBottom: '20px', marginRight: '20px', padding: '10px' }}>
                     <div style={{ display: 'flex', gap: '60px' }}>

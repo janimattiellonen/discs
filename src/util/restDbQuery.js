@@ -50,6 +50,10 @@ export const createQueryString = ({ query, limit, offset, order }) => {
             queryParams.push(`"type": "${mapType(query.type)}"`);
         }
 
+        if (query.manufacturer && query.manufacturer.length) {
+            queryParams.push(`"manufacturer": "${query.manufacturer}"`);
+        }
+
         if (query.missing && query.missing.length) {
             queryParams.push(`"missing": ${query.missing}`);
         }

@@ -17,6 +17,7 @@ const ADD_DISC = 'jme/discs/ADD_DISC';
 const initialState = {
     discs: [],
     stats: {},
+    data: {},
     loadingDiscs: false,
     loadingDiscsFailed: false,
     loadingStats: false,
@@ -29,19 +30,13 @@ const initialState = {
 };
 
 export const fetchDiscStatsAsync = createAsyncThunk('discs/fetchDiscStats', async () => {
-    console.log('fetchDiscStats');
-
     const response = await discApi.getStats();
-    console.log(`PP: ${JSON.stringify(response, null, 2)}`);
     return response;
+});
 
-    /*
-    dispatch({ type: FETCH_DISC_STATS })
-    discApi.getStats().then(
-      stats => dispatch({ type: FETCH_DISC_STATS_DONE, payload: stats }),
-      () => dispatch({ type: FETCH_DISC_STATS_FAILED })
-    )
-   */
+export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async () => {
+    const response = await discApi.getData();
+    return response;
 });
 
 export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (params) => {
@@ -77,8 +72,11 @@ export const discsSlice = createSlice({
             })
             .addCase(fetchDiscStatsAsync.pending, (state) => {})
             .addCase(fetchDiscStatsAsync.fulfilled, (state, action) => {
-                console.log(`fetchDiscStatsAsync.fulfilled, payload: ${JSON.stringify(action.payload, null, 2)}`);
                 state.stats = action.payload;
+            })
+            .addCase(fetchDiscDataAsync.pending, (state) => {})
+            .addCase(fetchDiscDataAsync.fulfilled, (state, action) => {
+                state.data = action.payload;
             });
     },
 });
@@ -143,19 +141,6 @@ export function fetchDiscs(params) {
                 },
             });
         });
-        /*
-    discApi.getFoo().then(data => {
-      console.log(`data: ${JSON.stringify(data, null, 2)}`)
-    })
-  */
-        /*
-    discApi.getDiscs(params).then(
-      discs => {
-        dispatch({ type: FETCH_DISCS_DONE, payload: { discs, limit: params.limit, offset: params.offset } })
-      },
-      () => dispatch({ type: FETCH_DISCS_FAILED })
-    )
-    */
     };
 }
 
@@ -167,12 +152,6 @@ export function fetchDiscStats() {
             (stats) => dispatch({ type: FETCH_DISC_STATS_DONE, payload: stats }),
             () => dispatch({ type: FETCH_DISC_STATS_FAILED }),
         );
-    };
-}
-
-export function saveDisc(data, token) {
-    return (dispatch) => {
-        //discApi.addDisc(data, token).then(data => dispatch({ type: ADD_DISC, payload: data }))
     };
 }
 

@@ -174,9 +174,11 @@ export const GalleryItem = ({ disc }) => {
     };
 
     const renderDonatedDisc = () => {
-        if (disc.Donated) {
+        if (disc.donated) {
             return renderTooltip(<DiscStatus label={'Donated'} />);
         }
+
+        return null;
     };
 
     const renderHioDisc = () => {

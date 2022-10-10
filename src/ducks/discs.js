@@ -145,7 +145,6 @@ export function fetchDiscs(params) {
 }
 
 export function fetchDiscStats() {
-    console.log('fetchDiscStats');
     return (dispatch) => {
         dispatch({ type: FETCH_DISC_STATS });
         discApi.getStats().then(

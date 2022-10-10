@@ -1,32 +1,19 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import styled from '@emotion/styled';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import debounce from 'lodash.debounce';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import queryString from 'query-string';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 
 import DiscGallery from './DiscGallery';
 
 import { Filter } from './Filter';
 
 import { theme } from '../util/theme';
-
-const SearchField = styled(TextField)({
-    margin: '20px',
-    width: 'calc(100% - 40px)',
-    '&.MuiTextField-root': {
-        '.MuiInputBase-input': {
-            fontSize: '1em',
-            padding: '5px 12px',
-        },
-    },
-});
 
 const MorePanel = styled('div')({
     width: '50%',
@@ -153,23 +140,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
         manufacturer,
     ]);
 
-    const search = (name) => {
-        const queryParams = queryString.parse(location.search);
-
-        queryParams.name = name;
-        queryParams.offset = 0;
-        navigate(`${location.pathname}?${queryString.stringify(queryParams)}`, { replace: true });
-    };
-
-    const debounceSearch = useCallback(
-        debounce((nextValue) => search(nextValue), 300),
-        [],
-    );
-
     const handleChange = (value) => {
-        // debounceSearch(value);
-        console.log(`query: ${value}`);
-
         navigate(`${location.pathname}?${value}`, { replace: true });
     };
 

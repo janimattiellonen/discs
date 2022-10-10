@@ -9,13 +9,9 @@ import ListItem from '@mui/material/ListItem';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { number, currency } from '../util/numbers';
+import { currency } from '../util/numbers';
 
 import styled from '@emotion/styled';
-
-const getAsCurrency = (value) => {
-    return <span>{value} €</span>;
-};
 
 const StyledListItem = styled(ListItem)({
     a: { color: '#337ab7' },
@@ -42,8 +38,6 @@ const Li = styled.li({
 
 export const Navigation = ({ stats, onSearch }) => {
     const showSideNav = useMediaQuery('(min-width:600px)');
-
-    const drawerWidth = showSideNav ? 180 : 0;
 
     const getStats = (key) => {
         for (const [k, v] of Object.entries(stats)) {
@@ -82,7 +76,6 @@ export const Navigation = ({ stats, onSearch }) => {
     const getOwnStampCount = () => getStats('ownStampCount');
 
     const getHoleInOneCount = () => getStats('aceCount');
-    const getBrokenCount = () => getStats('brokenCount');
 
     const sales = getStats('sales');
 
@@ -135,9 +128,6 @@ export const Navigation = ({ stats, onSearch }) => {
                         </StyledListItem>
                         <StyledListItem>
                             <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
-                        </StyledListItem>
-                        <StyledListItem>
-                            <Link to="/gallery?broken=true">Broken ({getBrokenCount()})</Link>
                         </StyledListItem>
                         <StyledListItem>
                             <Link to="/gallery?latest=true">Latest (10)</Link>

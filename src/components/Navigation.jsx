@@ -74,7 +74,6 @@ export const Navigation = ({ stats }) => {
     const getCollectibleCount = () => getStats('collectionCount');
 
     const getOwnStampCount = () => getStats('ownStampCount');
-
     const getHoleInOneCount = () => getStats('aceCount');
 
     const sales = getStats('sales');

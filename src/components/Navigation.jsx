@@ -36,7 +36,7 @@ const Li = styled.li({
     a: { color: '#337ab7' },
 });
 
-export const Navigation = ({ stats, onSearch }) => {
+export const Navigation = ({ stats }) => {
     const showSideNav = useMediaQuery('(min-width:600px)');
 
     const getStats = (key) => {

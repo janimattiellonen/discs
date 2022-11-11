@@ -98,6 +98,10 @@ export const createQueryString = ({ query, limit, offset, order }) => {
             queryParams.push(`"huk": ${query.huk}`);
         }
 
+        if (query.inTheBag && query.inTheBag.length) {
+            queryParams.push(`"in_the_bag": ${query.inTheBag}`);
+        }
+
         if (query.available && query.available.length) {
             const availableQuery = [];
 

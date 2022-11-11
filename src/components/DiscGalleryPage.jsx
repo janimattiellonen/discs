@@ -73,12 +73,11 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
     const favourite = queryParams.favourite || null;
     const glow = queryParams.glow || null;
     const huk = queryParams.huk || null;
+    const inTheBag = queryParams.inTheBag || null;
 
     const scrollToBottom = () => {
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     };
-
-    console.log(`donated: ${donated}`);
 
     const loadMore = () => {
         navigate(
@@ -100,6 +99,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
                 favourite,
                 glow,
                 huk,
+                inTheBag,
                 offset: parseInt(offset, 10) + parseInt(limit, 10),
             })}`,
             { replace: true },
@@ -129,6 +129,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
                 favourite,
                 glow,
                 huk,
+                inTheBag,
             },
             limit,
             offset: offset,
@@ -152,6 +153,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
         favourite,
         glow,
         huk,
+        inTheBag,
     ]);
 
     const handleChange = (value) => {

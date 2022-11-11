@@ -118,7 +118,7 @@ export const Filter = ({ handleChange, params }) => {
             collection: '',
             forSale: '',
             holeInOne: '',
-            ownStamp: '',
+            dyed: '',
             donated: '',
             lost: '',
             missing: '',
@@ -138,7 +138,7 @@ export const Filter = ({ handleChange, params }) => {
 
         setValue('collection', params?.collection ? true : false);
         setValue('holeInOne', params?.holeInOne ? true : false);
-        setValue('ownStamp', params?.ownStamp ? true : false);
+        setValue('dyed', params?.dyed ? true : false);
         setValue('favourite', params?.favourite ? true : false);
         setValue('glow', params?.glow ? true : false);
         setValue('huk', params?.huk ? true : false);
@@ -295,8 +295,8 @@ export const Filter = ({ handleChange, params }) => {
                         </div>
                         <div>
                             <ControlledField
-                                name="ownStamp"
-                                label="Own stamp"
+                                name="dyed"
+                                label="Dyed"
                                 labelPlacement="end"
                                 control={control}
                                 handleOnChange={handleOnChange}

@@ -75,7 +75,7 @@ export const Navigation = ({ stats }) => {
 
     const getCollectibleCount = () => getStats('collectionCount');
 
-    const getOwnStampCount = () => getStats('ownStampCount');
+    const getDyedCount = () => getStats('ownStampCount');
     const getHoleInOneCount = () => getStats('aceCount');
 
     const sales = getStats('sales');
@@ -129,7 +129,7 @@ export const Navigation = ({ stats }) => {
                             <Link to="/gallery?collection=true">Collection ({getCollectibleCount()})</Link>
                         </StyledListItem>
                         <StyledListItem>
-                            <Link to="/gallery?ownStamp=true">Own stamp ({getOwnStampCount()})</Link>
+                            <Link to="/gallery?dyed=true">Dyed ({getDyedCount()})</Link>
                         </StyledListItem>
                         <StyledListItem>
                             <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>

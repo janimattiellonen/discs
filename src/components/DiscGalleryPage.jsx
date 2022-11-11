@@ -65,7 +65,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
     const broken = queryParams.broken || null;
     const donated = queryParams.donated || null;
     const collection = queryParams.collection || null;
-    const ownStamp = queryParams.ownStamp || null;
+    const dyed = queryParams.dyed || null;
     const holeInOne = queryParams.holeInOne || null;
     const latest = queryParams.latest || null;
     const name = queryParams.name || null;
@@ -91,7 +91,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
                 broken,
                 donated,
                 collection,
-                ownStamp,
+                dyed: dyed,
                 holeInOne,
                 latest,
                 name,
@@ -121,7 +121,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
                 broken,
                 donated,
                 collection,
-                ownStamp,
+                dyed,
                 holeInOne,
                 latest,
                 name,
@@ -145,7 +145,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
         broken,
         donated,
         collection,
-        ownStamp,
+        dyed,
         holeInOne,
         latest,
         name,

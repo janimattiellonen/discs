@@ -74,8 +74,8 @@ export const createQueryString = ({ query, limit, offset, order }) => {
             queryParams.push(`"collection_item": ${query.collection}`);
         }
 
-        if (query.ownStamp && query.ownStamp.length) {
-            queryParams.push(`"own_stamp": ${query.ownStamp}`);
+        if (query.dyed && query.dyed.length) {
+            queryParams.push(`"own_stamp": ${query.dyed}`);
         }
 
         if (query.holeInOne && query.holeInOne.length) {

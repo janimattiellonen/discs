@@ -53,6 +53,8 @@ export const Navigation = ({ stats }) => {
 
     const getDiscCount = () => getStats('allCount');
 
+    const getFavouriteCount = () => getStats('favouriteCount');
+
     const getDistanceDriverCount = () => getStats('distanceDriverCount');
 
     const getAvailableCount = () => getStats('availableCount');
@@ -88,6 +90,10 @@ export const Navigation = ({ stats }) => {
                     <UiList>
                         <StyledListItem>
                             <Link to="/gallery">All ({getDiscCount()})</Link>
+                        </StyledListItem>
+
+                        <StyledListItem>
+                            <Link to="/gallery?favourite=true">Favourites ({getFavouriteCount()})</Link>
                         </StyledListItem>
                         <StyledListItem>
                             <Link to="/gallery?type=distanceDriver">Distance drivers ({getDistanceDriverCount()})</Link>
@@ -151,6 +157,9 @@ export const Navigation = ({ stats }) => {
                             <Ul>
                                 <Li>
                                     <Link to="/gallery">All ({getDiscCount()})</Link>
+                                </Li>
+                                <Li>
+                                    <Link to="/gallery?favourite=true">Favourites ({getFavouriteCount()})</Link>
                                 </Li>
                                 <Li>
                                     <Link to="/gallery?type=distanceDriver">

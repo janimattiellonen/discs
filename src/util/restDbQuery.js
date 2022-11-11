@@ -86,6 +86,18 @@ export const createQueryString = ({ query, limit, offset, order }) => {
             queryParams.push(`"broken": ${query.broken}`);
         }
 
+        if (query.favourite && query.favourite.length) {
+            queryParams.push(`"favourite": ${query.favourite}`);
+        }
+
+        if (query.glow && query.glow.length) {
+            queryParams.push(`"glow": ${query.glow}`);
+        }
+
+        if (query.huk && query.huk.length) {
+            queryParams.push(`"huk": ${query.huk}`);
+        }
+
         if (query.available && query.available.length) {
             const availableQuery = [];
 

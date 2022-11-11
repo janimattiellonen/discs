@@ -70,10 +70,15 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
     const latest = queryParams.latest || null;
     const name = queryParams.name || null;
     const manufacturer = queryParams.manufacturer || null;
+    const favourite = queryParams.favourite || null;
+    const glow = queryParams.glow || null;
+    const huk = queryParams.huk || null;
 
     const scrollToBottom = () => {
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     };
+
+    console.log(`donated: ${donated}`);
 
     const loadMore = () => {
         navigate(
@@ -92,6 +97,9 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
                 latest,
                 name,
                 manufacturer,
+                favourite,
+                glow,
+                huk,
                 offset: parseInt(offset, 10) + parseInt(limit, 10),
             })}`,
             { replace: true },
@@ -118,6 +126,9 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
                 latest,
                 name,
                 manufacturer,
+                favourite,
+                glow,
+                huk,
             },
             limit,
             offset: offset,
@@ -138,6 +149,9 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
         latest,
         name,
         manufacturer,
+        favourite,
+        glow,
+        huk,
     ]);
 
     const handleChange = (value) => {
@@ -154,7 +168,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
         <div>
             <Grid container>
                 <Grid item xs={12}>
-                    <Filter handleChange={(url) => handleChange(url)} />
+                    <Filter params={queryParams} handleChange={(url) => handleChange(url)} />
                 </Grid>
             </Grid>
 

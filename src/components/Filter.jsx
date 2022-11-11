@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -35,7 +35,7 @@ const SearchField = styled(TextField)({
     },
 });
 
-const ControlledField = ({ name, label, labelPlacement, control, handleOnChange, RenderComponent }) => (
+const ControlledField = ({ name, label, labelPlacement, control, handleOnChange, RenderComponent, ...rest }) => (
     <Controller
         name={name}
         control={control}
@@ -44,6 +44,8 @@ const ControlledField = ({ name, label, labelPlacement, control, handleOnChange,
                 control={
                     <RenderComponent
                         {...field}
+                        {...rest}
+                        checked={field.value}
                         onChange={(data) => {
                             field.onChange(data);
                             handleOnChange();
@@ -57,29 +59,7 @@ const ControlledField = ({ name, label, labelPlacement, control, handleOnChange,
     />
 );
 
-const ControlledTextField = ({ name, label, labelPlacement, control, handleOnChange }) => (
-    <Controller
-        name={name}
-        control={control}
-        render={({ field }) => (
-            <FormControlLabel
-                control={
-                    <SearchField
-                        {...field}
-                        onChange={(data) => {
-                            field.onChange(data);
-                            handleOnChange();
-                        }}
-                    />
-                }
-                label={label}
-                labelPlacement={labelPlacement ? labelPlacement : ''}
-            />
-        )}
-    />
-);
-
-const ControlledTextField2 = ({ name, label, labelPlacement, control, handleOnChange, ...rest }) => (
+const ControlledTextField = ({ name, label, labelPlacement, control, handleOnChange, ...rest }) => (
     <Controller
         name={name}
         control={control}
@@ -97,7 +77,30 @@ const ControlledTextField2 = ({ name, label, labelPlacement, control, handleOnCh
     />
 );
 
-export const Filter = ({ handleChange }) => {
+const mapTermType = (params) => {
+    if (params?.available === 'true') {
+        return 'available';
+    }
+
+    if (params?.sold === 'true') {
+        return 'sold';
+    }
+
+    if (params?.missing === 'true') {
+        return 'missing';
+    }
+
+    if (params?.forSale === 'true') {
+        return 'forSale';
+    }
+
+    if (params?.donated === 'true') {
+        return 'donated';
+    }
+    return null;
+};
+
+export const Filter = ({ handleChange, params }) => {
     const isExtraMarginNeeded = useMediaQuery('(max-width:444px)');
 
     const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
@@ -110,18 +113,39 @@ export const Filter = ({ handleChange }) => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            type: '',
-            manufacturer: '',
-            lastName: '',
+            type: params?.type || '',
+            manufacturer: params?.manufacturer || '',
+            collection: '',
             forSale: '',
             holeInOne: '',
+            ownStamp: '',
             donated: '',
             lost: '',
             missing: '',
             name: '',
-            termType: '',
+            favourite: '',
+            glow: '',
+            huk: '',
+            termType: mapTermType(params),
         },
     });
+
+    useEffect(() => {
+        if (params?.type) {
+            setValue('type', params.type);
+        }
+
+        setValue('collection', params?.collection ? true : false);
+        setValue('holeInOne', params?.holeInOne ? true : false);
+        setValue('ownStamp', params?.ownStamp ? true : false);
+        setValue('favourite', params?.favourite ? true : false);
+        setValue('glow', params?.glow ? true : false);
+        setValue('huk', params?.huk ? true : false);
+
+        const termType = mapTermType(params);
+
+        setValue('termType', termType ? termType : '');
+    }, [params]);
 
     const debounceSearch = useCallback(
         debounce((nextValue) => {
@@ -151,7 +175,7 @@ export const Filter = ({ handleChange }) => {
     return (
         <div style={{ marginLeft: '30px' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <ControlledTextField2
+                <ControlledTextField
                     variant="outlined"
                     name="name"
                     label=""
@@ -191,6 +215,7 @@ export const Filter = ({ handleChange }) => {
                                         value={value}
                                         onBlur={onBlur}
                                         onChange={(e) => {
+                                            console.log('on type change');
                                             onChange(e);
                                             handleOnChange();
                                         }}
@@ -289,6 +314,33 @@ export const Filter = ({ handleChange }) => {
                             <ControlledField
                                 name="holeInOne"
                                 label="Hole in one"
+                                labelPlacement="end"
+                                control={control}
+                                handleOnChange={handleOnChange}
+                                RenderComponent={Checkbox}
+                            />
+
+                            <ControlledField
+                                name="favourite"
+                                label="Favourite"
+                                labelPlacement="end"
+                                control={control}
+                                handleOnChange={handleOnChange}
+                                RenderComponent={Checkbox}
+                            />
+
+                            <ControlledField
+                                name="glow"
+                                label="Glow disc"
+                                labelPlacement="end"
+                                control={control}
+                                handleOnChange={handleOnChange}
+                                RenderComponent={Checkbox}
+                            />
+
+                            <ControlledField
+                                name="huk"
+                                label="Huk Lab stamp"
                                 labelPlacement="end"
                                 control={control}
                                 handleOnChange={handleOnChange}

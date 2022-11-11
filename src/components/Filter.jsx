@@ -118,7 +118,7 @@ export const Filter = ({ handleChange, params }) => {
             collection: '',
             forSale: '',
             holeInOne: '',
-            ownStamp: '',
+            dyed: '',
             donated: '',
             lost: '',
             missing: '',
@@ -126,6 +126,7 @@ export const Filter = ({ handleChange, params }) => {
             favourite: '',
             glow: '',
             huk: '',
+            inTheBag: '',
             termType: mapTermType(params),
         },
     });
@@ -137,10 +138,11 @@ export const Filter = ({ handleChange, params }) => {
 
         setValue('collection', params?.collection ? true : false);
         setValue('holeInOne', params?.holeInOne ? true : false);
-        setValue('ownStamp', params?.ownStamp ? true : false);
+        setValue('dyed', params?.dyed ? true : false);
         setValue('favourite', params?.favourite ? true : false);
         setValue('glow', params?.glow ? true : false);
         setValue('huk', params?.huk ? true : false);
+        setValue('inTheBag', params?.inTheBag ? true : false);
 
         const termType = mapTermType(params);
 
@@ -215,7 +217,6 @@ export const Filter = ({ handleChange, params }) => {
                                         value={value}
                                         onBlur={onBlur}
                                         onChange={(e) => {
-                                            console.log('on type change');
                                             onChange(e);
                                             handleOnChange();
                                         }}
@@ -294,8 +295,8 @@ export const Filter = ({ handleChange, params }) => {
                         </div>
                         <div>
                             <ControlledField
-                                name="ownStamp"
-                                label="Own stamp"
+                                name="dyed"
+                                label="Dyed"
                                 labelPlacement="end"
                                 control={control}
                                 handleOnChange={handleOnChange}
@@ -341,6 +342,15 @@ export const Filter = ({ handleChange, params }) => {
                             <ControlledField
                                 name="huk"
                                 label="Huk Lab stamp"
+                                labelPlacement="end"
+                                control={control}
+                                handleOnChange={handleOnChange}
+                                RenderComponent={Checkbox}
+                            />
+
+                            <ControlledField
+                                name="inTheBag"
+                                label="In the bag"
                                 labelPlacement="end"
                                 control={control}
                                 handleOnChange={handleOnChange}

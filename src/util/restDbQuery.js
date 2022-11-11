@@ -74,8 +74,8 @@ export const createQueryString = ({ query, limit, offset, order }) => {
             queryParams.push(`"collection_item": ${query.collection}`);
         }
 
-        if (query.ownStamp && query.ownStamp.length) {
-            queryParams.push(`"own_stamp": ${query.ownStamp}`);
+        if (query.dyed && query.dyed.length) {
+            queryParams.push(`"own_stamp": ${query.dyed}`);
         }
 
         if (query.holeInOne && query.holeInOne.length) {
@@ -96,6 +96,10 @@ export const createQueryString = ({ query, limit, offset, order }) => {
 
         if (query.huk && query.huk.length) {
             queryParams.push(`"huk": ${query.huk}`);
+        }
+
+        if (query.inTheBag && query.inTheBag.length) {
+            queryParams.push(`"in_the_bag": ${query.inTheBag}`);
         }
 
         if (query.available && query.available.length) {

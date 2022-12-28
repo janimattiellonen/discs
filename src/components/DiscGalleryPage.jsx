@@ -44,7 +44,7 @@ const CenterP = styled.p({
     justifyContent: 'center',
 });
 
-export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDiscs }) => {
+export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDiscs, status }) => {
     const discsState = useSelector((state) => state.discs);
 
     const { count, discs, skip, total } = discsState;
@@ -175,6 +175,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
             </Grid>
 
             <DiscsPanel className="disc-gallery-page discs" ref={pageEndRef}>
+                <p>STATUS: {status}</p>
                 <CenterP>
                     {discCount < total ? discCount : total} / {total}
                 </CenterP>

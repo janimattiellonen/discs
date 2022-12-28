@@ -88,6 +88,7 @@ export const discsSlice = createSlice({
                 state.offset = action.payload.offset;
                 state.count = action.payload.count;
                 state.total = action.payload.total;
+                state.status = '';
             })
             .addCase(fetchDiscStatsAsync.pending, (state) => {})
             .addCase(fetchDiscStatsAsync.fulfilled, (state, action) => {

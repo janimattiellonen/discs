@@ -18,6 +18,7 @@ export default connect(
         loadingDiscsFailed: state.discs.loadingDiscsFailed,
         stats: state.discs.stats,
         data: state.discs.data,
+        status: state.discs.status,
     }),
     (dispatch) =>
         bindActionCreators(

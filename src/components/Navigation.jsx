@@ -11,6 +11,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { currency } from '../util/numbers';
 
+import { Login } from './Login';
+import { Profile } from './Profile';
 import styled from '@emotion/styled';
 
 const StyledListItem = styled(ListItem)({
@@ -147,6 +149,8 @@ export const Navigation = ({ stats }) => {
                             </StyledListItem>
                         )}
                     </UiList>
+                    <Login />
+                    <Profile />
                 </Drawer>
             )}
 

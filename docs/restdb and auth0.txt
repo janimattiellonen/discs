@@ -1,0 +1,20 @@
+restdb.io & auth0 authentication:
+
+https://restdb.io/blog/simple-user-authentication-for-web-apps
+
+https://auth0.com/docs/libraries/auth0-single-page-app-sdk
+
+
+https://github.com/auth0/auth0-react/blob/master/src/auth0-context.tsx
+
+
+
+
+Make sure you have copied the certificate from Auth0 dashboard to restdb.io
+  - also Domain Client Id and Client secret
+  Auth0:
+
+    Applications
+      Settings
+        Advanced settings
+          Certificates (Signing certificate)

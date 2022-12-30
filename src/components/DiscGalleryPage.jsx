@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+
 import { useSelector } from 'react-redux';
 
 import styled from '@emotion/styled';
@@ -45,6 +47,8 @@ const CenterP = styled.p({
 });
 
 export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDiscs }) => {
+    const { user, isAuthenticated, isLoading, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+
     const discsState = useSelector((state) => state.discs);
 
     const { count, discs, skip, total } = discsState;
@@ -111,28 +115,35 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
     }, []);
 
     useEffect(() => {
-        fetchDiscs({
-            query: {
-                type,
-                available,
-                missing,
-                sold,
-                forSale,
-                broken,
-                donated,
-                collection,
-                ownStamp,
-                holeInOne,
-                latest,
-                name,
-                manufacturer,
-                favourite,
-                glow,
-                huk,
-            },
-            limit,
-            offset: offset,
-        });
+        (async () => {
+            const data = await getIdTokenClaims();
+
+            const token = data?.__raw;
+
+            console.log(`TEH TOKEN IS ${token}`);
+            fetchDiscs({
+                query: {
+                    type,
+                    available,
+                    missing,
+                    sold,
+                    forSale,
+                    broken,
+                    donated,
+                    collection,
+                    ownStamp,
+                    holeInOne,
+                    latest,
+                    name,
+                    manufacturer,
+                    favourite,
+                    glow,
+                    huk,
+                },
+                limit,
+                offset: offset,
+            });
+        })();
     }, [
         limit,
         offset,
@@ -152,6 +163,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
         favourite,
         glow,
         huk,
+        getAccessTokenSilently,
     ]);
 
     const handleChange = (value) => {

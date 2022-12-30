@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { Auth0Provider } from '@auth0/auth0-react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -15,16 +16,23 @@ const root = createRoot(container);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <Suspense fallback={<div>Loading...</div>}>
-                <Router>
-                    <AppLayout>
-                        <Routes>
-                            <Route exact path={`/`} element={<DiscGallery />} />
-                            <Route path={`/gallery`} element={<DiscGallery />} />
-                        </Routes>
-                    </AppLayout>
-                </Router>
-            </Suspense>
+            <Auth0Provider
+                cacheLocation="localstorage"
+                domain="mydiscs.eu.auth0.com"
+                clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
+                redirectUri={window.location.origin}
+            >
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Router>
+                        <AppLayout>
+                            <Routes>
+                                <Route exact path={`/`} element={<DiscGallery />} />
+                                <Route path={`/gallery`} element={<DiscGallery />} />
+                            </Routes>
+                        </AppLayout>
+                    </Router>
+                </Suspense>
+            </Auth0Provider>
         </Provider>
     </React.StrictMode>,
 );

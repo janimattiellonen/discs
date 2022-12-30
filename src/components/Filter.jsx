@@ -173,7 +173,7 @@ export const Filter = ({ handleChange, params }) => {
     };
 
     return (
-        <div style={{ marginLeft: '30px' }}>
+        <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <ControlledTextField
                     variant="outlined"

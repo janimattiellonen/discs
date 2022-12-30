@@ -59,7 +59,7 @@ export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async 
 });
 
 export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (params) => {
-    await discApi.addDisc();
+    //await discApi.addDisc();
     const response = await discApi.getDiscs(params);
 
     const payload = {

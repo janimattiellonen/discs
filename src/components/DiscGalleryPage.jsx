@@ -38,7 +38,7 @@ const MoreButton = styled(Button)({
 });
 
 const DiscsPanel = styled('div')({
-    padding: '0 20px 30px 30px',
+    padding: '0 20px 30px 0',
 });
 
 const CenterP = styled.p({

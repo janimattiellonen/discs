@@ -9,6 +9,7 @@ import './index.css';
 
 import DiscGallery from './components/containers/DiscGalleryContainer';
 import AppLayout from './components/containers/layouts/AppLayoutContainer';
+import { AddDiscPage } from './components/AddDiscPage';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -28,6 +29,7 @@ root.render(
                             <Routes>
                                 <Route exact path={`/`} element={<DiscGallery />} />
                                 <Route path={`/gallery`} element={<DiscGallery />} />
+                                <Route exact path={'/disc/new'} element={<AddDiscPage />} />
                             </Routes>
                         </AppLayout>
                     </Router>

@@ -8,7 +8,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 function AppLayout({ children, stats, fetchDiscStats }) {
     const showSideNav = useMediaQuery('(min-width:600px)');
 
-    const drawerWidth = showSideNav ? 180 : 0;
+    const drawerWidth = showSideNav ? 200 : 0;
 
     useEffect(() => {
         fetchDiscStats();
@@ -16,7 +16,7 @@ function AppLayout({ children, stats, fetchDiscStats }) {
 
     return (
         <NoSsr>
-            <div>
+            <div style={{ paddingLeft: '10px' }}>
                 <Navigation stats={stats} />
 
                 <div style={{ marginLeft: `${drawerWidth}px` }}>{children}</div>

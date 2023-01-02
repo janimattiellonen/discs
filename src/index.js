@@ -3,6 +3,9 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
@@ -16,26 +19,28 @@ const root = createRoot(container);
 
 root.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <Auth0Provider
-                cacheLocation="localstorage"
-                domain="mydiscs.eu.auth0.com"
-                clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
-                redirectUri={window.location.origin}
-            >
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Router>
-                        <AppLayout>
-                            <Routes>
-                                <Route exact path={`/`} element={<DiscGallery />} />
-                                <Route path={`/gallery`} element={<DiscGallery />} />
-                                <Route exact path={'/disc/new'} element={<AddDiscPage />} />
-                            </Routes>
-                        </AppLayout>
-                    </Router>
-                </Suspense>
-            </Auth0Provider>
-        </Provider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Provider store={store}>
+                <Auth0Provider
+                    cacheLocation="localstorage"
+                    domain="mydiscs.eu.auth0.com"
+                    clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
+                    redirectUri={window.location.origin}
+                >
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Router>
+                            <AppLayout>
+                                <Routes>
+                                    <Route exact path={`/`} element={<DiscGallery />} />
+                                    <Route path={`/gallery`} element={<DiscGallery />} />
+                                    <Route exact path={'/disc/new'} element={<AddDiscPage />} />
+                                </Routes>
+                            </AppLayout>
+                        </Router>
+                    </Suspense>
+                </Auth0Provider>
+            </Provider>
+        </LocalizationProvider>
     </React.StrictMode>,
 );
 

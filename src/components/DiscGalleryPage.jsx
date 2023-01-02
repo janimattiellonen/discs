@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styled from '@emotion/styled';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ import Button from '@mui/material/Button';
 import DiscGallery from './DiscGallery';
 
 import { Filter } from './Filter';
+
+import { fetchDiscsAsync } from '../ducks/discs';
 
 import { theme } from '../util/theme';
 
@@ -46,8 +48,9 @@ const CenterP = styled.p({
     justifyContent: 'center',
 });
 
-export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDiscs }) => {
+export const DiscGalleryPage = ({ fetchDiscData, history, loadingDiscs }) => {
     const { user, isAuthenticated, isLoading, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+    const dispatch = useDispatch();
 
     const discsState = useSelector((state) => state.discs);
 
@@ -116,33 +119,30 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
 
     useEffect(() => {
         (async () => {
-            const data = await getIdTokenClaims();
-
-            const token = data?.__raw;
-
-            console.log(`TEH TOKEN IS ${token}`);
-            fetchDiscs({
-                query: {
-                    type,
-                    available,
-                    missing,
-                    sold,
-                    forSale,
-                    broken,
-                    donated,
-                    collection,
-                    ownStamp,
-                    holeInOne,
-                    latest,
-                    name,
-                    manufacturer,
-                    favourite,
-                    glow,
-                    huk,
-                },
-                limit,
-                offset: offset,
-            });
+            dispatch(
+                fetchDiscsAsync({
+                    query: {
+                        type,
+                        available,
+                        missing,
+                        sold,
+                        forSale,
+                        broken,
+                        donated,
+                        collection,
+                        ownStamp,
+                        holeInOne,
+                        latest,
+                        name,
+                        manufacturer,
+                        favourite,
+                        glow,
+                        huk,
+                    },
+                    limit,
+                    offset: offset,
+                }),
+            );
         })();
     }, [
         limit,

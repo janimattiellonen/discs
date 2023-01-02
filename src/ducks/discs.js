@@ -59,7 +59,7 @@ export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async 
 });
 
 export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (params) => {
-    //await discApi.addDisc();
+    // await discApi.addDisc();
     const response = await discApi.getDiscs(params);
 
     const payload = {
@@ -79,11 +79,14 @@ export const discsSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+        console.log('discsSlice...');
+
         builder
             .addCase(fetchDiscsAsync.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(fetchDiscsAsync.fulfilled, (state, action) => {
+                console.log('DIIBA: ' + JSON.stringify(action.payload, null, 2));
                 state.discs = action.payload.discs;
                 state.skip = action.payload.skip;
                 state.offset = action.payload.offset;

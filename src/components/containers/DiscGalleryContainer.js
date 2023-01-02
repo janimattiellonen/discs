@@ -22,7 +22,6 @@ export default connect(
     (dispatch) =>
         bindActionCreators(
             {
-                fetchDiscs: fetchDiscsAsync,
                 fetchDiscData: fetchDiscDataAsync,
             },
             dispatch,

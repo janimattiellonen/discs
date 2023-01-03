@@ -18,3 +18,13 @@ Make sure you have copied the certificate from Auth0 dashboard to restdb.io
       Settings
         Advanced settings
           Certificates (Signing certificate)
+
+
+
+
+
+Fetch all uploaded files:
+
+  https://testdb-8e20.restdb.io/media/*/meta
+
+  Could be used for showing the 10 latest uploaded files

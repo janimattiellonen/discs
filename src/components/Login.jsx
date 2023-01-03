@@ -1,22 +1,23 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import Button from '@mui/material/Button';
+
 export const Login = () => {
-    const { loginWithRedirect, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
 
     return (
         <div>
-            <button
-                onClick={async () => {
-                    const foo = await loginWithRedirect();
-                    console.log(`foo: ${JSON.stringify(foo, null, 2)}`);
+            {isAuthenticated && <Button onClick={() => logout()}>Sign out</Button>}
 
-                    const d = await getAccessTokenSilently();
-
-                    console.log(`d: ${JSON.stringify(d, null, 2)}`);
-                }}
-            >
-                Login
-            </button>
+            {!isAuthenticated && (
+                <Button
+                    onClick={async () => {
+                        await loginWithRedirect();
+                    }}
+                >
+                    Sign in
+                </Button>
+            )}
         </div>
     );
 };

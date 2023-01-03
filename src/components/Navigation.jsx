@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
@@ -40,6 +41,7 @@ const Li = styled.li({
 
 export const Navigation = ({ stats }) => {
     const showSideNav = useMediaQuery('(min-width:600px)');
+    const { isAuthenticated } = useAuth0();
 
     const getStats = (key) => {
         for (const [k, v] of Object.entries(stats)) {
@@ -148,9 +150,14 @@ export const Navigation = ({ stats }) => {
                                 (sales)
                             </StyledListItem>
                         )}
+
+                        {isAuthenticated && (
+                            <StyledListItem>
+                                <Link to="/disc/new">Add new disc</Link>
+                            </StyledListItem>
+                        )}
                     </UiList>
                     <Login />
-                    <Profile />
                 </Drawer>
             )}
 

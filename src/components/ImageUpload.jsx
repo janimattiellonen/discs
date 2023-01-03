@@ -2,6 +2,9 @@ import React from 'react';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,7 +12,7 @@ import { uploadImageAsync } from '../ducks/images';
 
 import Button from '@mui/material/Button';
 
-export const ImageUpload = ({}) => {
+export const ImageUpload = ({ handleClose, open }) => {
     const { user, isAuthenticated, isLoading, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
 
     const { control, register, handleSubmit } = useForm();
@@ -31,18 +34,19 @@ export const ImageUpload = ({}) => {
             dispatch(uploadImageAsync(formData, token));
         })();
     };
-
+    console.log(`open: ${open}`);
     return (
-        <div>
-            <h3>Image upload</h3>
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Image upload</DialogTitle>
+            <DialogContent>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <input {...register('image')} type="file" multiple />
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input {...register('image')} type="file" multiple />
-
-                <Button variant="contained" type="submit">
-                    Upload
-                </Button>
-            </form>
-        </div>
+                    <Button variant="contained" type="submit">
+                        Upload
+                    </Button>
+                </form>
+            </DialogContent>
+        </Dialog>
     );
 };

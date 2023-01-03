@@ -18,6 +18,10 @@ const initialState = {
     skip: 0,
 };
 
+export const addNewDiscAsync = createAsyncThunk('discs/addNewDisc', async (data) => {
+    const response = await discApi.addDisc(data);
+});
+
 export const fetchDiscStatsAsync = createAsyncThunk('discs/fetchDiscStats', async () => {
     const raw = localStorage.getItem('stats');
     const cachedStats = raw ? JSON.parse(raw) : null;
@@ -59,7 +63,6 @@ export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async 
 });
 
 export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (params) => {
-    // await discApi.addDisc();
     const response = await discApi.getDiscs(params);
 
     const payload = {
@@ -100,6 +103,10 @@ export const discsSlice = createSlice({
             .addCase(fetchDiscDataAsync.pending, (state) => {})
             .addCase(fetchDiscDataAsync.fulfilled, (state, action) => {
                 state.data = action.payload;
+            })
+            .addCase(addNewDiscAsync.pending, () => {})
+            .addCase(addNewDiscAsync.fulfilled, (state, action) => {
+                // TODO: Implement this, or remove
             });
     },
 });

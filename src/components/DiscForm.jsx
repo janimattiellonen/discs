@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { format } from 'date-fns';
 
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,10 +14,14 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import { fetchDiscDataAsync } from '../ducks/discs';
-
+import { addNewDiscAsync, fetchDiscDataAsync } from '../ducks/discs';
 import { ImageUpload } from './ImageUpload';
 
 const ControlledField = ({ name, label, labelPlacement, control, RenderComponent, ...rest }) => (
@@ -33,13 +38,40 @@ const ControlledField = ({ name, label, labelPlacement, control, RenderComponent
     />
 );
 
+const ControlledDateField = ({ control, name, label }) => (
+    <Controller
+        control={control}
+        name={name}
+        defaultValue={null}
+        render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
+            <DesktopDatePicker
+                {...field}
+                inputRef={ref}
+                inputFormat="dd.MM.yyyy"
+                label={label}
+                labelPlacement="start"
+                renderInput={(inputProps) => (
+                    <TextField
+                        style={{ width: '15em' }}
+                        {...inputProps}
+                        onBlur={onBlur}
+                        name={name}
+                        error={!!fieldState.error}
+                        helperText={fieldState.error?.message}
+                    />
+                )}
+            />
+        )}
+    />
+);
+
 const ControlledTextField = ({ name, label, labelPlacement, control, rules, errorComponent, ...rest }) => (
     <div className="block mt-4">
         <Controller
             rules={rules}
             name={name}
             control={control}
-            render={({ field }) => <TextField label={label} {...field} {...rest} />}
+            render={({ field }) => <TextField style={{ width: '15em' }} label={label} {...field} {...rest} />}
         />
         {errorComponent}
     </div>
@@ -57,8 +89,10 @@ export const DiscForm = ({}) => {
     const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
     const images = useSelector((state) => state.images?.images || []);
 
-    const dispatch = useDispatch();
+    const [isDialogVisible, showDialog] = useState(false);
     const [isImageUploadVisible, setIsImageUploadVisible] = useState(false);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchDiscDataAsync());
@@ -74,6 +108,7 @@ export const DiscForm = ({}) => {
     } = useForm({
         defaultValues: {
             'HIO date': '',
+            'HIO description': '',
             additional: '',
             broken: '',
             collection_item: '',
@@ -83,6 +118,7 @@ export const DiscForm = ({}) => {
             //dyeing_costs: '',
             fade: '',
             favourite: '',
+            for_sale: '',
             glide: '',
             glow: '',
             hole_in_one: '',
@@ -109,11 +145,27 @@ export const DiscForm = ({}) => {
     });
 
     const onSubmit = (data) => {
+        const clonedData = { ...data };
+
+        const formatDate = (date) => format(new Date(date), 'dd.MM.yyyy');
+
         if (images?.length) {
-            data.image = images[0];
+            clonedData.image = images[0];
         }
 
-        console.log(data);
+        if (clonedData.sold_at) {
+            clonedData.sold_at = formatDate(clonedData.sold_at);
+        }
+
+        if (clonedData['HIO date']) {
+            clonedData['HIO date'] = formatDate(clonedData['HIO date']);
+        }
+
+        (async () => {
+            console.log(JSON.stringify(clonedData, null, 2));
+
+            dispatch(addNewDiscAsync(clonedData));
+        })();
     };
 
     console.log(`Errors: ${JSON.stringify(errors, null, 2)}`);
@@ -124,7 +176,7 @@ export const DiscForm = ({}) => {
     const watchDonatedFields = watch('donated', false);
 
     return (
-        <div className="flex gap-4">
+        <div className="flex gap-4 mb-40">
             <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <ControlledTextField
@@ -144,6 +196,7 @@ export const DiscForm = ({}) => {
                                 <FormControl style={{ width: '150px' }}>
                                     <InputLabel id="demo-simple-select-label">Disc type</InputLabel>
                                     <Select
+                                        style={{ width: '15em' }}
                                         name={name}
                                         label="Disc type"
                                         value={value}
@@ -151,10 +204,10 @@ export const DiscForm = ({}) => {
                                         onChange={onChange}
                                     >
                                         <MenuItem value={''}>Select...</MenuItem>
-                                        <MenuItem value={'putter'}>Putters</MenuItem>
-                                        <MenuItem value={'midrange'}>Midranges</MenuItem>
-                                        <MenuItem value={'fairwayDriver'}>Fairway drivers</MenuItem>
-                                        <MenuItem value={'distanceDriver'}>Distance drivers</MenuItem>
+                                        <MenuItem value={'Putter'}>Putters</MenuItem>
+                                        <MenuItem value={'Mid-range'}>Midranges</MenuItem>
+                                        <MenuItem value={'Fairway driver'}>Fairway drivers</MenuItem>
+                                        <MenuItem value={'Distance driver'}>Distance drivers</MenuItem>
                                     </Select>
                                 </FormControl>
                             )}
@@ -170,6 +223,7 @@ export const DiscForm = ({}) => {
                                 <FormControl style={{ width: '150px' }}>
                                     <InputLabel id="demo-simple-select-label">Manufacturer</InputLabel>
                                     <Select
+                                        style={{ width: '15em' }}
                                         name={name}
                                         label="Manufacturer"
                                         value={value}
@@ -192,14 +246,23 @@ export const DiscForm = ({}) => {
                     <div className="mt-4">
                         <h2>Image</h2>
 
-                        <p onClick={() => setIsImageUploadVisible(!isImageUploadVisible)}>Upload</p>
+                        <Button onClick={() => setIsImageUploadVisible(!isImageUploadVisible)}>Upload</Button>
+
+                        <div>
+                            <ImageUpload
+                                open={isImageUploadVisible}
+                                handleClose={() => setIsImageUploadVisible(false)}
+                            />
+                        </div>
 
                         {images &&
                             images.map((imageId, index) => {
                                 return (
                                     <p>
-                                        {imageId}:
-                                        <img src={`https://testdb-8e20.restdb.io/media/${imageId}`} />
+                                        <img
+                                            style={{ width: '400px' }}
+                                            src={`https://testdb-8e20.restdb.io/media/${imageId}`}
+                                        />
                                     </p>
                                 );
                             })}
@@ -233,7 +296,7 @@ export const DiscForm = ({}) => {
                         labelPlacement="start"
                         control={control}
                         rules={{ min: -5, max: 1 }}
-                        errorComponent={errors.stability && <Error text="Invalid value. Must be between 5 and 1" />}
+                        errorComponent={errors.stability && <Error text="Invalid value. Must be between -5 and 1" />}
                     />
                     <ControlledTextField
                         type="number"
@@ -242,7 +305,7 @@ export const DiscForm = ({}) => {
                         labelPlacement="start"
                         control={control}
                         rules={{ min: 0, max: 5 }}
-                        errorComponent={errors.stability && <Error text="Invalid value. Must be between 0 and 5" />}
+                        errorComponent={errors.fade && <Error text="Invalid value. Must be between 0 and 5" />}
                     />
 
                     <ControlledTextField
@@ -262,23 +325,24 @@ export const DiscForm = ({}) => {
                         errorComponent={errors.weight && <Error text="Invalid value. Must be at least 0" />}
                     />
 
+                    <ControlledTextField
+                        type="number"
+                        name="price"
+                        label="Price"
+                        labelPlacement="start"
+                        control={control}
+                        rules={{ min: 0 }}
+                        errorComponent={errors.price && <Error text="Invalid value. Must be at least 0" />}
+                    />
+
                     <div className="mt-4">
                         <ControlledField
-                            name="missing"
-                            label="Lost"
+                            name="for_sale"
+                            label="For sale"
                             labelPlacement="end"
                             control={control}
                             RenderComponent={Checkbox}
                         />
-
-                        {watchShowLostFields && (
-                            <ControlledTextField
-                                name="missing_description"
-                                label="Lost description"
-                                labelPlacement="start"
-                                control={control}
-                            />
-                        )}
                     </div>
 
                     <div className="mt-4">
@@ -292,28 +356,8 @@ export const DiscForm = ({}) => {
 
                         {watchShowSoldFields && (
                             <div className="mt-4">
-                                <Controller
-                                    control={control}
-                                    name="sold_at"
-                                    render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
-                                        <DesktopDatePicker
-                                            {...field}
-                                            inputRef={ref}
-                                            inputFormat="dd.MM.yyyy"
-                                            label="Sold at"
-                                            labelPlacement="start"
-                                            renderInput={(inputProps) => (
-                                                <TextField
-                                                    {...inputProps}
-                                                    onBlur={onBlur}
-                                                    name={name}
-                                                    error={!!fieldState.error}
-                                                    helperText={fieldState.error?.message}
-                                                />
-                                            )}
-                                        />
-                                    )}
-                                />
+                                <ControlledDateField control={control} name="sold_at" label="Sold at" />
+
                                 <ControlledTextField
                                     type="number"
                                     name="sold_for"
@@ -337,21 +381,22 @@ export const DiscForm = ({}) => {
 
                     <div className="mt-4">
                         <ControlledField
-                            name="hole_in_one"
-                            label="Hole in one"
+                            name="collection_item"
+                            label="Collection item"
                             labelPlacement="end"
                             control={control}
                             RenderComponent={Checkbox}
                         />
+                    </div>
 
-                        {watchShowHIOFields && (
-                            <ControlledTextField
-                                name="HIO date"
-                                label="HIO date"
-                                labelPlacement="start"
-                                control={control}
-                            />
-                        )}
+                    <div className="mt-4">
+                        <ControlledField
+                            name="own_stamp"
+                            label="Own stamp"
+                            labelPlacement="end"
+                            control={control}
+                            RenderComponent={Checkbox}
+                        />
                     </div>
 
                     <div className="mt-4">
@@ -375,13 +420,106 @@ export const DiscForm = ({}) => {
 
                     <div className="mt-4">
                         <ControlledField
-                            name="broken"
-                            label="Broken"
+                            name="missing"
+                            label="Lost"
                             labelPlacement="end"
                             control={control}
                             RenderComponent={Checkbox}
                         />
+
+                        {watchShowLostFields && (
+                            <ControlledTextField
+                                name="missing_description"
+                                label="Lost description"
+                                labelPlacement="start"
+                                control={control}
+                            />
+                        )}
                     </div>
+
+                    <div className="mt-4">
+                        <ControlledField
+                            name="hole_in_one"
+                            label="Hole in one"
+                            labelPlacement="end"
+                            control={control}
+                            RenderComponent={Checkbox}
+                        />
+
+                        {watchShowHIOFields && (
+                            <div className="mt-4">
+                                <ControlledDateField control={control} name="HIO date" label="HIO date" />
+
+                                <ControlledTextField
+                                    name="HIO description"
+                                    label="HIO description"
+                                    labelPlacement="start"
+                                    control={control}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>Additional settings</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div className="mt-4">
+                                <ControlledField
+                                    name="glow"
+                                    label="Glow"
+                                    labelPlacement="end"
+                                    control={control}
+                                    RenderComponent={Checkbox}
+                                />
+                            </div>
+
+                            <div className="mt-4">
+                                <ControlledField
+                                    name="huk"
+                                    label="Huk Lab stamp"
+                                    labelPlacement="end"
+                                    control={control}
+                                    RenderComponent={Checkbox}
+                                />
+                            </div>
+
+                            <div className="mt-4">
+                                <ControlledField
+                                    name="favourite"
+                                    label="Favourite"
+                                    labelPlacement="end"
+                                    control={control}
+                                    RenderComponent={Checkbox}
+                                />
+                            </div>
+
+                            <div className="mt-4">
+                                <ControlledField
+                                    name="in_the_bag"
+                                    label="In the bag"
+                                    labelPlacement="end"
+                                    control={control}
+                                    RenderComponent={Checkbox}
+                                />
+                            </div>
+
+                            <div className="mt-4">
+                                <ControlledField
+                                    name="broken"
+                                    label="Broken"
+                                    labelPlacement="end"
+                                    control={control}
+                                    RenderComponent={Checkbox}
+                                />
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
 
                     <div className="mt-4">
                         <Button variant="contained" type="submit">
@@ -390,7 +528,6 @@ export const DiscForm = ({}) => {
                     </div>
                 </form>
             </div>
-            <div>{isImageUploadVisible && <ImageUpload />}</div>
         </div>
     );
 };

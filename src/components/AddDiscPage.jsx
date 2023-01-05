@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
-
-import Grid from '@mui/material/Grid';
+import React from 'react';
 
 import { DiscForm } from './DiscForm';
 
-export const AddDiscPage = ({}) => {
+export function AddDiscPage() {
     return (
-        <div>
-            <h1>Add new disc</h1>
+        <div className="mt-10 m-auto px-4 [max-width:800px]">
+            <h1 className="mb-5">Add new disc</h1>
 
             <DiscForm />
         </div>
     );
-};
+}

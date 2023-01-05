@@ -8,14 +8,17 @@ import { GalleryItem } from './GalleryItem';
 
 const StyledGrid = styled(Grid)({ marginBottom: '30px' });
 
-const DiscGallery = ({ discs }) => (
-    <Grid container spacing={2}>
-        {discs.map((disc) => (
-            <StyledGrid item key={`col-${disc._id}`} xs={12} sm={6} lg={4}>
-                <GalleryItem disc={disc} />
-            </StyledGrid>
-        ))}
-    </Grid>
-);
+function DiscGallery({ discs }) {
+    return (
+        <Grid container spacing={2}>
+            {discs.map((disc) => (
+                // eslint-disable-next-line no-underscore-dangle
+                <StyledGrid item key={`col-${disc._id}`} xs={12} sm={6} lg={4}>
+                    <GalleryItem disc={disc} />
+                </StyledGrid>
+            ))}
+        </Grid>
+    );
+}
 
 export default DiscGallery;

@@ -1,37 +1,33 @@
 import React from 'react';
 
-import styled from '@emotion/styled';
-
 import { Attribute } from './Attribute';
 
 import { number } from '../util/numbers';
 
-const renderAttribute = (attribute) => {
-    return number(attribute);
-};
+const renderAttribute = (attribute) => number(attribute);
 
-export const Specs = ({ disc }) => {
+export function Specs({ disc }) {
     if (!disc) {
         return null;
     }
 
     return (
         <div className="float-left w-full mt-0.5">
-            <Attribute title={'Speed'} type={'speed'}>
+            <Attribute title="Speed" type="speed">
                 {renderAttribute(disc.speed)}
             </Attribute>
 
-            <Attribute title={'Glide'} type={'glide'}>
+            <Attribute title="Glide" type="glide">
                 {renderAttribute(disc.glide)}
             </Attribute>
 
-            <Attribute title={'Stability'} type={'stability'}>
+            <Attribute title="Stability" type="stability">
                 {renderAttribute(disc.stability)}
             </Attribute>
 
-            <Attribute title={'Fade'} type={'fade'}>
+            <Attribute title="Fade" type="fade">
                 {renderAttribute(disc.fade)}
             </Attribute>
         </div>
     );
-};
+}

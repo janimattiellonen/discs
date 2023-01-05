@@ -48,8 +48,8 @@ const CenterP = styled.p({
     justifyContent: 'center',
 });
 
-export const DiscGalleryPage = ({ fetchDiscData, history, loadingDiscs }) => {
-    const { user, isAuthenticated, isLoading, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
+    const { getAccessTokenSilently } = useAuth0();
     const dispatch = useDispatch();
 
     const discsState = useSelector((state) => state.discs);
@@ -80,12 +80,6 @@ export const DiscGalleryPage = ({ fetchDiscData, history, loadingDiscs }) => {
     const favourite = queryParams.favourite || null;
     const glow = queryParams.glow || null;
     const huk = queryParams.huk || null;
-
-    const scrollToBottom = () => {
-        pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    console.log(`donated: ${donated}`);
 
     const loadMore = () => {
         navigate(
@@ -140,7 +134,7 @@ export const DiscGalleryPage = ({ fetchDiscData, history, loadingDiscs }) => {
                         huk,
                     },
                     limit,
-                    offset: offset,
+                    offset,
                 }),
             );
         })();
@@ -186,7 +180,7 @@ export const DiscGalleryPage = ({ fetchDiscData, history, loadingDiscs }) => {
 
             <DiscsPanel className="disc-gallery-page discs" ref={pageEndRef}>
                 <CenterP>
-                    {discCount < total ? discCount : total} / {total}
+                    {discCount < total ? discCount : total} /{total}
                 </CenterP>
                 <DiscGallery discs={discs} />
             </DiscsPanel>
@@ -207,4 +201,4 @@ export const DiscGalleryPage = ({ fetchDiscData, history, loadingDiscs }) => {
             )}
         </div>
     );
-};
+}

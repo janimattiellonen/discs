@@ -10,11 +10,10 @@ import ListItem from '@mui/material/ListItem';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+import styled from '@emotion/styled';
 import { currency } from '../util/numbers';
 
 import { Login } from './Login';
-import { Profile } from './Profile';
-import styled from '@emotion/styled';
 
 const StyledListItem = styled(ListItem)({
     a: { color: '#337ab7' },
@@ -39,19 +38,11 @@ const Li = styled.li({
     a: { color: '#337ab7' },
 });
 
-export const Navigation = ({ stats }) => {
+export function Navigation({ stats }) {
     const showSideNav = useMediaQuery('(min-width:600px)');
     const { isAuthenticated } = useAuth0();
 
-    const getStats = (key) => {
-        for (const [k, v] of Object.entries(stats)) {
-            if (k === key) {
-                return v;
-            }
-        }
-
-        return null;
-    };
+    const getStats = (key) => (stats[key] ? stats[key] : null);
 
     const spentMoney = getStats('spentMoney');
 
@@ -203,4 +194,4 @@ export const Navigation = ({ stats }) => {
             )}
         </div>
     );
-};
+}

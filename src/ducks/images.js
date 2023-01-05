@@ -1,18 +1,16 @@
-import { createAsyncThunk, createSlice, unwrapResult } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
 
-import { fetchLatestImages, uploadImage } from '../api/image';
-import discApi from '../api/disc';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+import { uploadImage } from '../api/image';
 
 const initialState = {
     images: [],
 };
 
-export const fetchLatestImagesAsync = createAsyncThunk('images/fetchLatestImages', async (token) => {
-    const response = await fetchLatestImages(token);
-
-    console.log(`fetchLatestImagesAsync: ${JSON.stringify(response, null, 2)}`);
-
-    return response;
+export const fetchLatestImagesAsync = createAsyncThunk('images/fetchLatestImages', async () => {
+    // const response = await fetchLatestImages(token);
+    // return response;
 });
 
 export const uploadImageAsync = createAsyncThunk('images/uploadImage', async (formData, token) => {
@@ -31,8 +29,6 @@ export const imagesSlice = createSlice({
             state.status = 'loading';
         });
         builder.addCase(uploadImageAsync.fulfilled, (state, action) => {
-            console.log(`PAYLOAD: ${JSON.stringify(action.payload, null, 2)}`);
-            console.log('PAYLOAD');
             state.images = action.payload.ids;
         });
     },

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 import React, { Suspense } from 'react';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { createRoot } from 'react-dom/client';
@@ -31,9 +32,9 @@ root.render(
                         <Router>
                             <AppLayout>
                                 <Routes>
-                                    <Route exact path={`/`} element={<DiscGallery />} />
-                                    <Route path={`/gallery`} element={<DiscGallery />} />
-                                    <Route exact path={'/disc/new'} element={<AddDiscPage />} />
+                                    <Route exact path="/" element={<DiscGallery />} />
+                                    <Route path="/gallery" element={<DiscGallery />} />
+                                    <Route exact path="/disc/new" element={<AddDiscPage />} />
                                 </Routes>
                             </AppLayout>
                         </Router>
@@ -48,3 +49,5 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+/* eslint-enable react/jsx-filename-extension */

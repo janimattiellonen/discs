@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchDiscsAsync, fetchDiscDataAsync } from '../../ducks/discs';
+import { fetchDiscDataAsync } from '../../ducks/discs';
 
 import { DiscGalleryPage } from '../DiscGalleryPage';
 

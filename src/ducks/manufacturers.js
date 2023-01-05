@@ -38,7 +38,7 @@ export function fetchManufacturers() {
         dispatch({ type: FETCH_MANUFACTURERS });
         manufacturerApi.getManufacturers().then(
             (manufacturers) => dispatch({ type: FETCH_MANUFACTURERS_DONE, payload: manufacturers }),
-            (error) => dispatch({ type: FETCH_MANUFACTURERS_FAILED }),
+            () => dispatch({ type: FETCH_MANUFACTURERS_FAILED }),
         );
     };
 }

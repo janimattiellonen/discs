@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { add, isBefore } from 'date-fns';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -16,10 +18,13 @@ const initialState = {
     total: 0,
     count: 0,
     skip: 0,
+    saved: false,
 };
 
 export const addNewDiscAsync = createAsyncThunk('discs/addNewDisc', async (data) => {
     const response = await discApi.addDisc(data);
+
+    return response;
 });
 
 export const fetchDiscStatsAsync = createAsyncThunk('discs/fetchDiscStats', async () => {
@@ -57,6 +62,20 @@ export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async 
 
     const response = await discApi.getData();
 
+    const sorted = [...(response?.materials || [])].sort((a, b) => {
+        if (a > b) {
+            return 1;
+        }
+
+        if (a < b) {
+            return -1;
+        }
+
+        return 0;
+    });
+
+    response.materials = sorted;
+
     localStorage.setItem('data', JSON.stringify({ created: new Date().toISOString(), data: response }));
 
     return response;
@@ -82,31 +101,30 @@ export const discsSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        console.log('discsSlice...');
-
         builder
             .addCase(fetchDiscsAsync.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(fetchDiscsAsync.fulfilled, (state, action) => {
-                console.log('DIIBA: ' + JSON.stringify(action.payload, null, 2));
                 state.discs = action.payload.discs;
                 state.skip = action.payload.skip;
                 state.offset = action.payload.offset;
                 state.count = action.payload.count;
                 state.total = action.payload.total;
             })
-            .addCase(fetchDiscStatsAsync.pending, (state) => {})
+            .addCase(fetchDiscStatsAsync.pending, () => {})
             .addCase(fetchDiscStatsAsync.fulfilled, (state, action) => {
                 state.stats = action.payload;
             })
-            .addCase(fetchDiscDataAsync.pending, (state) => {})
+            .addCase(fetchDiscDataAsync.pending, () => {})
             .addCase(fetchDiscDataAsync.fulfilled, (state, action) => {
                 state.data = action.payload;
             })
-            .addCase(addNewDiscAsync.pending, () => {})
-            .addCase(addNewDiscAsync.fulfilled, (state, action) => {
-                // TODO: Implement this, or remove
+            .addCase(addNewDiscAsync.pending, (state) => {
+                state.saved = false;
+            })
+            .addCase(addNewDiscAsync.fulfilled, (state) => {
+                state.saved = true;
             });
     },
 });

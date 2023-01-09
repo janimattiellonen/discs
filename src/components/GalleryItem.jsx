@@ -109,14 +109,16 @@ export function GalleryItem({ disc }) {
         if (!disc.image) {
             element = <DiscImage src={unknown} alt="?" />;
         } else {
-            const src = `https://testdb-8e20.restdb.io/media/${disc.image[selectedImage]}`;
+            const src = `https://testdb-8e20.restdb.io/media/${
+                Array.isArray(disc.image) ? disc.image[selectedImage] : disc.image
+            }`;
             element = <DiscImage src={src} alt="" />;
         }
 
         return (
             <>
                 {renderTooltip(element)}{' '}
-                {!!disc.image && disc.image.length > 1 && (
+                {Array.isArray(disc.image) && disc.image.length > 1 && (
                     <>
                         <LeftBar>
                             <ImageIndex

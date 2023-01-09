@@ -288,7 +288,11 @@ export function DiscForm() {
 
                     <Box className="mt-4" sx={{ p: 4, border: '1px dashed grey' }}>
                         <div className="m-auto w-fit block">
-                            <Button variant="contained" onClick={() => setIsImageUploadVisible(!isImageUploadVisible)}>
+                            <Button
+                                type="button"
+                                variant="contained"
+                                onClick={() => setIsImageUploadVisible(!isImageUploadVisible)}
+                            >
                                 Upload
                             </Button>
                         </div>

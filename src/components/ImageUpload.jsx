@@ -34,7 +34,12 @@ export function ImageUpload({ handleClose, open }) {
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Image upload</DialogTitle>
             <DialogContent>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form
+                    onSubmit={(event) => {
+                        event.stopPropagation();
+                        handleSubmit(onSubmit)(event);
+                    }}
+                >
                     <input {...register('image')} type="file" multiple />
 
                     <Button variant="contained" type="submit">

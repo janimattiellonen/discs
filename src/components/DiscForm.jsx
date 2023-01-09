@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -22,7 +23,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import { addNewDiscAsync, fetchDiscDataAsync } from '../ducks/discs';
+import { addNewDiscAsync, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
 import { ImageUpload } from './ImageUpload';
 import { DiscSavedDialog } from './DiscSavedDialog';
 
@@ -119,8 +120,8 @@ export function DiscForm() {
     const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
     const materials = useSelector((state) => state.discs.data?.materials || []);
     const saved = useSelector((state) => state.discs.saved);
+    const navigate = useNavigate();
 
-    console.log(`saved: ${saved}`);
     const images = useSelector((state) => state.images?.images || []);
 
     const [isImageUploadVisible, setIsImageUploadVisible] = useState(false);
@@ -215,7 +216,14 @@ export function DiscForm() {
 
     return (
         <div className="flex gap-4 mb-40">
-            <DiscSavedDialog open={isDiscSavedDialogVisible} handleClose={() => setIsDiscSavedDialogVisible(false)} />
+            <DiscSavedDialog
+                open={isDiscSavedDialogVisible}
+                handleClose={() => {
+                    setIsDiscSavedDialogVisible(false);
+                    dispatch(markSavedAsAcknowledged());
+                    navigate('/gallery', { replace: true });
+                }}
+            />
             <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                 <ControlledTextField
                     name="name"
@@ -304,12 +312,17 @@ export function DiscForm() {
 
                 <ControlledTextField name="color" label="Colour" labelPlacement="start" control={control} />
 
+                {/* Use a basic text field for now, until issues with material API has been resolved */}
+                {/*
                 <ControlledAutoCompleteField
                     name="material"
                     label="Material"
                     control={control}
                     options={materials.map((item) => item)}
                 />
+                */}
+
+                <ControlledTextField name="material" label="Material" labelPlacement="start" control={control} />
 
                 <div className="grid grid-cols-2 gap-x-4">
                     <ControlledTextField

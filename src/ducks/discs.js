@@ -21,8 +21,14 @@ const initialState = {
     saved: false,
 };
 
+const invalidateCachedDiscData = () => {
+    localStorage.removeItem('data');
+    localStorage.removeItem('stats');
+};
+
 export const addNewDiscAsync = createAsyncThunk('discs/addNewDisc', async (data) => {
     const response = await discApi.addDisc(data);
+    invalidateCachedDiscData();
 
     return response;
 });
@@ -99,7 +105,11 @@ export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (param
 export const discsSlice = createSlice({
     name: 'discs',
     initialState,
-    reducers: {},
+    reducers: {
+        markSavedAsAcknowledged: (state) => {
+            state.saved = false;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchDiscsAsync.pending, (state) => {
@@ -128,5 +138,7 @@ export const discsSlice = createSlice({
             });
     },
 });
+
+export const { markSavedAsAcknowledged } = discsSlice.actions;
 
 export default discsSlice.reducer;

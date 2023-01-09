@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchDiscsAsync, fetchDiscDataAsync } from '../../ducks/discs';
+import { fetchDiscDataAsync } from '../../ducks/discs';
 
 import { DiscGalleryPage } from '../DiscGalleryPage';
 
@@ -22,7 +22,6 @@ export default connect(
     (dispatch) =>
         bindActionCreators(
             {
-                fetchDiscs: fetchDiscsAsync,
                 fetchDiscData: fetchDiscDataAsync,
             },
             dispatch,

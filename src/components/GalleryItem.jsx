@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import _ from 'lodash';
 import Tooltip from '@mui/material/Tooltip';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
@@ -66,10 +65,10 @@ const Price = styled.div({
     fontWeight: 'normal',
 });
 
-export const GalleryItem = ({ disc }) => {
+export function GalleryItem({ disc }) {
     const [selectedImage, setSelectedImage] = useState(0);
 
-    const renderWeight = (disc) => (disc.weight > 0 ? `, ${disc.weight}g` : '');
+    const renderWeight = () => (disc.weight > 0 ? `, ${disc.weight}g` : '');
 
     const renderOverlayTrigger = (tooltip, element) => element;
 
@@ -107,10 +106,10 @@ export const GalleryItem = ({ disc }) => {
     const renderImage = () => {
         let element = null;
 
-        if (_.isEmpty(disc.image)) {
+        if (!disc.image) {
             element = <DiscImage src={unknown} alt="?" />;
         } else {
-            let src = `https://testdb-8e20.restdb.io/media/${disc.image[selectedImage]}`;
+            const src = `https://testdb-8e20.restdb.io/media/${disc.image[selectedImage]}`;
             element = <DiscImage src={src} alt="" />;
         }
 
@@ -147,20 +146,20 @@ export const GalleryItem = ({ disc }) => {
         );
     };
 
-    const renderAttribute = (attribute) => {
-        return number(attribute);
-    };
-
     const renderLostDisc = () => {
         if (disc.missing) {
-            return renderTooltip(<DiscStatus label={'Lost'} />);
+            return renderTooltip(<DiscStatus label="Lost" />);
         }
+
+        return null;
     };
 
     const renderBrokenDisc = () => {
         if (disc.broken) {
-            return renderTooltip(<DiscStatus label={'Broken'} />);
+            return renderTooltip(<DiscStatus label="Broken" />);
         }
+
+        return null;
     };
 
     const renderSoldDisc = () => {
@@ -171,11 +170,13 @@ export const GalleryItem = ({ disc }) => {
                 />,
             );
         }
+
+        return null;
     };
 
     const renderDonatedDisc = () => {
         if (disc.donated) {
-            return renderTooltip(<DiscStatus label={'Donated'} />);
+            return renderTooltip(<DiscStatus label="Donated" />);
         }
 
         return null;
@@ -183,23 +184,29 @@ export const GalleryItem = ({ disc }) => {
 
     const renderHioDisc = () => {
         if (disc['Hole in one']) {
-            let element = (
+            const element = (
                 <div className="HoleInOne">
                     <span>Hole in one</span>
                 </div>
             );
             return renderHioTooltip(element);
         }
+
+        return null;
     };
 
     const renderPrice = () => {
         if (disc.price_status === 'gift') {
             return 'Gift';
-        } else if (disc.price_status === 'price_unknown') {
+        }
+        if (disc.price_status === 'price_unknown') {
             return 'n/a';
-        } else if (disc.price > 0) {
+        }
+        if (disc.price > 0) {
             return `${currency(disc.price)}`;
         }
+
+        return null;
     };
 
     return (
@@ -220,7 +227,8 @@ export const GalleryItem = ({ disc }) => {
 
             <div>
                 <DiscName>
-                    {disc.name}&nbsp;{disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
+                    {disc.name}
+                    {disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
                 </DiscName>
 
                 <div className="flex justify-between">
@@ -240,4 +248,4 @@ export const GalleryItem = ({ disc }) => {
             </div>
         </>
     );
-};
+}

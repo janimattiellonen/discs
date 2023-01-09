@@ -33,7 +33,7 @@ export function fetchTypes() {
         dispatch({ type: FETCH_TYPES });
         getTypes().then(
             (types) => dispatch({ type: FETCH_TYPES_DONE, payload: types }),
-            (error) => dispatch({ type: FETCH_TYPES_FAILED }),
+            () => dispatch({ type: FETCH_TYPES_FAILED }),
         );
     };
 }

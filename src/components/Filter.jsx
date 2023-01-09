@@ -12,11 +12,7 @@ import Radio from '@mui/material/Radio';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Link from '@mui/material/Link';
-
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import ToggleButton from '@mui/material/ToggleButton';
-
+import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -35,47 +31,51 @@ const SearchField = styled(TextField)({
     },
 });
 
-const ControlledField = ({ name, label, labelPlacement, control, handleOnChange, RenderComponent, ...rest }) => (
-    <Controller
-        name={name}
-        control={control}
-        render={({ field }) => (
-            <FormControlLabel
-                control={
-                    <RenderComponent
-                        {...field}
-                        {...rest}
-                        checked={field.value}
-                        onChange={(data) => {
-                            field.onChange(data);
-                            handleOnChange();
-                        }}
-                    />
-                }
-                label={label}
-                labelPlacement={labelPlacement ? labelPlacement : ''}
-            />
-        )}
-    />
-);
+function ControlledField({ name, label, labelPlacement, control, handleOnChange, RenderComponent, ...rest }) {
+    return (
+        <Controller
+            name={name}
+            control={control}
+            render={({ field }) => (
+                <FormControlLabel
+                    control={
+                        <RenderComponent
+                            {...field}
+                            {...rest}
+                            checked={field.value}
+                            onChange={(data) => {
+                                field.onChange(data);
+                                handleOnChange();
+                            }}
+                        />
+                    }
+                    label={label}
+                    labelPlacement={labelPlacement || ''}
+                />
+            )}
+        />
+    );
+}
 
-const ControlledTextField = ({ name, label, labelPlacement, control, handleOnChange, ...rest }) => (
-    <Controller
-        name={name}
-        control={control}
-        render={({ field }) => (
-            <SearchField
-                label={label}
-                {...field}
-                onChange={(data) => {
-                    field.onChange(data);
-                    handleOnChange();
-                }}
-                {...rest}
-            />
-        )}
-    />
-);
+function ControlledTextField({ name, label, labelPlacement, control, handleOnChange, ...rest }) {
+    return (
+        <Controller
+            name={name}
+            control={control}
+            render={({ field }) => (
+                <SearchField
+                    label={label}
+                    {...field}
+                    onChange={(data) => {
+                        field.onChange(data);
+                        handleOnChange();
+                    }}
+                    {...rest}
+                />
+            )}
+        />
+    );
+}
 
 const mapTermType = (params) => {
     if (params?.available === 'true') {
@@ -100,18 +100,12 @@ const mapTermType = (params) => {
     return null;
 };
 
-export const Filter = ({ handleChange, params }) => {
+export function Filter({ handleChange, params }) {
     const isExtraMarginNeeded = useMediaQuery('(max-width:444px)');
 
     const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
 
-    const {
-        control,
-        handleSubmit,
-        getValues,
-        setValue,
-        formState: { errors },
-    } = useForm({
+    const { control, handleSubmit, getValues, setValue } = useForm({
         defaultValues: {
             type: params?.type || '',
             manufacturer: params?.manufacturer || '',
@@ -135,23 +129,23 @@ export const Filter = ({ handleChange, params }) => {
             setValue('type', params.type);
         }
 
-        setValue('collection', params?.collection ? true : false);
-        setValue('holeInOne', params?.holeInOne ? true : false);
-        setValue('ownStamp', params?.ownStamp ? true : false);
-        setValue('favourite', params?.favourite ? true : false);
-        setValue('glow', params?.glow ? true : false);
-        setValue('huk', params?.huk ? true : false);
+        setValue('collection', !!params?.collection);
+        setValue('holeInOne', !!params?.holeInOne);
+        setValue('ownStamp', !!params?.ownStamp);
+        setValue('favourite', !!params?.favourite);
+        setValue('glow', !!params?.glow);
+        setValue('huk', !!params?.huk);
 
         const termType = mapTermType(params);
 
-        setValue('termType', termType ? termType : '');
+        setValue('termType', termType || '');
     }, [params]);
 
     const debounceSearch = useCallback(
         debounce((nextValue) => {
-            const filtered = Object.entries(nextValue).filter(([key, value]) => {
-                return value !== false && value !== '' && value !== null;
-            });
+            const filtered = Object.entries(nextValue).filter(
+                ([, value]) => value !== false && value !== '' && value !== null,
+            );
 
             const asObjects = Object.fromEntries(filtered);
 
@@ -166,14 +160,14 @@ export const Filter = ({ handleChange, params }) => {
         [],
     );
 
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => console.info(data);
 
     const handleOnChange = () => {
         debounceSearch(getValues());
     };
 
     return (
-        <div style={{ marginLeft: '30px' }}>
+        <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <ControlledTextField
                     variant="outlined"
@@ -198,7 +192,7 @@ export const Filter = ({ handleChange, params }) => {
                 >
                     <div style={{ flexGrow: 4 }}>
                         <Controller
-                            name={'type'}
+                            name="type"
                             control={control}
                             render={({ field: { onChange, onBlur, name, value } }) => (
                                 <FormControl
@@ -215,23 +209,22 @@ export const Filter = ({ handleChange, params }) => {
                                         value={value}
                                         onBlur={onBlur}
                                         onChange={(e) => {
-                                            console.log('on type change');
                                             onChange(e);
                                             handleOnChange();
                                         }}
                                     >
-                                        <MenuItem value={''}>Select...</MenuItem>
-                                        <MenuItem value={'putter'}>Putters</MenuItem>
-                                        <MenuItem value={'midrange'}>Midranges</MenuItem>
-                                        <MenuItem value={'fairwayDriver'}>Fairway drivers</MenuItem>
-                                        <MenuItem value={'distanceDriver'}>Distance drivers</MenuItem>
+                                        <MenuItem value="">Select...</MenuItem>
+                                        <MenuItem value="putter">Putters</MenuItem>
+                                        <MenuItem value="midrange">Midranges</MenuItem>
+                                        <MenuItem value="fairwayDriver">Fairway drivers</MenuItem>
+                                        <MenuItem value="distanceDriver">Distance drivers</MenuItem>
                                     </Select>
                                 </FormControl>
                             )}
                         />
 
                         <Controller
-                            name={'manufacturer'}
+                            name="manufacturer"
                             control={control}
                             render={({ field: { onChange, onBlur, name, value } }) => (
                                 <FormControl style={{ width: '150px' }}>
@@ -246,9 +239,9 @@ export const Filter = ({ handleChange, params }) => {
                                             handleOnChange();
                                         }}
                                     >
-                                        <MenuItem value={''}>Select...</MenuItem>
-                                        {manufacturers.map((manufacturer, i) => (
-                                            <MenuItem key={`manufacturer-${i}`} value={manufacturer}>
+                                        <MenuItem value="">Select...</MenuItem>
+                                        {manufacturers.map((manufacturer) => (
+                                            <MenuItem key={`manufacturer-${manufacturer}`} value={manufacturer}>
                                                 {manufacturer}
                                             </MenuItem>
                                         ))}
@@ -257,12 +250,19 @@ export const Filter = ({ handleChange, params }) => {
                             )}
                         />
                     </div>
-                    <div style={{ display: 'flex', columnGap: '60px', rowGap: '10px', flexFlow: 'row wrap' }}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            columnGap: '60px',
+                            rowGap: '10px',
+                            flexFlow: 'row wrap',
+                        }}
+                    >
                         <div>
                             <Controller
                                 name="termType"
                                 control={control}
-                                render={({ field: { onChange, onBlur, name, value } }) => (
+                                render={({ field: { onChange, onBlur, value } }) => (
                                     <RadioGroup
                                         style={{ display: 'inline' }}
                                         row
@@ -282,15 +282,16 @@ export const Filter = ({ handleChange, params }) => {
                                 )}
                             />
 
-                            <Link
-                                href="#"
-                                onClick={() => {
+                            <Button
+                                variant="text"
+                                onClick={(e) => {
+                                    e.preventDefault();
                                     setValue('termType', null);
                                     handleOnChange();
                                 }}
                             >
                                 Reset
-                            </Link>
+                            </Button>
                         </div>
                         <div>
                             <ControlledField
@@ -352,4 +353,4 @@ export const Filter = ({ handleChange, params }) => {
             </form>
         </div>
     );
-};
+}

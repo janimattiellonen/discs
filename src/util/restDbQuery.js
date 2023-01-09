@@ -1,12 +1,3 @@
-const createQuery = (values = null) => {};
-const createHint = (values = null) => {
-    if (!values) {
-        return '';
-    }
-
-    return 'h={' + values.join(',') + '}';
-};
-
 const mapType = (type) => {
     const types = {
         putter: 'Putter',
@@ -21,8 +12,10 @@ const mapType = (type) => {
 export const createQueryString = ({ query, limit, offset, order }) => {
     const output = [];
 
-    if (limit) {
-        output.push(`max=${limit}`);
+    let limitValue = limit;
+
+    if (limitValue) {
+        output.push(`max=${limitValue}`);
     }
 
     if (offset) {
@@ -37,13 +30,13 @@ export const createQueryString = ({ query, limit, offset, order }) => {
         const col = order.column;
         const mode = order.mode.toUpperCase();
 
-        hints.push('"$orderby": {"' + col + '": ' + (mode === 'ASC' ? 1 : -1) + '}');
+        hints.push(`"$orderby": {"${col}": ${mode === 'ASC' ? 1 : -1}}`);
     }
 
     const queryParams = [];
     if (query) {
         if (query.name && query.name.length >= 2) {
-            queryParams.push('"name": {"$regex": "^' + query.name + '"}');
+            queryParams.push(`"name": {"$regex": "^${query.name}"}`);
         }
 
         if (query.type && query.type.length) {
@@ -106,30 +99,15 @@ export const createQueryString = ({ query, limit, offset, order }) => {
             availableQuery.push('{"sold": {"$not": true}}');
             availableQuery.push('{"broken": {"$not": true}}');
 
-            queryParams.push('"$and": [' + availableQuery.join(',') + ']');
+            queryParams.push(`"$and": [${availableQuery.join(',')}]`);
         }
 
-        if (!!query.latest) {
+        if (query.latest) {
             hints = [];
             hints.push('"$orderby": {"_created": -1}');
-            limit = 10;
+            limitValue = 10;
         }
     }
 
-    //return `max=${limit}&skip=${offset}&q=` + '{' + queryParams.join(',') + '}' + '&h={"$orderby": {"_created": -1}}'
-    return (
-        `max=${limit}&skip=${offset}&q=` +
-        '{' +
-        queryParams.join(',') +
-        '}' +
-        '&h={' +
-        hints.join(',') +
-        '}&totals=true'
-    );
-
-    // &max=${limit}&skip=${offset}&h={"$orderby": {"_created": 1, "name": 1}}
+    return `max=${limitValue}&skip=${offset}&q={${queryParams.join(',')}}&h={${hints.join(',')}}&totals=true`;
 };
-
-//getDiscs({ limit: 5, offset: 0, query: { name: 'Fop' }, order: { column: '_created', mode: 'ASC|DESC' } })
-
-// https://testdb-8e20.restdb.io/rest/discs?metafields=true&apikey=5e98ae5a436377171a0c24a0&max=4&skip=4&h={"$orderby": "{_created": 1}}

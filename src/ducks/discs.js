@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { add, isBefore } from 'date-fns';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -16,7 +18,20 @@ const initialState = {
     total: 0,
     count: 0,
     skip: 0,
+    saved: false,
 };
+
+const invalidateCachedDiscData = () => {
+    localStorage.removeItem('data');
+    localStorage.removeItem('stats');
+};
+
+export const addNewDiscAsync = createAsyncThunk('discs/addNewDisc', async (data) => {
+    const response = await discApi.addDisc(data);
+    invalidateCachedDiscData();
+
+    return response;
+});
 
 export const fetchDiscStatsAsync = createAsyncThunk('discs/fetchDiscStats', async () => {
     const raw = localStorage.getItem('stats');
@@ -53,6 +68,20 @@ export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async 
 
     const response = await discApi.getData();
 
+    const sorted = [...(response?.materials || [])].sort((a, b) => {
+        if (a > b) {
+            return 1;
+        }
+
+        if (a < b) {
+            return -1;
+        }
+
+        return 0;
+    });
+
+    response.materials = sorted;
+
     localStorage.setItem('data', JSON.stringify({ created: new Date().toISOString(), data: response }));
 
     return response;
@@ -76,7 +105,11 @@ export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (param
 export const discsSlice = createSlice({
     name: 'discs',
     initialState,
-    reducers: {},
+    reducers: {
+        markSavedAsAcknowledged: (state) => {
+            state.saved = false;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchDiscsAsync.pending, (state) => {
@@ -89,15 +122,23 @@ export const discsSlice = createSlice({
                 state.count = action.payload.count;
                 state.total = action.payload.total;
             })
-            .addCase(fetchDiscStatsAsync.pending, (state) => {})
+            .addCase(fetchDiscStatsAsync.pending, () => {})
             .addCase(fetchDiscStatsAsync.fulfilled, (state, action) => {
                 state.stats = action.payload;
             })
-            .addCase(fetchDiscDataAsync.pending, (state) => {})
+            .addCase(fetchDiscDataAsync.pending, () => {})
             .addCase(fetchDiscDataAsync.fulfilled, (state, action) => {
                 state.data = action.payload;
+            })
+            .addCase(addNewDiscAsync.pending, (state) => {
+                state.saved = false;
+            })
+            .addCase(addNewDiscAsync.fulfilled, (state) => {
+                state.saved = true;
             });
     },
 });
+
+export const { markSavedAsAcknowledged } = discsSlice.actions;
 
 export default discsSlice.reducer;

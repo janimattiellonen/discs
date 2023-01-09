@@ -1,19 +1,8 @@
-import moment from 'moment';
+/* This file not in use? */
 
+/*
 export default (discs, filter) => {
-    /*
-  discs = discs.sort((a, b) => {
-    if (a.name.toLowerCase() > b.name.toLowerCase()) {
-      return 1
-    }
 
-    if (a.name.toLowerCase() < b.name.toLowerCase()) {
-      return -1
-    }
-
-    return 0
-  })
-  */
 
     if (!filter) {
         return discs;
@@ -98,3 +87,5 @@ export default (discs, filter) => {
 
     return discs;
 };
+
+*/

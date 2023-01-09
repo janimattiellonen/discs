@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import styled from '@emotion/styled';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,6 +14,8 @@ import Button from '@mui/material/Button';
 import DiscGallery from './DiscGallery';
 
 import { Filter } from './Filter';
+
+import { fetchDiscsAsync } from '../ducks/discs';
 
 import { theme } from '../util/theme';
 
@@ -36,7 +40,7 @@ const MoreButton = styled(Button)({
 });
 
 const DiscsPanel = styled('div')({
-    padding: '0 20px 30px 30px',
+    padding: '0 20px 30px 0',
 });
 
 const CenterP = styled.p({
@@ -44,7 +48,10 @@ const CenterP = styled.p({
     justifyContent: 'center',
 });
 
-export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDiscs }) => {
+export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
+    const { getAccessTokenSilently } = useAuth0();
+    const dispatch = useDispatch();
+
     const discsState = useSelector((state) => state.discs);
 
     const { count, discs, skip, total } = discsState;
@@ -73,12 +80,6 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
     const favourite = queryParams.favourite || null;
     const glow = queryParams.glow || null;
     const huk = queryParams.huk || null;
-
-    const scrollToBottom = () => {
-        pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    console.log(`donated: ${donated}`);
 
     const loadMore = () => {
         navigate(
@@ -111,28 +112,32 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
     }, []);
 
     useEffect(() => {
-        fetchDiscs({
-            query: {
-                type,
-                available,
-                missing,
-                sold,
-                forSale,
-                broken,
-                donated,
-                collection,
-                ownStamp,
-                holeInOne,
-                latest,
-                name,
-                manufacturer,
-                favourite,
-                glow,
-                huk,
-            },
-            limit,
-            offset: offset,
-        });
+        (async () => {
+            dispatch(
+                fetchDiscsAsync({
+                    query: {
+                        type,
+                        available,
+                        missing,
+                        sold,
+                        forSale,
+                        broken,
+                        donated,
+                        collection,
+                        ownStamp,
+                        holeInOne,
+                        latest,
+                        name,
+                        manufacturer,
+                        favourite,
+                        glow,
+                        huk,
+                    },
+                    limit,
+                    offset,
+                }),
+            );
+        })();
     }, [
         limit,
         offset,
@@ -152,6 +157,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
         favourite,
         glow,
         huk,
+        getAccessTokenSilently,
     ]);
 
     const handleChange = (value) => {
@@ -174,7 +180,7 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
 
             <DiscsPanel className="disc-gallery-page discs" ref={pageEndRef}>
                 <CenterP>
-                    {discCount < total ? discCount : total} / {total}
+                    {discCount < total ? discCount : total} /{total}
                 </CenterP>
                 <DiscGallery discs={discs} />
             </DiscsPanel>
@@ -195,4 +201,4 @@ export const DiscGalleryPage = ({ fetchDiscs, fetchDiscData, history, loadingDis
             )}
         </div>
     );
-};
+}

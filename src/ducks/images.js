@@ -27,7 +27,6 @@ export const imagesSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        console.log('imageSlice...');
         builder.addCase(uploadImageAsync.pending, (state) => {
             state.status = 'loading';
         });

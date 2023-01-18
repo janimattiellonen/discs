@@ -6,8 +6,8 @@
     "extends": [
         "plugin:react/recommended",
         "airbnb",
-        "prettier"
-
+        "prettier",
+        "plugin:react-hooks/recommended"
     ],
     "overrides": [
     ],

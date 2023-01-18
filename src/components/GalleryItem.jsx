@@ -1,7 +1,10 @@
+/* eslint-disable no-underscore-dangle */
+
 import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 
+import EditIcon from '@mui/icons-material/Edit';
 import Tooltip from '@mui/material/Tooltip';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
@@ -234,8 +237,14 @@ export function GalleryItem({ disc }) {
 
             <div>
                 <DiscName>
-                    {/* eslint-disable-next-line no-underscore-dangle */}
-                    {disc.name} {isAuthenticated && <Link to={`/disc/${disc._id}/edit`}>Edit</Link>}
+                    <span>
+                        <span>{disc.name}</span>
+                        {isAuthenticated && (
+                            <Link to={`/disc/${disc._id}/edit`}>
+                                <EditIcon style={{ color: '#337ab7', marginLeft: '8px' }} />
+                            </Link>
+                        )}
+                    </span>
                     {disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
                 </DiscName>
 

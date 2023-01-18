@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Link } from 'react-router-dom';
+
 import Tooltip from '@mui/material/Tooltip';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
@@ -66,6 +69,8 @@ const Price = styled.div({
 });
 
 export function GalleryItem({ disc }) {
+    const { isAuthenticated } = useAuth0();
+
     const [selectedImage, setSelectedImage] = useState(0);
 
     const renderWeight = () => (disc.weight > 0 ? `, ${disc.weight}g` : '');
@@ -117,7 +122,7 @@ export function GalleryItem({ disc }) {
 
         return (
             <>
-                {renderTooltip(element)}{' '}
+                {renderTooltip(element)}
                 {Array.isArray(disc.image) && disc.image.length > 1 && (
                     <>
                         <LeftBar>
@@ -229,7 +234,8 @@ export function GalleryItem({ disc }) {
 
             <div>
                 <DiscName>
-                    {disc.name}
+                    {/* eslint-disable-next-line no-underscore-dangle */}
+                    {disc.name} {isAuthenticated && <Link to={`/disc/${disc._id}/edit`}>Edit</Link>}
                     {disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
                 </DiscName>
 

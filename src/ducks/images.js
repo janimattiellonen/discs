@@ -13,7 +13,10 @@ export const fetchLatestImagesAsync = createAsyncThunk('images/fetchLatestImages
     // return response;
 });
 
-export const uploadImageAsync = createAsyncThunk('images/uploadImage', async (formData, token) => {
+export const uploadImageAsync = createAsyncThunk('images/uploadImage', async (params) => {
+    const { formData, token } = params;
+
+    // eslint-disable-next-line no-unreachable
     const response = await uploadImage(formData, token);
 
     return response;
@@ -29,7 +32,7 @@ export const imagesSlice = createSlice({
             state.status = 'loading';
         });
         builder.addCase(uploadImageAsync.fulfilled, (state, action) => {
-            state.images = action.payload.ids;
+            state.images.push(...action.payload.ids);
         });
     },
 });

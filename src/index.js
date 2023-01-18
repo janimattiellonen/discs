@@ -14,6 +14,7 @@ import './index.css';
 import DiscGallery from './components/containers/DiscGalleryContainer';
 import AppLayout from './components/containers/layouts/AppLayoutContainer';
 import { AddDiscPage } from './components/AddDiscPage';
+import { EditDiscPage } from './components/EditDiscPage';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -23,10 +24,12 @@ root.render(
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Provider store={store}>
                 <Auth0Provider
+                    scope="write:discs"
                     cacheLocation="localstorage"
                     domain="mydiscs.eu.auth0.com"
                     clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
                     redirectUri={window.location.origin}
+                    audience="my-discs"
                 >
                     <Suspense fallback={<div>Loading...</div>}>
                         <Router>
@@ -35,6 +38,7 @@ root.render(
                                     <Route exact path="/" element={<DiscGallery />} />
                                     <Route path="/gallery" element={<DiscGallery />} />
                                     <Route exact path="/disc/new" element={<AddDiscPage />} />
+                                    <Route exact path="/disc/:id/edit" element={<EditDiscPage />} />
                                 </Routes>
                             </AppLayout>
                         </Router>

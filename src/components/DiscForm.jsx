@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -23,7 +22,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import { addNewDiscAsync, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
+import { defaultDiscValues, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
 import { ImageUpload } from './ImageUpload';
 import { DiscSavedDialog } from './DiscSavedDialog';
 
@@ -116,11 +115,10 @@ function Error({ text }) {
     );
 }
 
-export function DiscForm() {
+export function DiscForm({ disc, saveHandler, onSuccess }) {
     const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
-    const materials = useSelector((state) => state.discs.data?.materials || []);
+    const materials = useSelector((state) => state.discs.data?.materials?.map((material) => material.name) || []);
     const saved = useSelector((state) => state.discs.saved);
-    const navigate = useNavigate();
 
     const images = useSelector((state) => state.images?.images || []);
 
@@ -135,7 +133,11 @@ export function DiscForm() {
 
     useEffect(() => {
         dispatch(fetchDiscDataAsync());
-    }, [fetchDiscDataAsync]);
+    }, [dispatch]);
+
+    console.info(`DISC: ${JSON.stringify(disc, null, 2)}`);
+
+    const defaultValues = disc?.name ? disc : defaultDiscValues;
 
     const {
         control,
@@ -143,53 +145,30 @@ export function DiscForm() {
         watch,
         formState: { errors },
     } = useForm({
-        defaultValues: {
-            'HIO date': '',
-            'HIO description': '',
-            additional: '',
-            broken: '',
-            collection_item: '',
-            color: '',
-            donated: '',
-            'Donation description': '',
-            // dyeing_costs: '',
-            fade: '',
-            favourite: '',
-            for_sale: '',
-            glide: '',
-            glow: '',
-            hole_in_one: '',
-            huk: '',
-            image: '',
-            in_the_bag: '',
-            manufacturer: '',
-            material: '',
-            missing_description: '',
-            missing: '',
-            name: '',
-            own_stamp: '',
-            price: '',
-            // profit: '',
-            sold_at: '',
-            sold_for: '',
-            sold_to: '',
-            sold: '',
-            speed: '',
-            stability: '',
-            type: '',
-            weight: '',
-        },
+        defaultValues,
     });
 
     const onSubmit = (data) => {
         const clonedData = { ...data };
 
+        const keys = Object.keys(clonedData);
+
+        keys.forEach((key) => {
+            clonedData[key] = clonedData[key] === '' ? undefined : clonedData[key];
+        });
+
         const formatDate = (date) => format(new Date(date), 'dd.MM.yyyy');
 
         if (images?.length) {
-            const index = 0;
+            if (Array.isArray(clonedData.image)) {
+                clonedData.image.push([...images]);
+            } else {
+                clonedData.image = images;
+            }
+        }
 
-            clonedData.image = images[index];
+        if (clonedData.glide === '') {
+            clonedData.glide = undefined;
         }
 
         if (clonedData.sold_at) {
@@ -201,18 +180,18 @@ export function DiscForm() {
         }
 
         (async () => {
-            console.log(JSON.stringify(clonedData, null, 2));
-
-            dispatch(addNewDiscAsync(clonedData));
+            saveHandler(clonedData);
         })();
     };
-
-    console.log(`Errors: ${JSON.stringify(errors, null, 2)}`);
 
     const watchShowLostFields = watch('missing', false);
     const watchShowSoldFields = watch('sold', false);
     const watchShowHIOFields = watch('hole_in_one', false);
     const watchDonatedFields = watch('donated', false);
+
+    if (!materials?.length || !manufacturers?.length) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="flex gap-4 mb-40">
@@ -221,7 +200,10 @@ export function DiscForm() {
                 handleClose={() => {
                     setIsDiscSavedDialogVisible(false);
                     dispatch(markSavedAsAcknowledged());
-                    navigate('/gallery', { replace: true });
+
+                    if (onSuccess) {
+                        onSuccess();
+                    }
                 }}
             />
             <form onSubmit={handleSubmit(onSubmit)} className="w-full">
@@ -286,6 +268,14 @@ export function DiscForm() {
                 <div className="mt-4 mb-4">
                     <h2 className="mb-4">Image</h2>
 
+                    {disc?.image?.length > 0 && (
+                        <div className="grid grid-cols-2 gap-2">
+                            {disc?.image.map((imageId) => (
+                                <img key={imageId} alt="" src={`https://testdb-8e20.restdb.io/media/${imageId}`} />
+                            ))}
+                        </div>
+                    )}
+
                     <Box className="mt-4" sx={{ p: 4, border: '1px dashed grey' }}>
                         <div className="m-auto w-fit block">
                             <Button
@@ -302,31 +292,45 @@ export function DiscForm() {
                         <ImageUpload open={isImageUploadVisible} handleClose={() => setIsImageUploadVisible(false)} />
                     </div>
 
-                    {images &&
-                        images.map((imageId) => (
-                            <p>
-                                <img
-                                    alt=""
-                                    style={{ width: '400px' }}
-                                    src={`https://testdb-8e20.restdb.io/media/${imageId}`}
-                                />
-                            </p>
-                        ))}
+                    {images?.length > 0 && (
+                        <div className="mt-4 mb-4 ">
+                            <h3>Uploaded images</h3>
+                            <div className="grid grid-cols-2 gap-2">
+                                {images.map((imageId) => (
+                                    <img key={imageId} alt="" src={`https://testdb-8e20.restdb.io/media/${imageId}`} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <ControlledTextField name="color" label="Colour" labelPlacement="start" control={control} />
 
-                {/* Use a basic text field for now, until issues with material API has been resolved */}
-                {/*
-                <ControlledAutoCompleteField
-                    name="material"
-                    label="Material"
-                    control={control}
-                    options={materials.map((item) => item)}
-                />
-                */}
-
-                <ControlledTextField name="material" label="Material" labelPlacement="start" control={control} />
+                <div className="mt-4">
+                    <Controller
+                        name="material"
+                        control={control}
+                        render={({ field: { onChange, onBlur, name, value } }) => (
+                            <FormControl fullWidth>
+                                <InputLabel>Material</InputLabel>
+                                <Select
+                                    name={name}
+                                    label="Manuterial"
+                                    value={value}
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                >
+                                    <MenuItem value="">Select...</MenuItem>
+                                    {materials.map((material) => (
+                                        <MenuItem key={`material-${material}`} value={material}>
+                                            {material}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )}
+                    />
+                </div>
 
                 <div className="grid grid-cols-2 gap-x-4">
                     <ControlledTextField

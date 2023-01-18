@@ -177,7 +177,6 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
                     <Filter params={queryParams} handleChange={(url) => handleChange(url)} />
                 </Grid>
             </Grid>
-
             <DiscsPanel className="disc-gallery-page discs" ref={pageEndRef}>
                 <CenterP>
                     {discCount < total ? discCount : total} /{total}

@@ -13,11 +13,12 @@ export const fetchLatestImages = async (token) => {
 };
 */
 
-export const uploadImage = (formData) => {
+export const uploadImage = (formData, token) => {
     const response = axios
-        .post('https://testdb-8e20.restdb.io/media?apikey=5e98ae5a436377171a0c24a0', formData, {
+        .post('https://testdb-8e20.restdb.io/media', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
             },
         })
         .then((res) => res.data);

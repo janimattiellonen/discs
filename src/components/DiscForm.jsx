@@ -138,7 +138,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         defaultValues,
     });
 
-    const { fields, append, remove, prepend } = useFieldArray({
+    const { fields, append, remove, prepend, move, update } = useFieldArray({
         control,
         name: 'image',
     });
@@ -169,7 +169,8 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         }
 
         (async () => {
-            saveHandler(clonedData);
+            console.info(`About to save, clonedData: ${JSON.stringify(clonedData, null, 2)}`);
+            // saveHandler(clonedData);
         })();
     };
 
@@ -256,7 +257,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
 
                 <div className="mt-4 mb-4">
                     <h2 className="mb-4">Image</h2>
-
+                    {/*
                     <Reorder.Group
                         axis="y"
                         onReorder={(values) => {
@@ -293,6 +294,43 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
                                         console.info(`BB, filtered: ${JSON.stringify(filtered, null, 2)}`);
 
                                         setItems(filtered);
+                                    }}
+                                />
+                            </Reorder.Item>
+                        ))}
+                    </Reorder.Group>
+                    */}
+
+                    <h2>Using field array</h2>
+
+                    <Reorder.Group
+                        axis="y"
+                        onReorder={(values) => {
+                            const foundItem = values.find((item) => {
+                                const valueIndex = values.findIndex((valueItem) => valueItem.id === item.id);
+                                const fieldIndex = fields.findIndex((fieldItem) => fieldItem.id === item.id);
+
+                                return valueIndex !== fieldIndex;
+                            });
+
+                            if (foundItem) {
+                                const valIndex = values.findIndex((item) => item.id === foundItem.id);
+                                const fieldIndex = fields.findIndex((item) => item.id === foundItem.id);
+
+                                move(fieldIndex, valIndex);
+                            }
+                        }}
+                        values={fields}
+                    >
+                        {fields.map((field, index) => (
+                            <Reorder.Item key={field.id} value={field} id={field.id} onDragExit={(e) => {}}>
+                                <input key={field.id} {...register(`image.${index}.id`)} type="hidden" />
+
+                                <DraggableImage
+                                    url={`url(https://testdb-8e20.restdb.io/media/${getValues(`image.${index}.id`)}`}
+                                    onRemove={() => {
+                                        remove(index);
+                                        // setItems(filtered);
                                     }}
                                 />
                             </Reorder.Item>

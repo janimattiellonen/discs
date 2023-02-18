@@ -20,8 +20,8 @@ const RemoveCircle = styled(RemoveCircleOutlineIcon)({
 
 const Image = styled.div({
     position: 'relative',
-    width: '400px',
-    height: '400px',
+    width: '500px',
+    height: '500px',
     marginBottom: '10px',
     backgroundRepeat: 'no',
     backgroundSize: 'contain',

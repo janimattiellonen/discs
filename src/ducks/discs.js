@@ -155,6 +155,12 @@ export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (param
     return payload;
 });
 
+export const removeDiscImage = createAsyncThunk('discs/removeDiscImage', async ({ id, imageId, token }) => {
+    const response = await discApi.removeImageFromDisc(id, imageId, token);
+
+    return response;
+});
+
 const buildFromResponse = (responseData) => {
     const obj = {};
 
@@ -194,6 +200,14 @@ export const discsSlice = createSlice({
 
                 if (!!buildObj.image && !Array.isArray(buildObj.image)) {
                     buildObj.image = [buildObj.image];
+                }
+
+                if (buildObj.image) {
+                    buildObj.image = buildObj.image.map((image) => {
+                        const foo = { id: image };
+
+                        return foo;
+                    });
                 }
 
                 state.disc = buildObj;

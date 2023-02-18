@@ -25,3 +25,10 @@ export const uploadImage = (formData, token) => {
 
     return response;
 };
+
+export const removeImage = (id, token) =>
+    axios.delete(`https://testdb-8e20.restdb.io/rest/discs/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });

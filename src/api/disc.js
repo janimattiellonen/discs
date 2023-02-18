@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { createQueryString } from '../util/restDbQuery';
 
+import { removeImage } from './image';
+
 export default {
     getDisc(id) {
         return axios.get(
@@ -46,5 +48,27 @@ export default {
                 Authorization: `Bearer ${token}`,
             },
         });
+    },
+
+    async removeImageFromDisc(id, imageId, token) {
+        const disc = await this.getDisc(id);
+
+        if (disc.id && disc.image) {
+            await removeImage(imageId, token);
+            const images = Array.isArray(disc.image) ? disc.image : [disc.image];
+
+            disc.image = images.filter((image) => image !== imageId);
+            return axios.patch(
+                `https://testdb-8e20.restdb.io/rest/discs/${id}`,
+                { image: images },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+        }
+
+        return null;
     },
 };

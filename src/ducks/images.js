@@ -25,7 +25,12 @@ export const uploadImageAsync = createAsyncThunk('images/uploadImage', async (pa
 export const imagesSlice = createSlice({
     name: 'images',
     initialState,
-    reducers: {},
+    reducers: {
+        reorderImages: (state, action) => {
+            console.info(`reorderImages: payload: ${JSON.stringify(action.payload, null, 2)}`);
+            state.images = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(uploadImageAsync.pending, (state) => {
             state.status = 'loading';
@@ -35,5 +40,7 @@ export const imagesSlice = createSlice({
         });
     },
 });
+
+export const { reorderImages } = imagesSlice.actions;
 
 export default imagesSlice.reducer;

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
-
-import { Controller, useForm } from 'react-hook-form';
+import { Reorder } from 'framer-motion';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
-import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
@@ -23,6 +22,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 import { defaultDiscValues, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
+
+import { DraggableImage } from './DraggableImage';
 import { ImageUpload } from './ImageUpload';
 import { DiscSavedDialog } from './DiscSavedDialog';
 
@@ -42,27 +43,6 @@ function ControlledField({ name, label, labelPlacement, control, RenderComponent
     );
 }
 
-function ControlledAutoCompleteField({ options, control, name, label }) {
-    return (
-        <div className="block mt-4">
-            <Controller
-                control={control}
-                name={name}
-                defaultValue=""
-                render={({ field: { onChange, ...field } }) => (
-                    <Autocomplete
-                        {...field}
-                        onChange={(_, data) => onChange(data)}
-                        getOptionLabel={(option) => option}
-                        freeSolo
-                        options={options}
-                        renderInput={(params) => <TextField name={name} {...params} label={label} />}
-                    />
-                )}
-            />
-        </div>
-    );
-}
 function ControlledDateField({ control, name, label }) {
     return (
         <Controller
@@ -127,6 +107,14 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
 
     const dispatch = useDispatch();
 
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        if (disc?.image?.length > 0) {
+            setItems(disc.image);
+        }
+    }, [disc]);
+
     useEffect(() => {
         setIsDiscSavedDialogVisible(saved);
     }, [saved]);
@@ -135,8 +123,6 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         dispatch(fetchDiscDataAsync());
     }, [dispatch]);
 
-    console.info(`DISC: ${JSON.stringify(disc, null, 2)}`);
-
     const defaultValues = disc?.name ? disc : defaultDiscValues;
 
     const {
@@ -144,8 +130,17 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         handleSubmit,
         watch,
         formState: { errors },
+        getValues,
+        setValue,
+        register,
+        unregister,
     } = useForm({
         defaultValues,
+    });
+
+    const { fields, append, remove, prepend } = useFieldArray({
+        control,
+        name: 'image',
     });
 
     const onSubmit = (data) => {
@@ -159,13 +154,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
 
         const formatDate = (date) => format(new Date(date), 'dd.MM.yyyy');
 
-        if (images?.length) {
-            if (Array.isArray(clonedData.image)) {
-                clonedData.image.push([...images]);
-            } else {
-                clonedData.image = images;
-            }
-        }
+        clonedData.image = clonedData.image.map((image) => image.id);
 
         if (clonedData.glide === '') {
             clonedData.glide = undefined;
@@ -268,13 +257,47 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
                 <div className="mt-4 mb-4">
                     <h2 className="mb-4">Image</h2>
 
-                    {disc?.image?.length > 0 && (
-                        <div className="grid grid-cols-2 gap-2">
-                            {disc?.image.map((imageId) => (
-                                <img key={imageId} alt="" src={`https://testdb-8e20.restdb.io/media/${imageId}`} />
-                            ))}
-                        </div>
-                    )}
+                    <Reorder.Group
+                        axis="y"
+                        onReorder={(values) => {
+                            values.forEach((item, index) => {
+                                setValue(`image.${index}.id`, item.id);
+                            });
+
+                            setItems(values);
+                        }}
+                        values={items}
+                    >
+                        {items.map((field, index) => (
+                            <Reorder.Item
+                                key={field.id}
+                                value={field}
+                                id={field.id}
+                                style={{ border: 'solid red 1px' }}
+                            >
+                                <input key={field.id} {...register(`image.${index}.id`)} type="hidden" />
+                                {`image.${index}.id`}: {getValues(`image.${index}.id`)}
+                                <DraggableImage
+                                    url={`url(https://testdb-8e20.restdb.io/media/${getValues(`image.${index}.id`)}`}
+                                    onRemove={() => {
+                                        items.forEach((item) => console.info(`AB: ${item.id}`));
+
+                                        console.info(`To be removed: ${getValues(`image.${index}.id`)}`);
+
+                                        unregister(getValues(`image.${index}.id`));
+
+                                        const filtered = items.filter(
+                                            (item) => item.id !== getValues(`image.${index}.id`),
+                                        );
+
+                                        console.info(`BB, filtered: ${JSON.stringify(filtered, null, 2)}`);
+
+                                        setItems(filtered);
+                                    }}
+                                />
+                            </Reorder.Item>
+                        ))}
+                    </Reorder.Group>
 
                     <Box className="mt-4" sx={{ p: 4, border: '1px dashed grey' }}>
                         <div className="m-auto w-fit block">
@@ -291,17 +314,6 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
                     <div>
                         <ImageUpload open={isImageUploadVisible} handleClose={() => setIsImageUploadVisible(false)} />
                     </div>
-
-                    {images?.length > 0 && (
-                        <div className="mt-4 mb-4 ">
-                            <h3>Uploaded images</h3>
-                            <div className="grid grid-cols-2 gap-2">
-                                {images.map((imageId) => (
-                                    <img key={imageId} alt="" src={`https://testdb-8e20.restdb.io/media/${imageId}`} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
 
                 <ControlledTextField name="color" label="Colour" labelPlacement="start" control={control} />

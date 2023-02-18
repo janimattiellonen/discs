@@ -30,7 +30,7 @@ export function ImageUpload({ handleClose, open }) {
                 formData.append('image', file, file.name);
             });
 
-            console.info(`FUCK: ${JSON.stringify(formData, null, 2)}`);
+            console.info(`FEKK: ${JSON.stringify(formData, null, 2)}`);
 
             dispatch(uploadImageAsync({ formData, token }));
         })();

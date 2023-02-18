@@ -6,6 +6,7 @@ import { uploadImage } from '../api/image';
 
 const initialState = {
     images: [],
+    uploadedImages: [],
 };
 
 export const fetchLatestImagesAsync = createAsyncThunk('images/fetchLatestImages', async () => {
@@ -28,7 +29,7 @@ export const imagesSlice = createSlice({
     reducers: {
         reorderImages: (state, action) => {
             console.info(`reorderImages: payload: ${JSON.stringify(action.payload, null, 2)}`);
-            state.images = action.payload;
+            // state.images = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -36,7 +37,8 @@ export const imagesSlice = createSlice({
             state.status = 'loading';
         });
         builder.addCase(uploadImageAsync.fulfilled, (state, action) => {
-            state.images.push(...action.payload.ids);
+            state.uploadedImages = [];
+            state.uploadedImages.push(...action.payload.ids);
         });
     },
 });

@@ -100,20 +100,14 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
     const materials = useSelector((state) => state.discs.data?.materials?.map((material) => material.name) || []);
     const saved = useSelector((state) => state.discs.saved);
 
-    const images = useSelector((state) => state.images?.images || []);
+    // Because this is no longer used, any uploaded image is not automatically shown on the form
+    // I need to add the new images to the fieldArray somehow
+    const uploadedImages = useSelector((state) => state.images?.uploadedImages || []);
 
     const [isImageUploadVisible, setIsImageUploadVisible] = useState(false);
     const [isDiscSavedDialogVisible, setIsDiscSavedDialogVisible] = useState(false);
 
     const dispatch = useDispatch();
-
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        if (disc?.image?.length > 0) {
-            setItems(disc.image);
-        }
-    }, [disc]);
 
     useEffect(() => {
         setIsDiscSavedDialogVisible(saved);
@@ -131,9 +125,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         watch,
         formState: { errors },
         getValues,
-        setValue,
         register,
-        unregister,
     } = useForm({
         defaultValues,
     });
@@ -142,6 +134,12 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         control,
         name: 'image',
     });
+
+    useEffect(() => {
+        uploadedImages.forEach((img) => {
+            append({ id: img });
+        });
+    }, [uploadedImages]);
 
     const onSubmit = (data) => {
         const clonedData = { ...data };
@@ -169,8 +167,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         }
 
         (async () => {
-            console.info(`About to save, clonedData: ${JSON.stringify(clonedData, null, 2)}`);
-            // saveHandler(clonedData);
+            saveHandler(clonedData);
         })();
     };
 
@@ -257,52 +254,6 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
 
                 <div className="mt-4 mb-4">
                     <h2 className="mb-4">Image</h2>
-                    {/*
-                    <Reorder.Group
-                        axis="y"
-                        onReorder={(values) => {
-                            values.forEach((item, index) => {
-                                setValue(`image.${index}.id`, item.id);
-                            });
-
-                            setItems(values);
-                        }}
-                        values={items}
-                    >
-                        {items.map((field, index) => (
-                            <Reorder.Item
-                                key={field.id}
-                                value={field}
-                                id={field.id}
-                                style={{ border: 'solid red 1px' }}
-                            >
-                                <input key={field.id} {...register(`image.${index}.id`)} type="hidden" />
-                                {`image.${index}.id`}: {getValues(`image.${index}.id`)}
-                                <DraggableImage
-                                    url={`url(https://testdb-8e20.restdb.io/media/${getValues(`image.${index}.id`)}`}
-                                    onRemove={() => {
-                                        items.forEach((item) => console.info(`AB: ${item.id}`));
-
-                                        console.info(`To be removed: ${getValues(`image.${index}.id`)}`);
-
-                                        unregister(getValues(`image.${index}.id`));
-
-                                        const filtered = items.filter(
-                                            (item) => item.id !== getValues(`image.${index}.id`),
-                                        );
-
-                                        console.info(`BB, filtered: ${JSON.stringify(filtered, null, 2)}`);
-
-                                        setItems(filtered);
-                                    }}
-                                />
-                            </Reorder.Item>
-                        ))}
-                    </Reorder.Group>
-                    */}
-
-                    <h2>Using field array</h2>
-
                     <Reorder.Group
                         axis="y"
                         onReorder={(values) => {
@@ -330,7 +281,6 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
                                     url={`url(https://testdb-8e20.restdb.io/media/${getValues(`image.${index}.id`)}`}
                                     onRemove={() => {
                                         remove(index);
-                                        // setItems(filtered);
                                     }}
                                 />
                             </Reorder.Item>

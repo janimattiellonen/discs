@@ -5,6 +5,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 
 import EditIcon from '@mui/icons-material/Edit';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import CircleIcon from '@mui/icons-material/Circle';
 import Tooltip from '@mui/material/Tooltip';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
@@ -23,8 +27,11 @@ const CollectionItem = styled.div({
 });
 
 const ImageIndex = styled.div({
-    display: 'inline-block',
-    background: 'red',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // background: 'red',
+    background: 'hsl(0, 100%, 55%)',
     height: '50px',
     fontSize: '2em',
     width: '50px',
@@ -35,9 +42,11 @@ const ImageIndex = styled.div({
     transform: 'translateY(-50%)',
     '&:hover': {
         cursor: 'pointer',
+        background: 'hsl(0, 100%, 25%)',
     },
     transition: 'opacity .5s',
     opacity: 0.7,
+    borderRadius: '15%',
 });
 
 const VerticalBar = styled.div({
@@ -70,6 +79,39 @@ const Price = styled.div({
     fontSize: '2em',
     fontWeight: 'normal',
 });
+
+const Indicator = styled.div({
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 'fit-content',
+    padding: '5px',
+    height: '25px',
+    borderRadius: '12px',
+    background: 'hsl(0, 0%, 74%, 0.3)',
+    left: '50%',
+    right: '50%',
+    bottom: '15px',
+    color: 'white',
+    transform: 'translate(-50%)',
+});
+
+function SelectedImageIndicator({ imageCount, selectedImage }) {
+    const range = [...Array(imageCount).keys()];
+
+    return (
+        <Indicator>
+            {range.map((item) => {
+                if (item === selectedImage) {
+                    return <CircleIcon />;
+                }
+
+                return <RadioButtonUncheckedIcon key={`indicator-${item}`} />;
+            })}
+        </Indicator>
+    );
+}
 
 export function GalleryItem({ disc }) {
     const { isAuthenticated } = useAuth0();
@@ -128,28 +170,34 @@ export function GalleryItem({ disc }) {
                 {renderTooltip(element)}
                 {Array.isArray(disc.image) && disc.image.length > 1 && (
                     <>
-                        <LeftBar>
+                        <LeftBar style={{ left: '10px' }}>
                             <ImageIndex
                                 onClick={() => {
                                     if (selectedImage > 0) {
                                         setSelectedImage(selectedImage - 1);
+                                    } else {
+                                        setSelectedImage(disc.image.length - 1);
                                     }
                                 }}
                             >
-                                &lt;
+                                <ArrowBackIosIcon />
                             </ImageIndex>
                         </LeftBar>
-                        <RightBar>
+
+                        <RightBar style={{ right: '10px' }}>
                             <ImageIndex
                                 onClick={() => {
                                     if (selectedImage < disc.image.length - 1) {
                                         setSelectedImage(selectedImage + 1);
+                                    } else {
+                                        setSelectedImage(0);
                                     }
                                 }}
                             >
-                                &gt;
+                                <ArrowForwardIosIcon />
                             </ImageIndex>
                         </RightBar>
+                        <SelectedImageIndicator imageCount={disc.image.length} selectedImage={selectedImage} />
                     </>
                 )}
             </>

@@ -69,7 +69,6 @@ export const addNewDiscAsync = createAsyncThunk('discs/addNewDisc', async ({ dat
     const response = await discApi.addDisc(data, token);
     invalidateCachedDiscData();
 
-    console.info(`Added a new disc, data: ${JSON.stringify(data, null, 2)}`);
     return response;
 });
 
@@ -234,9 +233,6 @@ export const discsSlice = createSlice({
                 state.saved = false;
             })
             .addCase(addNewDiscAsync.fulfilled, (state, action) => {
-                console.info(`payload: ${JSON.stringify(action.payload.data, null, 2)}`);
-                // eslint-disable-next-line no-underscore-dangle
-                console.info(`payload: ${JSON.stringify(action.payload.data._id, null, 2)}`);
                 // eslint-disable-next-line no-underscore-dangle
                 state.savedDiscId = action.payload.data._id;
                 state.saved = true;

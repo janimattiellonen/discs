@@ -28,7 +28,6 @@ export const imagesSlice = createSlice({
     initialState,
     reducers: {
         reorderImages: (state, action) => {
-            console.info(`reorderImages: payload: ${JSON.stringify(action.payload, null, 2)}`);
             // state.images = action.payload;
         },
     },

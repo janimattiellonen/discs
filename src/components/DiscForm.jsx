@@ -130,7 +130,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         defaultValues,
     });
 
-    const { fields, append, remove, prepend, move, update } = useFieldArray({
+    const { fields, append, remove, move } = useFieldArray({
         control,
         name: 'image',
     });
@@ -139,7 +139,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
         uploadedImages.forEach((img) => {
             append({ id: img });
         });
-    }, [uploadedImages]);
+    }, [append, uploadedImages]);
 
     const onSubmit = (data) => {
         const clonedData = { ...data };
@@ -274,7 +274,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
                         values={fields}
                     >
                         {fields.map((field, index) => (
-                            <Reorder.Item key={field.id} value={field} id={field.id} onDragExit={(e) => {}}>
+                            <Reorder.Item key={field.id} value={field} id={field.id}>
                                 <input key={field.id} {...register(`image.${index}.id`)} type="hidden" />
 
                                 <DraggableImage

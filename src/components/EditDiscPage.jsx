@@ -14,7 +14,6 @@ export function EditDiscPage() {
     const { getIdTokenClaims } = useAuth0();
 
     useEffect(() => {
-        console.log('fooo');
         dispatch(resetDisc());
         dispatch(fetchDiscAsync(id));
     }, [dispatch, id]);

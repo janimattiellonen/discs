@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
-
-import { Controller, useForm } from 'react-hook-form';
+import { Reorder } from 'framer-motion';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
@@ -23,7 +21,9 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import { addNewDiscAsync, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
+import { defaultDiscValues, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
+
+import { DraggableImage } from './DraggableImage';
 import { ImageUpload } from './ImageUpload';
 import { DiscSavedDialog } from './DiscSavedDialog';
 
@@ -43,27 +43,6 @@ function ControlledField({ name, label, labelPlacement, control, RenderComponent
     );
 }
 
-function ControlledAutoCompleteField({ options, control, name, label }) {
-    return (
-        <div className="block mt-4">
-            <Controller
-                control={control}
-                name={name}
-                defaultValue=""
-                render={({ field: { onChange, ...field } }) => (
-                    <Autocomplete
-                        {...field}
-                        onChange={(_, data) => onChange(data)}
-                        getOptionLabel={(option) => option}
-                        freeSolo
-                        options={options}
-                        renderInput={(params) => <TextField name={name} {...params} label={label} />}
-                    />
-                )}
-            />
-        </div>
-    );
-}
 function ControlledDateField({ control, name, label }) {
     return (
         <Controller
@@ -116,13 +95,14 @@ function Error({ text }) {
     );
 }
 
-export function DiscForm() {
+export function DiscForm({ disc, saveHandler, onSuccess }) {
     const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
-    const materials = useSelector((state) => state.discs.data?.materials || []);
+    const materials = useSelector((state) => state.discs.data?.materials?.map((material) => material.name) || []);
     const saved = useSelector((state) => state.discs.saved);
-    const navigate = useNavigate();
 
-    const images = useSelector((state) => state.images?.images || []);
+    // Because this is no longer used, any uploaded image is not automatically shown on the form
+    // I need to add the new images to the fieldArray somehow
+    const uploadedImages = useSelector((state) => state.images?.uploadedImages || []);
 
     const [isImageUploadVisible, setIsImageUploadVisible] = useState(false);
     const [isDiscSavedDialogVisible, setIsDiscSavedDialogVisible] = useState(false);
@@ -135,61 +115,47 @@ export function DiscForm() {
 
     useEffect(() => {
         dispatch(fetchDiscDataAsync());
-    }, [fetchDiscDataAsync]);
+    }, [dispatch]);
+
+    const defaultValues = disc?.name ? disc : defaultDiscValues;
 
     const {
         control,
         handleSubmit,
         watch,
         formState: { errors },
+        getValues,
+        register,
     } = useForm({
-        defaultValues: {
-            'HIO date': '',
-            'HIO description': '',
-            additional: '',
-            broken: '',
-            collection_item: '',
-            color: '',
-            donated: '',
-            'Donation description': '',
-            // dyeing_costs: '',
-            fade: '',
-            favourite: '',
-            for_sale: '',
-            glide: '',
-            glow: '',
-            hole_in_one: '',
-            huk: '',
-            image: '',
-            in_the_bag: '',
-            manufacturer: '',
-            material: '',
-            missing_description: '',
-            missing: '',
-            name: '',
-            own_stamp: '',
-            price: '',
-            // profit: '',
-            sold_at: '',
-            sold_for: '',
-            sold_to: '',
-            sold: '',
-            speed: '',
-            stability: '',
-            type: '',
-            weight: '',
-        },
+        defaultValues,
     });
+
+    const { fields, append, remove, move } = useFieldArray({
+        control,
+        name: 'image',
+    });
+
+    useEffect(() => {
+        uploadedImages.forEach((img) => {
+            append({ id: img });
+        });
+    }, [append, uploadedImages]);
 
     const onSubmit = (data) => {
         const clonedData = { ...data };
 
+        const keys = Object.keys(clonedData);
+
+        keys.forEach((key) => {
+            clonedData[key] = clonedData[key] === '' ? undefined : clonedData[key];
+        });
+
         const formatDate = (date) => format(new Date(date), 'dd.MM.yyyy');
 
-        if (images?.length) {
-            const index = 0;
+        clonedData.image = clonedData.image.map((image) => image.id);
 
-            clonedData.image = images[index];
+        if (clonedData.glide === '') {
+            clonedData.glide = undefined;
         }
 
         if (clonedData.sold_at) {
@@ -201,18 +167,18 @@ export function DiscForm() {
         }
 
         (async () => {
-            console.log(JSON.stringify(clonedData, null, 2));
-
-            dispatch(addNewDiscAsync(clonedData));
+            saveHandler(clonedData);
         })();
     };
-
-    console.log(`Errors: ${JSON.stringify(errors, null, 2)}`);
 
     const watchShowLostFields = watch('missing', false);
     const watchShowSoldFields = watch('sold', false);
     const watchShowHIOFields = watch('hole_in_one', false);
     const watchDonatedFields = watch('donated', false);
+
+    if (!materials?.length || !manufacturers?.length) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="flex gap-4 mb-40">
@@ -221,7 +187,10 @@ export function DiscForm() {
                 handleClose={() => {
                     setIsDiscSavedDialogVisible(false);
                     dispatch(markSavedAsAcknowledged());
-                    navigate('/gallery', { replace: true });
+
+                    if (onSuccess) {
+                        onSuccess();
+                    }
                 }}
             />
             <form onSubmit={handleSubmit(onSubmit)} className="w-full">
@@ -285,6 +254,38 @@ export function DiscForm() {
 
                 <div className="mt-4 mb-4">
                     <h2 className="mb-4">Image</h2>
+                    <Reorder.Group
+                        axis="y"
+                        onReorder={(values) => {
+                            const foundItem = values.find((item) => {
+                                const valueIndex = values.findIndex((valueItem) => valueItem.id === item.id);
+                                const fieldIndex = fields.findIndex((fieldItem) => fieldItem.id === item.id);
+
+                                return valueIndex !== fieldIndex;
+                            });
+
+                            if (foundItem) {
+                                const valIndex = values.findIndex((item) => item.id === foundItem.id);
+                                const fieldIndex = fields.findIndex((item) => item.id === foundItem.id);
+
+                                move(fieldIndex, valIndex);
+                            }
+                        }}
+                        values={fields}
+                    >
+                        {fields.map((field, index) => (
+                            <Reorder.Item key={field.id} value={field} id={field.id}>
+                                <input key={field.id} {...register(`image.${index}.id`)} type="hidden" />
+
+                                <DraggableImage
+                                    url={`url(https://testdb-8e20.restdb.io/media/${getValues(`image.${index}.id`)}`}
+                                    onRemove={() => {
+                                        remove(index);
+                                    }}
+                                />
+                            </Reorder.Item>
+                        ))}
+                    </Reorder.Group>
 
                     <Box className="mt-4" sx={{ p: 4, border: '1px dashed grey' }}>
                         <div className="m-auto w-fit block">
@@ -301,32 +302,35 @@ export function DiscForm() {
                     <div>
                         <ImageUpload open={isImageUploadVisible} handleClose={() => setIsImageUploadVisible(false)} />
                     </div>
-
-                    {images &&
-                        images.map((imageId) => (
-                            <p>
-                                <img
-                                    alt=""
-                                    style={{ width: '400px' }}
-                                    src={`https://testdb-8e20.restdb.io/media/${imageId}`}
-                                />
-                            </p>
-                        ))}
                 </div>
 
                 <ControlledTextField name="color" label="Colour" labelPlacement="start" control={control} />
 
-                {/* Use a basic text field for now, until issues with material API has been resolved */}
-                {/*
-                <ControlledAutoCompleteField
-                    name="material"
-                    label="Material"
-                    control={control}
-                    options={materials.map((item) => item)}
-                />
-                */}
-
-                <ControlledTextField name="material" label="Material" labelPlacement="start" control={control} />
+                <div className="mt-4">
+                    <Controller
+                        name="material"
+                        control={control}
+                        render={({ field: { onChange, onBlur, name, value } }) => (
+                            <FormControl fullWidth>
+                                <InputLabel>Material</InputLabel>
+                                <Select
+                                    name={name}
+                                    label="Manuterial"
+                                    value={value}
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                >
+                                    <MenuItem value="">Select...</MenuItem>
+                                    {materials.map((material) => (
+                                        <MenuItem key={`material-${material}`} value={material}>
+                                            {material}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )}
+                    />
+                </div>
 
                 <div className="grid grid-cols-2 gap-x-4">
                     <ControlledTextField

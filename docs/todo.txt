@@ -3,7 +3,12 @@
 
 - mahdollisuus muokata kiekon tietoja
   - tällä hetkellä mahdollista vain redtdb.io:n kautta
+    - työn alla, melkein valmis
 
 - esitäytetyt lomaketiedot
   - jos syöttää Name-kenttään "Destroyer", kysyy sivu jos haluat täyttää tietyt tiedot kuten valmistajan, nopeuden jne
   - lisäksi Materials-valinta voisi näyttää vain Innovan muovit
+
+
+- Erillinen sivu, jossa luetellaan myynnissä olevat kiekot
+  - mahdollinen erillinen sivu yksittäiselle kiekolle, jossa näytetään kaikki kuvat ja muut tiedot, sekä toivottu hinta + mahdollisesti lomake, jolla voi lähettää tarjouksen jne

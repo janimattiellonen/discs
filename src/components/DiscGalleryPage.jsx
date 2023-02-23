@@ -48,6 +48,8 @@ const CenterP = styled.p({
     justifyContent: 'center',
 });
 
+const showMoreButton = (discCount, total) => discCount < total;
+
 export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
     const { getAccessTokenSilently } = useAuth0();
     const dispatch = useDispatch();
@@ -109,7 +111,7 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
 
     useEffect(() => {
         fetchDiscData();
-    }, []);
+    }, [fetchDiscData]);
 
     useEffect(() => {
         (async () => {
@@ -158,6 +160,7 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
         glow,
         huk,
         getAccessTokenSilently,
+        dispatch,
     ]);
 
     const handleChange = (value) => {
@@ -177,14 +180,13 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
                     <Filter params={queryParams} handleChange={(url) => handleChange(url)} />
                 </Grid>
             </Grid>
-
             <DiscsPanel className="disc-gallery-page discs" ref={pageEndRef}>
                 <CenterP>
-                    {discCount < total ? discCount : total} /{total}
+                    {discCount < total ? discCount : total} / {total}
                 </CenterP>
                 <DiscGallery discs={discs} />
             </DiscsPanel>
-            {discs.length > 0 && (
+            {!!showMoreButton(discCount, total) && (
                 <MorePanel>
                     <div>
                         <MoreButton

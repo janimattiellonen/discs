@@ -5,7 +5,46 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import discApi from '../api/disc';
 
+export const defaultDiscValues = {
+    'HIO date': '',
+    'HIO description': '',
+    additional: '',
+    broken: '',
+    collection_item: '',
+    color: '',
+    donated: '',
+    'Donation description': '',
+    // dyeing_costs: '',
+    fade: '',
+    favourite: '',
+    for_sale: '',
+    glide: '',
+    glow: '',
+    hole_in_one: '',
+    huk: '',
+    image: '',
+    in_the_bag: '',
+    manufacturer: '',
+    material: '',
+    missing_description: '',
+    missing: '',
+    name: '',
+    own_stamp: '',
+    price: '',
+    // profit: '',
+    sold_at: '',
+    sold_for: '',
+    sold_to: '',
+    sold: '',
+    speed: '',
+    stability: '',
+    type: '',
+    weight: '',
+};
+
 const initialState = {
+    savedDiscId: null,
+    disc: defaultDiscValues,
     discs: [],
     stats: {},
     data: {},
@@ -26,8 +65,15 @@ const invalidateCachedDiscData = () => {
     localStorage.removeItem('stats');
 };
 
-export const addNewDiscAsync = createAsyncThunk('discs/addNewDisc', async (data) => {
-    const response = await discApi.addDisc(data);
+export const addNewDiscAsync = createAsyncThunk('discs/addNewDisc', async ({ data, token }) => {
+    const response = await discApi.addDisc(data, token);
+    invalidateCachedDiscData();
+
+    return response;
+});
+
+export const updateDiscAsync = createAsyncThunk('discs/updateDisc', async ({ id, data, token }) => {
+    const response = await discApi.updateDisc(id, data, token);
     invalidateCachedDiscData();
 
     return response;
@@ -68,23 +114,29 @@ export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async 
 
     const response = await discApi.getData();
 
-    const sorted = [...(response?.materials || [])].sort((a, b) => {
-        if (a > b) {
+    const sortedMaterials = [...(response?.materials || [])].sort((a, b) => {
+        if (a.name > b.name) {
             return 1;
         }
 
-        if (a < b) {
+        if (a.name < b.name) {
             return -1;
         }
 
         return 0;
     });
 
-    response.materials = sorted;
+    response.materials = sortedMaterials;
 
     localStorage.setItem('data', JSON.stringify({ created: new Date().toISOString(), data: response }));
 
     return response;
+});
+
+export const fetchDiscAsync = createAsyncThunk('discs/fetchDisc', async (id) => {
+    const response = await discApi.getDisc(id);
+
+    return response.data;
 });
 
 export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (params) => {
@@ -102,6 +154,28 @@ export const fetchDiscsAsync = createAsyncThunk('discs/fetchDiscs', async (param
     return payload;
 });
 
+export const removeDiscImage = createAsyncThunk('discs/removeDiscImage', async ({ id, imageId, token }) => {
+    const response = await discApi.removeImageFromDisc(id, imageId, token);
+
+    return response;
+});
+
+const buildFromResponse = (responseData) => {
+    const obj = {};
+
+    const acceptedKeys = Object.keys(defaultDiscValues);
+
+    acceptedKeys.forEach((key) => {
+        if (responseData[key]) {
+            obj[key] = responseData[key];
+        } else {
+            obj[key] = '';
+        }
+    });
+
+    return obj;
+};
+
 export const discsSlice = createSlice({
     name: 'discs',
     initialState,
@@ -109,9 +183,34 @@ export const discsSlice = createSlice({
         markSavedAsAcknowledged: (state) => {
             state.saved = false;
         },
+        resetDisc: (state) => {
+            state.disc = {};
+        },
     },
     extraReducers: (builder) => {
         builder
+            .addCase(fetchDiscAsync.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchDiscAsync.fulfilled, (state, action) => {
+                const clonedData = { ...action.payload };
+
+                const buildObj = buildFromResponse(clonedData);
+
+                if (!!buildObj.image && !Array.isArray(buildObj.image)) {
+                    buildObj.image = [buildObj.image];
+                }
+
+                if (buildObj.image) {
+                    buildObj.image = buildObj.image.map((image) => {
+                        const foo = { id: image };
+
+                        return foo;
+                    });
+                }
+
+                state.disc = buildObj;
+            })
             .addCase(fetchDiscsAsync.pending, (state) => {
                 state.status = 'loading';
             })
@@ -133,12 +232,20 @@ export const discsSlice = createSlice({
             .addCase(addNewDiscAsync.pending, (state) => {
                 state.saved = false;
             })
-            .addCase(addNewDiscAsync.fulfilled, (state) => {
+            .addCase(addNewDiscAsync.fulfilled, (state, action) => {
+                // eslint-disable-next-line no-underscore-dangle
+                state.savedDiscId = action.payload.data._id;
+                state.saved = true;
+            })
+            .addCase(updateDiscAsync.pending, (state) => {
+                state.saved = false;
+            })
+            .addCase(updateDiscAsync.fulfilled, (state) => {
                 state.saved = true;
             });
     },
 });
 
-export const { markSavedAsAcknowledged } = discsSlice.actions;
+export const { markSavedAsAcknowledged, resetDisc } = discsSlice.actions;
 
 export default discsSlice.reducer;

@@ -21,12 +21,16 @@ export function ImageUpload({ handleClose, open }) {
         (async () => {
             const tokenData = await getIdTokenClaims();
 
+            const files = data.image ? [...data.image] : [];
             // eslint-disable-next-line no-underscore-dangle
             const token = tokenData?.__raw;
             const formData = new FormData();
-            formData.append('image', data.image[0], data.image[0].name);
 
-            dispatch(uploadImageAsync(formData, token));
+            files.forEach((file) => {
+                formData.append('image', file, file.name);
+            });
+
+            dispatch(uploadImageAsync({ formData, token }));
         })();
     };
 

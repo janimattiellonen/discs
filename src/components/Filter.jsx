@@ -139,7 +139,7 @@ export function Filter({ handleChange, params }) {
         const termType = mapTermType(params);
 
         setValue('termType', termType || '');
-    }, [params]);
+    }, [params, setValue]);
 
     const debounceSearch = useCallback(
         debounce((nextValue) => {
@@ -160,15 +160,13 @@ export function Filter({ handleChange, params }) {
         [],
     );
 
-    const onSubmit = (data) => console.info(data);
-
     const handleOnChange = () => {
         debounceSearch(getValues());
     };
 
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form>
                 <ControlledTextField
                     variant="outlined"
                     name="name"

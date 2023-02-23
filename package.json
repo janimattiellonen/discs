@@ -17,6 +17,7 @@
         "axios": "^0.27.2",
         "date-fns": "2.29.3",
         "eslint-config-prettier": "8.6.0",
+        "framer-motion": "8.5.0",
         "immutable": "^4.1.0",
         "lodash.debounce": "4.0.8",
         "query-string": "^7.1.1",

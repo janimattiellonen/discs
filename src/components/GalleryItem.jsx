@@ -40,9 +40,11 @@ const ImageIndex = styled.div({
     position: 'relative',
     top: '50%',
     transform: 'translateY(-50%)',
+
     '&:hover': {
         cursor: 'pointer',
         background: 'hsl(0, 100%, 25%)',
+        transition: 'background 250ms',
     },
     transition: 'opacity .5s',
     opacity: 0.7,
@@ -65,7 +67,30 @@ const RightBar = styled(VerticalBar)({
     right: 0,
 });
 
-const DiscImage = styled.img({ width: '100%' });
+const DiscImage = styled.img`
+    border-radius: 5px;
+    width: 100%;
+    z-index: 2;
+`;
+
+const DiscImageCopy = styled(DiscImage)`
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    @keyframes zoppa {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+
+            z-index: 3;
+        }
+    }
+`;
 
 const DiscName = styled.h2({
     display: 'flex',
@@ -92,9 +117,10 @@ const Indicator = styled.div({
     background: 'hsl(0, 0%, 74%, 0.3)',
     left: '50%',
     right: '50%',
-    bottom: '15px',
+    bottom: '57px', // 15px
     color: 'white',
     transform: 'translate(-50%)',
+    zIndex: 5,
 });
 
 function SelectedImageIndicator({ imageCount, selectedImage }) {
@@ -115,6 +141,7 @@ function SelectedImageIndicator({ imageCount, selectedImage }) {
 
 export function GalleryItem({ disc }) {
     const { isAuthenticated } = useAuth0();
+    const [style, setStyle] = useState(null);
 
     const [selectedImage, setSelectedImage] = useState(0);
 
@@ -156,13 +183,28 @@ export function GalleryItem({ disc }) {
     const renderImage = () => {
         let element = null;
 
-        if (!disc.image) {
+        if (!disc?.image?.length) {
             element = <DiscImage src={unknown} alt="?" />;
         } else {
             const src = `https://testdb-8e20.restdb.io/media/${
                 Array.isArray(disc.image) ? disc.image[selectedImage] : disc.image
             }`;
-            element = <DiscImage src={src} alt="" />;
+
+            const nextIndex = selectedImage < disc.image.length ? selectedImage + 1 : 0;
+
+            const copySrc = `https://testdb-8e20.restdb.io/media/${
+                Array.isArray(disc.image) ? disc.image[nextIndex] : disc.image
+            }`;
+
+            element = (
+                <>
+                    {Array.isArray(disc.image) && disc.image.length > 1 && (
+                        <DiscImageCopy style={style} src={copySrc} alt="" />
+                    )}
+
+                    <DiscImage src={src} alt="" />
+                </>
+            );
         }
 
         return (

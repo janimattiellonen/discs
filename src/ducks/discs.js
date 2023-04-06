@@ -84,7 +84,7 @@ export const fetchDiscStatsAsync = createAsyncThunk('discs/fetchDiscStats', asyn
     const cachedStats = raw ? JSON.parse(raw) : null;
 
     if (cachedStats?.stats && cachedStats?.created) {
-        const created = add(new Date(cachedStats.created), { minutes: 5 });
+        const created = add(new Date(cachedStats.created), { hours: 24 });
         const isValidCache = !isBefore(created, new Date());
 
         if (isValidCache) {
@@ -104,7 +104,7 @@ export const fetchDiscDataAsync = createAsyncThunk('discs/fetchDiscData', async 
     const cachedData = raw ? JSON.parse(raw) : null;
 
     if (cachedData?.data && cachedData?.created) {
-        const created = add(new Date(cachedData.created), { minutes: 5 });
+        const created = add(new Date(cachedData.created), { hours: 24 });
         const isValidCache = !isBefore(created, new Date());
 
         if (isValidCache) {
@@ -213,6 +213,7 @@ export const discsSlice = createSlice({
             })
             .addCase(fetchDiscsAsync.pending, (state) => {
                 state.status = 'loading';
+                state.loadingDiscs = true;
             })
             .addCase(fetchDiscsAsync.fulfilled, (state, action) => {
                 state.discs = action.payload.discs;
@@ -220,6 +221,7 @@ export const discsSlice = createSlice({
                 state.offset = action.payload.offset;
                 state.count = action.payload.count;
                 state.total = action.payload.total;
+                state.loadingDiscs = false;
             })
             .addCase(fetchDiscStatsAsync.pending, () => {})
             .addCase(fetchDiscStatsAsync.fulfilled, (state, action) => {

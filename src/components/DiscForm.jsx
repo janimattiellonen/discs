@@ -136,10 +136,16 @@ export function DiscForm({ disc, saveHandler, onSuccess }) {
     });
 
     useEffect(() => {
+        const images = getValues('image');
+
         uploadedImages.forEach((img) => {
-            append({ id: img });
+            const found = images.find((item) => item.id === img);
+
+            if (!found) {
+                append({ id: img });
+            }
         });
-    }, [append, uploadedImages]);
+    }, [append, getValues, uploadedImages]);
 
     const onSubmit = (data) => {
         const clonedData = { ...data };

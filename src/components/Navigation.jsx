@@ -15,9 +15,17 @@ import { currency } from '../util/numbers';
 
 import { Login } from './Login';
 
-const StyledListItem = styled(ListItem)({
-    a: { color: '#337ab7' },
-});
+const StyledListItem = styled(ListItem)`
+    a {
+        color: #337ab7;
+
+        transition: font-size 500ms ease;
+
+        &:hover {
+            font-size: 1.3rem;
+        }
+    }
+`;
 
 const StyledTopNav = styled.div({
     header: {
@@ -30,13 +38,18 @@ const StyledTopNav = styled.div({
     },
 });
 
-const Ul = styled.ul({ padding: 0 });
-const Li = styled.li({
-    display: 'inline-block',
-    marginRight: '20px',
-    lineHeight: '30px',
-    a: { color: '#337ab7' },
-});
+const Ul = styled.ul`
+    padding: 0;
+`;
+
+const Li = styled.li`
+    display: inline-block;
+    margin-right: 20px;
+    line-height: 30px;
+    a {
+        color: #337ab7;
+    }
+`;
 
 export function Navigation({ stats }) {
     const showSideNav = useMediaQuery('(min-width:600px)');
@@ -78,10 +91,9 @@ export function Navigation({ stats }) {
     const forSaleCount = getDiscsForSaleCount();
 
     return (
-        <div>
+        <>
             {showSideNav && (
                 <Drawer variant="permanent" anchor="left">
-                    <div />
                     <UiList>
                         <StyledListItem>
                             <Link to="/gallery">All ({getDiscCount()})</Link>
@@ -132,9 +144,9 @@ export function Navigation({ stats }) {
                         <StyledListItem>
                             <Link to="/gallery?latest=true">Latest (10)</Link>
                         </StyledListItem>
-                        {spentMoney > 0 && <StyledListItem>{currency(spentMoney)}</StyledListItem>}
+                        {isAuthenticated && spentMoney > 0 && <StyledListItem>{currency(spentMoney)}</StyledListItem>}
 
-                        {sales > 0 && (
+                        {isAuthenticated && sales > 0 && (
                             <StyledListItem>
                                 {currency(sales)}
                                 <span style={{ paddingLeft: 5 }}> </span>
@@ -185,13 +197,13 @@ export function Navigation({ stats }) {
                                 <Li>
                                     <Link to="/gallery?latest=true">Latest (10)</Link>
                                 </Li>
-                                {spentMoney > 0 && <Li>{currency(spentMoney)}</Li>}
-                                {sales > 0 && <Li>{currency(sales)} (sales)</Li>}
+                                {isAuthenticated && spentMoney > 0 && <Li>{currency(spentMoney)}</Li>}
+                                {isAuthenticated && sales > 0 && <Li>{currency(sales)} (sales)</Li>}
                             </Ul>
                         </Toolbar>
                     </AppBar>
                 </StyledTopNav>
             )}
-        </div>
+        </>
     );
 }

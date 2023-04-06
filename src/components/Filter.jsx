@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -25,8 +25,7 @@ const SearchField = styled(TextField)({
     width: 'calc(100% - 20px)',
     '&.MuiTextField-root': {
         '.MuiInputBase-input': {
-            fontSize: '1em',
-            padding: '5px 12px',
+            fontSize: '1.2rem',
         },
     },
 });
@@ -105,7 +104,7 @@ export function Filter({ handleChange, params }) {
 
     const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
 
-    const { control, handleSubmit, getValues, setValue } = useForm({
+    const { control, getValues, setValue } = useForm({
         defaultValues: {
             type: params?.type || '',
             manufacturer: params?.manufacturer || '',
@@ -141,28 +140,29 @@ export function Filter({ handleChange, params }) {
         setValue('termType', termType || '');
     }, [params, setValue]);
 
-    const debounceSearch = useCallback(
-        debounce((nextValue) => {
-            const filtered = Object.entries(nextValue).filter(
-                ([, value]) => value !== false && value !== '' && value !== null,
-            );
+    const debounceSearch = useMemo(
+        () =>
+            debounce((nextValue) => {
+                const filtered = Object.entries(nextValue).filter(
+                    ([, value]) => value !== false && value !== '' && value !== null,
+                );
 
-            const asObjects = Object.fromEntries(filtered);
+                const asObjects = Object.fromEntries(filtered);
 
-            if (asObjects.termType) {
-                asObjects[asObjects.termType] = true;
-                delete asObjects.termType;
-            }
+                if (asObjects.termType) {
+                    asObjects[asObjects.termType] = true;
+                    delete asObjects.termType;
+                }
 
-            const query = queryString.stringify(asObjects);
-            handleChange(query);
-        }, 300),
-        [],
+                const query = queryString.stringify(asObjects);
+                handleChange(query);
+            }, 300),
+        [handleChange],
     );
 
-    const handleOnChange = () => {
+    const handleOnChange = useCallback(() => {
         debounceSearch(getValues());
-    };
+    }, [debounceSearch, getValues]);
 
     return (
         <div>

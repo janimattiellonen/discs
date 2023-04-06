@@ -31,7 +31,7 @@ const MorePanel = styled('div')({
 const MoreButton = styled(Button)({
     '&.MuiButtonBase-root': {
         padding: '15px 30px',
-        fontSize: '1em',
+        fontSize: '1rem',
         [theme.mq('1000')]: {
             padding: '8px 22px',
             fontSize: '0.9375rem',
@@ -184,7 +184,7 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }) {
                 <CenterP>
                     {discCount < total ? discCount : total} / {total}
                 </CenterP>
-                <DiscGallery discs={discs} />
+                <DiscGallery discs={discs} isLoading={loadingDiscs} />
             </DiscsPanel>
             {!!showMoreButton(discCount, total) && (
                 <MorePanel>

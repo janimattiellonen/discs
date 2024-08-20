@@ -15,7 +15,7 @@ function AppLayout({ children, stats, fetchDiscStats }) {
 
     return (
         <NoSsr>
-            <div style={{ paddingLeft: '10px' }}>
+            <div style={{ paddingLeft: '10px', background: '#F9F9F9' }}>
                 <Navigation stats={stats} />
 
                 <div style={{ marginLeft: `${drawerWidth}px` }}>{children}</div>

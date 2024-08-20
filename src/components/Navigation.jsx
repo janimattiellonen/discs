@@ -17,19 +17,22 @@ import { Login } from './Login';
 
 const StyledListItem = styled(ListItem)`
     a {
-        color: #337ab7;
+        padding: 5px;
+        color: ${(props) => props.theme.colors.linkBlue};
 
         transition: font-size 500ms ease;
 
         &:hover {
-            font-size: 1.3rem;
+            background: red;
+            border-radius: 5px;
+            padding: 5px;
         }
     }
 `;
 
 const StyledTopNav = styled.div({
     header: {
-        backgroundColor: 'white',
+        backgroundColor: '#F9F9F9',
         paddingTop: '10px',
         paddingBottom: '10px',
     },
@@ -47,7 +50,13 @@ const Li = styled.li`
     margin-right: 20px;
     line-height: 30px;
     a {
-        color: #337ab7;
+        color: ${(props) => props.theme.colors.linkBlue};
+    }
+`;
+
+const StyledDrawer = styled(Drawer)`
+    & > .MuiDrawer-paper {
+        background: #F9F9F9;
     }
 `;
 
@@ -93,7 +102,7 @@ export function Navigation({ stats }) {
     return (
         <>
             {showSideNav && (
-                <Drawer variant="permanent" anchor="left">
+                <StyledDrawer variant="permanent" anchor="left" >
                     <UiList>
                         <StyledListItem>
                             <Link to="/gallery">All ({getDiscCount()})</Link>
@@ -161,7 +170,7 @@ export function Navigation({ stats }) {
                         )}
                     </UiList>
                     <Login />
-                </Drawer>
+                </StyledDrawer>
             )}
 
             {!showSideNav && (

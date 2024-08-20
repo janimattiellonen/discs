@@ -168,10 +168,8 @@ export function Filter({ handleChange, params }) {
         <div>
             <form>
                 <ControlledTextField
-                    variant="outlined"
                     name="name"
                     label=""
-                    labelPlacement="start"
                     control={control}
                     handleOnChange={handleOnChange}
                 />

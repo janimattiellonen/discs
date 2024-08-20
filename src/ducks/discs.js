@@ -31,7 +31,6 @@ export const defaultDiscValues = {
     name: '',
     own_stamp: '',
     price: '',
-    // profit: '',
     sold_at: '',
     sold_for: '',
     sold_to: '',

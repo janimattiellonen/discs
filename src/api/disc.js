@@ -10,6 +10,12 @@ export default {
             `https://testdb-8e20.restdb.io/rest/discs/${id}?metafields=true&apikey=${process.env.REACT_APP_RESTDB_API_KEY}`,
         );
     },
+
+    getAnnotationsForDisc(id) {
+        return axios.get(
+            `https://testdb-8e20.restdb.io/rest/image-annotations?metafields=true&apikey=${process.env.REACT_APP_RESTDB_API_KEY}&q={"disc_id":"${id}"}`,
+        );
+    },
     getDiscs({ query, filter, limit, offset, order }) {
         const queryString = createQueryString({
             query,

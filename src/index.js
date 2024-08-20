@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 
 import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
@@ -15,37 +17,47 @@ import DiscGallery from './components/containers/DiscGalleryContainer';
 import AppLayout from './components/containers/layouts/AppLayoutContainer';
 import { AddDiscPage } from './components/AddDiscPage';
 import { EditDiscPage } from './components/EditDiscPage';
+import { Annotation } from './components/Annotation';
+
+import { muiTheme } from './util/mui-theme';
+import { theme } from './util/theme';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
     <React.StrictMode>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Provider store={store}>
-                <Auth0Provider
-                    scope="write:discs"
-                    cacheLocation="localstorage"
-                    domain="mydiscs.eu.auth0.com"
-                    clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
-                    redirectUri={window.location.origin}
-                    audience="my-discs"
-                >
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Router>
-                            <AppLayout>
-                                <Routes>
-                                    <Route exact path="/" element={<DiscGallery />} />
-                                    <Route path="/gallery" element={<DiscGallery />} />
-                                    <Route exact path="/disc/new" element={<AddDiscPage />} />
-                                    <Route exact path="/disc/:id/edit" element={<EditDiscPage />} />
-                                </Routes>
-                            </AppLayout>
-                        </Router>
-                    </Suspense>
-                </Auth0Provider>
-            </Provider>
-        </LocalizationProvider>
+        <ThemeProvider theme={muiTheme}>
+            {' '}
+            <EmotionThemeProvider theme={theme}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <Provider store={store}>
+                        <Auth0Provider
+                            scope="write:discs"
+                            cacheLocation="localstorage"
+                            domain="mydiscs.eu.auth0.com"
+                            clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
+                            redirectUri={window.location.origin}
+                            audience="my-discs"
+                        >
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Router>
+                                    <AppLayout>
+                                        <Routes>
+                                            <Route exact path="/" element={<DiscGallery />} />
+                                            <Route exact path="/test" element={<Annotation />} />
+                                            <Route path="/gallery" element={<DiscGallery />} />
+                                            <Route exact path="/disc/new" element={<AddDiscPage />} />
+                                            <Route exact path="/disc/:id/edit" element={<EditDiscPage />} />
+                                        </Routes>
+                                    </AppLayout>
+                                </Router>
+                            </Suspense>
+                        </Auth0Provider>
+                    </Provider>
+                </LocalizationProvider>{' '}
+            </EmotionThemeProvider>
+        </ThemeProvider>
     </React.StrictMode>,
 );
 

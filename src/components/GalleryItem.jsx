@@ -9,6 +9,9 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CircleIcon from '@mui/icons-material/Circle';
+import InfoIcon from '@mui/icons-material/Info';
+import { Typography } from '@mui/material';
+
 import Tooltip from '@mui/material/Tooltip';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
@@ -18,6 +21,8 @@ import { currency, number } from '../util/numbers';
 import { DiscStatus } from './DiscStatus';
 
 import { Specs } from './Specs';
+
+import { DiscDialog } from './DiscDialog';
 
 import unknown from '../unknown.png';
 
@@ -73,6 +78,14 @@ const DiscImage = styled.img`
     z-index: 2;
 `;
 
+const StyledInfoIcon = styled(InfoIcon)`
+    position: absolute;
+    z-index: 10000;
+    top: 5px;
+    left: 5px;
+    hover: pointer;
+`;
+
 const DiscImageCopy = styled(DiscImage)`
     position: absolute;
     top: 0;
@@ -92,9 +105,8 @@ const DiscImageCopy = styled(DiscImage)`
     }
 `;
 
-const DiscName = styled.h2({
+const DiscName = styled(Typography)({
     display: 'flex',
-    fontSize: '1.875rem',
     justifyContent: 'space-between',
     alignItems: 'center',
 });
@@ -142,6 +154,7 @@ function SelectedImageIndicator({ imageCount, selectedImage }) {
 export function GalleryItem({ disc }) {
     const { isAuthenticated } = useAuth0();
     const [style, setStyle] = useState(null);
+    const [open, setOpen] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState(0);
 
@@ -309,9 +322,23 @@ export function GalleryItem({ disc }) {
         return null;
     };
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         <>
             <div className="flex w-auto relative">
+                {disc.image?.length > 0 && (
+                    <StyledInfoIcon onClick={handleClickOpen} />
+                )}
+                {disc.image?.length > 0 && (
+                    <DiscDialog open={open} onClose={handleClose} disc={disc} image={disc.image[selectedImage]} />
+                )}
                 {renderImage()}
 
                 {renderLostDisc()}
@@ -326,7 +353,7 @@ export function GalleryItem({ disc }) {
             </div>
 
             <div>
-                <DiscName>
+                <DiscName variant="h2">
                     <span>
                         <span>{disc.name}</span>
                         {isAuthenticated && (

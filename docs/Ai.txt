@@ -1,0 +1,29 @@
+Cloud Vision API:n hyödyntäminen
+
+
+Ideana on parsia jokaisesta kiekkokuvasta CLoud Vision Api:n avulla metatietoja ja tallentaa ne tietokantaan.
+
+Metatietoja ovat mm.:
+- kiekosta löytyvät, dominoivat värit
+- mahdollisest tekstit ("Discmania", "Cloud breaker" jne)
+
+
+
+Tarvitaan scripti, joka hakee metatiedot jo entuudestaan olevista kuvista, sekä toiminnallisuus, joka hakee uusista,
+palveluun lisätyistä kuvista metatiedot.
+
+Tiedot tallennetaan Supabase-tietokantaan (ainakin alustavan ajatuksen mukaan).
+
+
+
+Vaiheet:
+
+1) Kuvat ladataan restdb:stä
+
+2) Metatiedot poimitaan kuvista Cloud Vision api:lla
+
+3) metadata tallennetaan tiedostoihin
+
+
+4) metadata tallennetaan tietokantaan
+

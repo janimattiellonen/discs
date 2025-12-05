@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Controller, Control, useForm } from 'react-hook-form';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -136,7 +136,7 @@ function ControlledTextField({
                 <SearchField
                     label={label}
                     {...field}
-                    onChange={(data) => {
+                    onChange={(data: any) => {
                         field.onChange(data);
                         handleOnChange();
                     }}

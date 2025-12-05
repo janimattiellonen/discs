@@ -6,18 +6,27 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 
 import Button from '@mui/material/Button';
 import { uploadImageAsync } from '../ducks/images';
+import { useAppDispatch } from '../app/hooks';
 
-export function ImageUpload({ handleClose, open }) {
+interface ImageUploadProps {
+    handleClose: () => void;
+    open: boolean;
+}
+
+interface ImageFormData {
+    image?: FileList;
+}
+
+export function ImageUpload({ handleClose, open }: ImageUploadProps): React.JSX.Element {
     const { getIdTokenClaims } = useAuth0();
 
-    const { register, handleSubmit } = useForm();
-    const dispatch = useDispatch();
+    const { register, handleSubmit } = useForm<ImageFormData>();
+    const dispatch = useAppDispatch();
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: ImageFormData): void => {
         (async () => {
             const tokenData = await getIdTokenClaims();
 

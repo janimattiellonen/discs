@@ -36,8 +36,9 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint": "eslint --ext .js --ext .jsx src",
-        "lint:fix": "eslint --fix --ext .js --ext .jsx src"
+        "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
+        "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
+        "type-check": "tsc --noEmit"
     },
     "eslintConfig": {
         "extends": [
@@ -58,15 +59,25 @@
         ]
     },
     "devDependencies": {
+        "@types/lodash.debounce": "^4.0.9",
+        "@types/node": "^24.10.1",
+        "@types/react": "^18.3.27",
+        "@types/react-dom": "^18.3.7",
+        "@types/react-router-dom": "^5.3.3",
+        "@typescript-eslint/eslint-plugin": "^8.48.1",
+        "@typescript-eslint/parser": "^8.48.1",
         "autoprefixer": "^10.4.7",
-        "eslint": "8.31.0",
+        "eslint": "^8.57.1",
         "eslint-config-airbnb": "19.0.4",
+        "eslint-config-airbnb-typescript": "^18.0.0",
         "eslint-plugin-import": "2.26.0",
         "eslint-plugin-jsx-a11y": "6.6.1",
         "eslint-plugin-react": "7.31.11",
         "eslint-plugin-react-hooks": "4.6.0",
+        "fork-ts-checker-webpack-plugin": "^9.1.0",
         "postcss": "^8.4.14",
         "prettier": "^2.6.2",
-        "tailwindcss": "^3.0.24"
+        "tailwindcss": "^3.0.24",
+        "typescript": "^5.9.3"
     }
 }

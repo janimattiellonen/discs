@@ -31,7 +31,11 @@ const StyledSpan = styled.span({
     '@media (min-width: 768px)': { fontSize: '2em' },
 });
 
-export function DiscStatus({ label }) {
+interface DiscStatusProps {
+    label: string;
+}
+
+export function DiscStatus({ label }: DiscStatusProps): React.JSX.Element {
     return (
         <StyledDiv>
             <WrapperDiv>

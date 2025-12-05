@@ -15,6 +15,29 @@ import { currency } from '../util/numbers';
 
 import { Login } from './Login';
 
+interface DiscStats {
+    spentMoney?: number;
+    allCount?: number;
+    favouriteCount?: number;
+    distanceDriverCount?: number;
+    fairwayDriverCount?: number;
+    midrangeCount?: number;
+    putterCount?: number;
+    missingCount?: number;
+    soldCount?: number;
+    forSaleCount?: number;
+    donatedCount?: number;
+    collectionCount?: number;
+    ownStampCount?: number;
+    aceCount?: number;
+    sales?: number;
+    availableCount?: number;
+}
+
+interface NavigationProps {
+    stats: DiscStats;
+}
+
 const StyledListItem = styled(ListItem)`
     a {
         color: #337ab7;
@@ -51,40 +74,41 @@ const Li = styled.li`
     }
 `;
 
-export function Navigation({ stats }) {
+export function Navigation({ stats }: NavigationProps): React.JSX.Element {
     const showSideNav = useMediaQuery('(min-width:600px)');
     const { isAuthenticated } = useAuth0();
 
-    const getStats = (key) => (stats[key] ? stats[key] : null);
+    const getStats = (key: keyof DiscStats): number | null => (stats[key] ? stats[key] ?? null : null);
 
     const spentMoney = getStats('spentMoney');
 
-    const getDiscCount = () => getStats('allCount');
+    const getDiscCount = (): number | null => getStats('allCount');
 
-    const getFavouriteCount = () => getStats('favouriteCount');
+    const getFavouriteCount = (): number | null => getStats('favouriteCount');
 
-    const getDistanceDriverCount = () => getStats('distanceDriverCount');
+    const getDistanceDriverCount = (): number | null => getStats('distanceDriverCount');
 
-    const getAvailableCount = () => getStats('availableCount');
+    const getAvailableCount = (): number | null => getStats('availableCount');
 
-    const getFairwayDriverCount = () => getStats('fairwayDriverCount');
+    const getFairwayDriverCount = (): number | null => getStats('fairwayDriverCount');
 
-    const getMidrangeCount = () => getStats('midrangeCount');
+    const getMidrangeCount = (): number | null => getStats('midrangeCount');
 
-    const getPutterCount = () => getStats('putterCount');
+    const getPutterCount = (): number | null => getStats('putterCount');
 
-    const getLostDiscCount = () => getStats('missingCount');
+    const getLostDiscCount = (): number | null => getStats('missingCount');
 
-    const getSoldDiscCount = () => getStats('soldCount');
+    const getSoldDiscCount = (): number | null => getStats('soldCount');
 
-    const getDiscsForSaleCount = () => getStats('forSaleCount');
+    const getDiscsForSaleCount = (): number | null => getStats('forSaleCount');
 
-    const getDonatedDiscCount = () => getStats('donatedCount');
+    const getDonatedDiscCount = (): number | null => getStats('donatedCount');
 
-    const getCollectibleCount = () => getStats('collectionCount');
+    const getCollectibleCount = (): number | null => getStats('collectionCount');
 
-    const getOwnStampCount = () => getStats('ownStampCount');
-    const getHoleInOneCount = () => getStats('aceCount');
+    const getOwnStampCount = (): number | null => getStats('ownStampCount');
+
+    const getHoleInOneCount = (): number | null => getStats('aceCount');
 
     const sales = getStats('sales');
 

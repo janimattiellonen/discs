@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +20,16 @@ import { DiscStatus } from './DiscStatus';
 import { Specs } from './Specs';
 
 import unknown from '../unknown.png';
+import { Disc } from '../types';
+
+interface GalleryItemProps {
+    disc: Disc;
+}
+
+interface SelectedImageIndicatorProps {
+    imageCount: number;
+    selectedImage: number;
+}
 
 const CollectionItem = styled.div({
     fontWeight: 'bold',
@@ -123,14 +133,14 @@ const Indicator = styled.div({
     zIndex: 5,
 });
 
-function SelectedImageIndicator({ imageCount, selectedImage }) {
+function SelectedImageIndicator({ imageCount, selectedImage }: SelectedImageIndicatorProps): React.JSX.Element {
     const range = [...Array(imageCount).keys()];
 
     return (
         <Indicator>
             {range.map((item) => {
                 if (item === selectedImage) {
-                    return <CircleIcon />;
+                    return <CircleIcon key={`indicator-${item}`} />;
                 }
 
                 return <RadioButtonUncheckedIcon key={`indicator-${item}`} />;
@@ -139,17 +149,17 @@ function SelectedImageIndicator({ imageCount, selectedImage }) {
     );
 }
 
-export function GalleryItem({ disc }) {
+export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
     const { isAuthenticated } = useAuth0();
-    const [style, setStyle] = useState(null);
+    const [style, setStyle] = useState<React.CSSProperties | null>(null);
 
-    const [selectedImage, setSelectedImage] = useState(0);
+    const [selectedImage, setSelectedImage] = useState<number>(0);
 
-    const renderWeight = () => (disc.weight > 0 ? `, ${disc.weight}g` : '');
+    const renderWeight = (): string => (disc.weight && disc.weight > 0 ? `, ${disc.weight}g` : '');
 
-    const renderOverlayTrigger = (tooltip, element) => element;
+    const renderOverlayTrigger = (_tooltip: ReactNode, element: ReactNode): ReactNode => element;
 
-    const renderTooltip = (element) => {
+    const renderTooltip = (element: ReactNode): ReactNode => {
         if (
             (!disc.missing_description || disc.missing_description.length === 0) &&
             (!disc['Donation description'] || disc['Donation description'].length === 0)
@@ -158,7 +168,10 @@ export function GalleryItem({ disc }) {
         }
 
         const tooltip = (
-            <Tooltip id={`tooltip-disc-${disc.id}`} placement="bottom">
+            <Tooltip
+                title={disc.missing_description || disc['Donation description'] || ''}
+                placement="bottom"
+            >
                 <span>{disc.missing_description || disc['Donation description']}</span>
             </Tooltip>
         );
@@ -166,13 +179,13 @@ export function GalleryItem({ disc }) {
         return renderOverlayTrigger(tooltip, element);
     };
 
-    const renderHioTooltip = (element) => {
+    const renderHioTooltip = (element: ReactNode): ReactNode => {
         if (!disc['HIO date']) {
             return element;
         }
 
         const tooltip = (
-            <Tooltip id={`tooltip-disc-hio-${disc.id}`}>
+            <Tooltip title={format(new Date(disc['HIO date']), 'DD.MM.YYYY')}>
                 <span>{format(new Date(disc['HIO date']), 'DD.MM.YYYY')}</span>
             </Tooltip>
         );
@@ -180,7 +193,7 @@ export function GalleryItem({ disc }) {
         return renderOverlayTrigger(tooltip, element);
     };
 
-    const renderImage = () => {
+    const renderImage = (): ReactNode => {
         let element = null;
 
         if (!disc?.image?.length) {
@@ -246,7 +259,7 @@ export function GalleryItem({ disc }) {
         );
     };
 
-    const renderLostDisc = () => {
+    const renderLostDisc = (): ReactNode => {
         if (disc.missing) {
             return renderTooltip(<DiscStatus label="Lost" />);
         }
@@ -254,7 +267,7 @@ export function GalleryItem({ disc }) {
         return null;
     };
 
-    const renderBrokenDisc = () => {
+    const renderBrokenDisc = (): ReactNode => {
         if (disc.broken) {
             return renderTooltip(<DiscStatus label="Broken" />);
         }
@@ -262,7 +275,7 @@ export function GalleryItem({ disc }) {
         return null;
     };
 
-    const renderSoldDisc = () => {
+    const renderSoldDisc = (): ReactNode => {
         if (disc.sold) {
             return renderTooltip(
                 <DiscStatus
@@ -274,7 +287,7 @@ export function GalleryItem({ disc }) {
         return null;
     };
 
-    const renderDonatedDisc = () => {
+    const renderDonatedDisc = (): ReactNode => {
         if (disc.donated) {
             return renderTooltip(<DiscStatus label="Donated" />);
         }
@@ -282,7 +295,7 @@ export function GalleryItem({ disc }) {
         return null;
     };
 
-    const renderHioDisc = () => {
+    const renderHioDisc = (): ReactNode => {
         if (disc['Hole in one']) {
             const element = (
                 <div className="HoleInOne">
@@ -295,14 +308,14 @@ export function GalleryItem({ disc }) {
         return null;
     };
 
-    const renderPrice = () => {
+    const renderPrice = (): string | null => {
         if (disc.price_status === 'gift') {
             return 'Gift';
         }
         if (disc.price_status === 'price_unknown') {
             return 'n/a';
         }
-        if (disc.price > 0) {
+        if (disc.price && disc.price > 0) {
             return `${currency(disc.price)}`;
         }
 
@@ -342,13 +355,13 @@ export function GalleryItem({ disc }) {
                     <div>
                         <p className="manufacturer">
                             {disc.manufacturer} {disc.material}
-                            {renderWeight(disc)}
+                            {renderWeight()}
                         </p>
                         <p className="type">{disc.type}</p>
                         <p />
                     </div>
 
-                    <Price>{renderPrice(disc)}</Price>
+                    <Price>{renderPrice()}</Price>
                 </div>
 
                 <Specs disc={disc} />

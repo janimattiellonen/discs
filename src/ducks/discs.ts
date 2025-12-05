@@ -47,12 +47,18 @@ interface DiscValues {
     [key: string]: unknown; // Allow additional properties
 }
 
+interface DiscData {
+    manufacturers?: string[];
+    types?: string[];
+    [key: string]: unknown;
+}
+
 interface DiscsState {
     savedDiscId: string | null;
     disc: Partial<DiscValues>;
     discs: Disc[];
     stats: unknown; // TODO: Type properly - stats response structure
-    data: unknown; // TODO: Type properly - data response structure
+    data: DiscData | null;
     loadingDiscs: boolean;
     loadingDiscsFailed: boolean;
     loadingStats: boolean;
@@ -144,7 +150,7 @@ const initialState: DiscsState = {
     disc: defaultDiscValues,
     discs: [],
     stats: {},
-    data: {},
+    data: null,
     loadingDiscs: false,
     loadingDiscsFailed: false,
     loadingStats: false,
@@ -202,9 +208,9 @@ export const fetchDiscStatsAsync = createAsyncThunk<unknown>('discs/fetchDiscSta
     return response;
 });
 
-export const fetchDiscDataAsync = createAsyncThunk<unknown>('discs/fetchDiscData', async () => {
+export const fetchDiscDataAsync = createAsyncThunk<DiscData>('discs/fetchDiscData', async () => {
     const raw = localStorage.getItem('data');
-    const cachedData: { data?: unknown; created?: string } | null = raw ? JSON.parse(raw) : null;
+    const cachedData: { data?: DiscData; created?: string } | null = raw ? JSON.parse(raw) : null;
 
     if (cachedData?.data && cachedData?.created) {
         const created = add(new Date(cachedData.created), { hours: 24 });
@@ -215,7 +221,7 @@ export const fetchDiscDataAsync = createAsyncThunk<unknown>('discs/fetchDiscData
         }
     }
 
-    const response = await discApi.getData();
+    const response = (await discApi.getData()) as DiscData;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sortedMaterials = [...((response as any)?.materials || [])].sort((a: any, b: any) => {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 const AnimatedDiv = styled.div`
@@ -14,8 +14,14 @@ const AnimatedDiv = styled.div`
 
     animation: feppa 1000ms linear forwards;
 `;
-export const Animated = function ({ children, keyValue }) {
-    const [, updateState] = useState();
+
+interface AnimatedProps {
+    children: ReactNode;
+    keyValue: string | number;
+}
+
+export const Animated = function ({ children, keyValue }: AnimatedProps): React.JSX.Element {
+    const [, updateState] = useState<Record<string, never>>();
     const forceUpdate = useCallback(() => updateState({}), []);
 
     useEffect(() => {

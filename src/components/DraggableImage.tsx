@@ -27,7 +27,12 @@ const Image = styled.div({
     backgroundSize: 'contain',
 });
 
-export function DraggableImage({ url, onRemove }) {
+interface DraggableImageProps {
+    url: string;
+    onRemove: () => void;
+}
+
+export function DraggableImage({ url, onRemove }: DraggableImageProps): React.JSX.Element {
     return (
         <Image
             style={{

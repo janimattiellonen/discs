@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import React, { ReactElement, useCallback, useEffect, useMemo } from 'react';
+import { Controller, Control, useForm } from 'react-hook-form';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import debounce from 'lodash.debounce';
@@ -19,6 +18,63 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 
 import Paper from '@mui/material/Paper';
+import { useAppSelector } from '../app/hooks';
+
+interface FilterFormValues {
+    type: string;
+    manufacturer: string;
+    collection: boolean | string;
+    forSale: boolean | string;
+    holeInOne: boolean | string;
+    ownStamp: boolean | string;
+    donated: boolean | string;
+    lost: boolean | string;
+    missing: boolean | string;
+    name: string;
+    favourite: boolean | string;
+    glow: boolean | string;
+    huk: boolean | string;
+    termType: string | null;
+}
+
+interface FilterParams {
+    type?: string;
+    manufacturer?: string;
+    available?: string;
+    sold?: string;
+    missing?: string;
+    forSale?: string;
+    donated?: string;
+    collection?: boolean | string;
+    holeInOne?: boolean | string;
+    ownStamp?: boolean | string;
+    favourite?: boolean | string;
+    glow?: boolean | string;
+    huk?: boolean | string;
+}
+
+interface FilterProps {
+    handleChange: (query: string) => void;
+    params: FilterParams;
+}
+
+interface ControlledFieldProps {
+    name: keyof FilterFormValues;
+    label: string;
+    labelPlacement?: 'end' | 'start' | 'top' | 'bottom';
+    control: Control<FilterFormValues>;
+    handleOnChange: () => void;
+    RenderComponent: typeof Checkbox | typeof Radio;
+}
+
+interface ControlledTextFieldProps {
+    name: keyof FilterFormValues;
+    label: string;
+    labelPlacement: string;
+    control: Control<FilterFormValues>;
+    handleOnChange: () => void;
+    variant?: 'outlined' | 'filled' | 'standard';
+}
 
 const SearchField = styled(TextField)({
     margin: '20px 20px 20px 0',
@@ -30,7 +86,15 @@ const SearchField = styled(TextField)({
     },
 });
 
-function ControlledField({ name, label, labelPlacement, control, handleOnChange, RenderComponent, ...rest }) {
+function ControlledField({
+    name,
+    label,
+    labelPlacement,
+    control,
+    handleOnChange,
+    RenderComponent,
+    ...rest
+}: ControlledFieldProps): React.JSX.Element {
     return (
         <Controller
             name={name}
@@ -41,7 +105,7 @@ function ControlledField({ name, label, labelPlacement, control, handleOnChange,
                         <RenderComponent
                             {...field}
                             {...rest}
-                            checked={field.value}
+                            checked={field.value as boolean}
                             onChange={(data) => {
                                 field.onChange(data);
                                 handleOnChange();
@@ -49,14 +113,21 @@ function ControlledField({ name, label, labelPlacement, control, handleOnChange,
                         />
                     }
                     label={label}
-                    labelPlacement={labelPlacement || ''}
+                    labelPlacement={labelPlacement || 'end'}
                 />
             )}
         />
     );
 }
 
-function ControlledTextField({ name, label, labelPlacement, control, handleOnChange, ...rest }) {
+function ControlledTextField({
+    name,
+    label,
+    labelPlacement,
+    control,
+    handleOnChange,
+    ...rest
+}: ControlledTextFieldProps): React.JSX.Element {
     return (
         <Controller
             name={name}
@@ -76,7 +147,7 @@ function ControlledTextField({ name, label, labelPlacement, control, handleOnCha
     );
 }
 
-const mapTermType = (params) => {
+const mapTermType = (params?: FilterParams): string | null => {
     if (params?.available === 'true') {
         return 'available';
     }
@@ -99,12 +170,12 @@ const mapTermType = (params) => {
     return null;
 };
 
-export function Filter({ handleChange, params }) {
+export function Filter({ handleChange, params }: FilterProps): React.JSX.Element {
     const isExtraMarginNeeded = useMediaQuery('(max-width:444px)');
 
-    const manufacturers = useSelector((state) => state.discs.data?.manufacturers || []);
+    const manufacturers = useAppSelector((state) => state.discs.data?.manufacturers || []);
 
-    const { control, getValues, setValue } = useForm({
+    const { control, getValues, setValue } = useForm<FilterFormValues>({
         defaultValues: {
             type: params?.type || '',
             manufacturer: params?.manufacturer || '',
@@ -149,8 +220,8 @@ export function Filter({ handleChange, params }) {
 
                 const asObjects = Object.fromEntries(filtered);
 
-                if (asObjects.termType) {
-                    asObjects[asObjects.termType] = true;
+                if (asObjects.termType && typeof asObjects.termType === 'string') {
+                    asObjects[asObjects.termType as string] = true;
                     delete asObjects.termType;
                 }
 

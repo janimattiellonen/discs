@@ -2,11 +2,9 @@ import React, { Suspense } from 'react';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import { store } from './app/store';
 import {
     DiscsProvider,
     DiscFormProvider,
@@ -28,38 +26,35 @@ const root = createRoot(container);
 root.render(
     <React.StrictMode>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Provider store={store}>
-                {/* New Context Providers - nested for optimal performance */}
-                <ReferenceDataProvider>
-                    <DiscsProvider>
-                        <DiscFormProvider>
-                            <ImageUploadProvider>
-                                <Auth0Provider
-                                    scope="write:discs"
-                                    cacheLocation="localstorage"
-                                    domain="mydiscs.eu.auth0.com"
-                                    clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
-                                    redirectUri={window.location.origin}
-                                    audience="my-discs"
-                                >
-                                    <Suspense fallback={<div>Loading...</div>}>
-                                        <Router>
-                                            <AppLayout>
-                                                <Routes>
-                                                    <Route path="/" element={<DiscGalleryPage />} />
-                                                    <Route path="/gallery" element={<DiscGalleryPage />} />
-                                                    <Route path="/disc/new" element={<AddDiscPage />} />
-                                                    <Route path="/disc/:id/edit" element={<EditDiscPage />} />
-                                                </Routes>
-                                            </AppLayout>
-                                        </Router>
-                                    </Suspense>
-                                </Auth0Provider>
-                            </ImageUploadProvider>
-                        </DiscFormProvider>
-                    </DiscsProvider>
-                </ReferenceDataProvider>
-            </Provider>
+            <ReferenceDataProvider>
+                <DiscsProvider>
+                    <DiscFormProvider>
+                        <ImageUploadProvider>
+                            <Auth0Provider
+                                scope="write:discs"
+                                cacheLocation="localstorage"
+                                domain="mydiscs.eu.auth0.com"
+                                clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
+                                redirectUri={window.location.origin}
+                                audience="my-discs"
+                            >
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <Router>
+                                        <AppLayout>
+                                            <Routes>
+                                                <Route path="/" element={<DiscGalleryPage />} />
+                                                <Route path="/gallery" element={<DiscGalleryPage />} />
+                                                <Route path="/disc/new" element={<AddDiscPage />} />
+                                                <Route path="/disc/:id/edit" element={<EditDiscPage />} />
+                                            </Routes>
+                                        </AppLayout>
+                                    </Router>
+                                </Suspense>
+                            </Auth0Provider>
+                        </ImageUploadProvider>
+                    </DiscFormProvider>
+                </DiscsProvider>
+            </ReferenceDataProvider>
         </LocalizationProvider>
     </React.StrictMode>,
 );

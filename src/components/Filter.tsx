@@ -140,7 +140,7 @@ function ControlledTextField({
                         field.onChange(data);
                         handleOnChange();
                     }}
-                    {...rest}
+                    {...(rest as any)}
                 />
             )}
         />

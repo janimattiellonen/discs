@@ -7,6 +7,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { store } from './app/store';
+import {
+    DiscsProvider,
+    DiscFormProvider,
+    ReferenceDataProvider,
+    ImageUploadProvider,
+} from './contexts';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
@@ -23,27 +29,36 @@ root.render(
     <React.StrictMode>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Provider store={store}>
-                <Auth0Provider
-                    scope="write:discs"
-                    cacheLocation="localstorage"
-                    domain="mydiscs.eu.auth0.com"
-                    clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
-                    redirectUri={window.location.origin}
-                    audience="my-discs"
-                >
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Router>
-                            <AppLayout>
-                                <Routes>
-                                    <Route path="/" element={<DiscGallery />} />
-                                    <Route path="/gallery" element={<DiscGallery />} />
-                                    <Route path="/disc/new" element={<AddDiscPage />} />
-                                    <Route path="/disc/:id/edit" element={<EditDiscPage />} />
-                                </Routes>
-                            </AppLayout>
-                        </Router>
-                    </Suspense>
-                </Auth0Provider>
+                {/* New Context Providers - nested for optimal performance */}
+                <ReferenceDataProvider>
+                    <DiscsProvider>
+                        <DiscFormProvider>
+                            <ImageUploadProvider>
+                                <Auth0Provider
+                                    scope="write:discs"
+                                    cacheLocation="localstorage"
+                                    domain="mydiscs.eu.auth0.com"
+                                    clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
+                                    redirectUri={window.location.origin}
+                                    audience="my-discs"
+                                >
+                                    <Suspense fallback={<div>Loading...</div>}>
+                                        <Router>
+                                            <AppLayout>
+                                                <Routes>
+                                                    <Route path="/" element={<DiscGallery />} />
+                                                    <Route path="/gallery" element={<DiscGallery />} />
+                                                    <Route path="/disc/new" element={<AddDiscPage />} />
+                                                    <Route path="/disc/:id/edit" element={<EditDiscPage />} />
+                                                </Routes>
+                                            </AppLayout>
+                                        </Router>
+                                    </Suspense>
+                                </Auth0Provider>
+                            </ImageUploadProvider>
+                        </DiscFormProvider>
+                    </DiscsProvider>
+                </ReferenceDataProvider>
             </Provider>
         </LocalizationProvider>
     </React.StrictMode>,

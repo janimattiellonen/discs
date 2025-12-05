@@ -151,8 +151,6 @@ function SelectedImageIndicator({ imageCount, selectedImage }: SelectedImageIndi
 
 export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
     const { isAuthenticated } = useAuth0();
-    const [style, setStyle] = useState<React.CSSProperties | null>(null);
-
     const [selectedImage, setSelectedImage] = useState<number>(0);
 
     const renderWeight = (): string => (disc.weight && disc.weight > 0 ? `, ${disc.weight}g` : '');
@@ -212,7 +210,7 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
             element = (
                 <>
                     {Array.isArray(disc.image) && disc.image.length > 1 && (
-                        <DiscImageCopy style={style} src={copySrc} alt="" />
+                        <DiscImageCopy src={copySrc} alt="" />
                     )}
 
                     <DiscImage src={src} alt="" />

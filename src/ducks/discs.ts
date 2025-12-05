@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import { add, isBefore } from 'date-fns';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
 import discApi from '../api/disc';

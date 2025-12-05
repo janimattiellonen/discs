@@ -18,7 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 
 import Paper from '@mui/material/Paper';
-import { useAppSelector } from '../app/hooks';
+import { useReferenceData } from '../contexts';
 
 interface FilterFormValues {
     type: string;
@@ -173,7 +173,7 @@ const mapTermType = (params?: FilterParams): string | null => {
 export function Filter({ handleChange, params }: FilterProps): React.JSX.Element {
     const isExtraMarginNeeded = useMediaQuery('(max-width:444px)');
 
-    const manufacturers = useAppSelector((state) => state.discs.data?.manufacturers || []);
+    const { manufacturers } = useReferenceData();
 
     const { control, getValues, setValue } = useForm<FilterFormValues>({
         defaultValues: {

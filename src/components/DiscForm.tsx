@@ -20,12 +20,10 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import { defaultDiscValues, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
-
 import { DraggableImage } from './DraggableImage';
 import { ImageUpload } from './ImageUpload';
 import { DiscSavedDialog } from './DiscSavedDialog';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useReferenceData, useImageUpload, useDiscForm } from '../contexts';
 
 interface DiscImage {
     id: string;
@@ -169,28 +167,22 @@ function Error({ text }: ErrorProps): React.JSX.Element {
 }
 
 export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React.JSX.Element {
-    const manufacturers = useAppSelector((state) => state.discs.data?.manufacturers || []);
-    const materials = useAppSelector((state) => (state.discs.data?.materials as any[])?.map((material: any) => material.name) || []);
-    const saved = useAppSelector((state) => state.discs.saved);
-
-    // Because this is no longer used, any uploaded image is not automatically shown on the form
-    // I need to add the new images to the fieldArray somehow
-    const uploadedImages = useAppSelector((state) => state.images?.uploadedImages || []);
+    const { manufacturers, materials, fetchData } = useReferenceData();
+    const { saved, markSavedAsAcknowledged } = useDiscForm();
+    const { uploadedImages } = useImageUpload();
 
     const [isImageUploadVisible, setIsImageUploadVisible] = useState<boolean>(false);
     const [isDiscSavedDialogVisible, setIsDiscSavedDialogVisible] = useState<boolean>(false);
-
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
         setIsDiscSavedDialogVisible(saved);
     }, [saved]);
 
     useEffect(() => {
-        dispatch(fetchDiscDataAsync());
-    }, [dispatch]);
+        fetchData();
+    }, [fetchData]);
 
-    const defaultValues = disc?.name ? disc : (defaultDiscValues as unknown as Partial<DiscFormValues>);
+    const defaultValues = disc?.name ? disc : ({} as Partial<DiscFormValues>);
 
     const {
         control,
@@ -265,7 +257,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                 open={isDiscSavedDialogVisible}
                 handleClose={() => {
                     setIsDiscSavedDialogVisible(false);
-                    dispatch(markSavedAsAcknowledged());
+                    markSavedAsAcknowledged();
 
                     if (onSuccess) {
                         onSuccess();

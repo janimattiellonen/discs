@@ -16,8 +16,8 @@ import {
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
-import DiscGallery from './components/containers/DiscGalleryContainer';
-import AppLayout from './components/containers/layouts/AppLayoutContainer';
+import { DiscGalleryPage } from './components/DiscGalleryPage';
+import AppLayout from './components/containers/layouts/AppLayout';
 import { AddDiscPage } from './components/AddDiscPage';
 import { EditDiscPage } from './components/EditDiscPage';
 
@@ -46,8 +46,8 @@ root.render(
                                         <Router>
                                             <AppLayout>
                                                 <Routes>
-                                                    <Route path="/" element={<DiscGallery />} />
-                                                    <Route path="/gallery" element={<DiscGallery />} />
+                                                    <Route path="/" element={<DiscGalleryPage />} />
+                                                    <Route path="/gallery" element={<DiscGalleryPage />} />
                                                     <Route path="/disc/new" element={<AddDiscPage />} />
                                                     <Route path="/disc/:id/edit" element={<EditDiscPage />} />
                                                 </Routes>

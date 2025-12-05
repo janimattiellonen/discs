@@ -1,16 +1,49 @@
-const mapType = (type) => {
-    const types = {
+type DiscTypeKey = 'putter' | 'fairwayDriver' | 'distanceDriver' | 'midrange';
+
+interface DiscQuery {
+    name?: string;
+    type?: string;
+    manufacturer?: string;
+    missing?: string;
+    sold?: string;
+    forSale?: string;
+    donated?: string;
+    collection?: string;
+    ownStamp?: string;
+    holeInOne?: string;
+    broken?: string;
+    favourite?: string;
+    glow?: string;
+    huk?: string;
+    available?: string;
+    latest?: boolean;
+}
+
+interface QueryOrder {
+    column: string;
+    mode: string;
+}
+
+interface QueryStringParams {
+    query?: DiscQuery;
+    limit?: number;
+    offset?: number;
+    order?: QueryOrder;
+}
+
+const mapType = (type: string): string => {
+    const types: Record<DiscTypeKey, string> = {
         putter: 'Putter',
         fairwayDriver: 'Fairway driver',
         distanceDriver: 'Distance driver',
         midrange: 'Mid-range',
     };
 
-    return types[type] ? types[type] : '';
+    return types[type as DiscTypeKey] ? types[type as DiscTypeKey] : '';
 };
 
-export const createQueryString = ({ query, limit, offset, order }) => {
-    const output = [];
+export const createQueryString = ({ query, limit, offset, order }: QueryStringParams): string => {
+    const output: string[] = [];
 
     let limitValue = limit;
 
@@ -22,7 +55,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
         output.push(`skip=${offset}`);
     }
 
-    let hints = [];
+    let hints: string[] = [];
 
     if (!order) {
         hints.push('"$orderby": {"$moment._created": 1, "name": 1}');
@@ -33,7 +66,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
         hints.push(`"$orderby": {"${col}": ${mode === 'ASC' ? 1 : -1}}`);
     }
 
-    const queryParams = [];
+    const queryParams: string[] = [];
     if (query) {
         if (query.name && query.name.length >= 2) {
             queryParams.push(`"name": {"$regex": "^${query.name}"}`);
@@ -92,7 +125,7 @@ export const createQueryString = ({ query, limit, offset, order }) => {
         }
 
         if (query.available && query.available.length) {
-            const availableQuery = [];
+            const availableQuery: string[] = [];
 
             availableQuery.push('{"donated": {"$not": true}}');
             availableQuery.push('{"missing": {"$not": true}}');

@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 /*
-export const fetchLatestImages = async (token) => {
+export const fetchLatestImages = async (token: string) => {
   const images = await axios.get(
     'https://testdb-8e20.restdb.io/api/testdb-8e20:self/data/attachments?sort=_id&max=10&dir=-1',
     {
@@ -13,9 +13,15 @@ export const fetchLatestImages = async (token) => {
 };
 */
 
-export const uploadImage = (formData, token) => {
+interface UploadImageResponse {
+    id: string;
+    url: string;
+    [key: string]: unknown; // TODO: Type properly - additional response fields
+}
+
+export const uploadImage = (formData: FormData, token: string): Promise<UploadImageResponse> => {
     const response = axios
-        .post('https://testdb-8e20.restdb.io/media', formData, {
+        .post<UploadImageResponse>('https://testdb-8e20.restdb.io/media', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
@@ -26,7 +32,7 @@ export const uploadImage = (formData, token) => {
     return response;
 };
 
-export const removeImage = (id, token) =>
+export const removeImage = (id: string, token: string): Promise<AxiosResponse> =>
     axios.delete(`https://testdb-8e20.restdb.io/rest/discs/${id}`, {
         headers: {
             Authorization: `Bearer ${token}`,

@@ -36,8 +36,8 @@ root.render(
                                 clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
                                 authorizationParams={{
                                     redirect_uri: window.location.origin,
-                                    audience: "my-discs",
-                                    scope: "write:discs"
+                                    audience: 'my-discs',
+                                    scope: 'write:discs',
                                 }}
                             >
                                 <Suspense fallback={<div>Loading...</div>}>

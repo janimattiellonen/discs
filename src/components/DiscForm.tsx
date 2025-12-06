@@ -148,7 +148,10 @@ function ControlledDateField({
             control={control}
             name={name}
             defaultValue={null}
-            render={({ field: { ref, onBlur, value, ...field }, fieldState }) => (
+            render={({
+                field: { ref, onBlur, value, ...field },
+                fieldState,
+            }) => (
                 <DesktopDatePicker
                     {...field}
                     value={(value as Date) || null}

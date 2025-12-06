@@ -3,21 +3,21 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@mui/material/Button';
 
 export function Login(): React.JSX.Element {
-  const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
 
-  return (
-    <div>
-      {isAuthenticated && <Button onClick={() => logout()}>Sign out</Button>}
+    return (
+        <div>
+            {isAuthenticated && <Button onClick={() => logout()}>Sign out</Button>}
 
-      {!isAuthenticated && (
-        <Button
-          onClick={async () => {
-            await loginWithRedirect();
-          }}
-        >
-          Sign in
-        </Button>
-      )}
-    </div>
-  );
+            {!isAuthenticated && (
+                <Button
+                    onClick={async () => {
+                        await loginWithRedirect();
+                    }}
+                >
+                    Sign in
+                </Button>
+            )}
+        </div>
+    );
 }

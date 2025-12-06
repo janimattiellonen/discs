@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Reorder } from 'framer-motion';
-import { Controller, Control, useFieldArray, useForm, RegisterOptions } from 'react-hook-form';
+import { Controller, Control, useFieldArray, useForm, RegisterOptions, Path, FieldArrayPath } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -20,12 +20,10 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import { defaultDiscValues, fetchDiscDataAsync, markSavedAsAcknowledged } from '../ducks/discs';
-
 import { DraggableImage } from './DraggableImage';
 import { ImageUpload } from './ImageUpload';
 import { DiscSavedDialog } from './DiscSavedDialog';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useReferenceData, useImageUpload, useDiscForm } from '../contexts';
 
 interface DiscImage {
     id: string;
@@ -68,13 +66,13 @@ interface DiscFormValues {
 }
 
 interface DiscFormProps {
-    disc?: Partial<DiscFormValues>;
-    saveHandler: (data: Partial<DiscFormValues>) => void;
+    disc?: Partial<DiscFormValues> | Record<string, unknown>;
+    saveHandler: (data: Partial<DiscFormValues> | Record<string, unknown>) => void;
     onSuccess?: () => void;
 }
 
 interface ControlledFieldProps {
-    name: string;
+    name: Path<DiscFormValues>;
     label: string;
     labelPlacement?: 'end' | 'start' | 'top' | 'bottom';
     control: Control<DiscFormValues>;
@@ -83,12 +81,12 @@ interface ControlledFieldProps {
 
 interface ControlledDateFieldProps {
     control: Control<DiscFormValues>;
-    name: string;
+    name: Path<DiscFormValues>;
     label: string;
 }
 
 interface ControlledTextFieldProps {
-    name: string;
+    name: Path<DiscFormValues>;
     label: string;
     labelPlacement?: string;
     control: Control<DiscFormValues>;
@@ -101,10 +99,17 @@ interface ErrorProps {
     text: string;
 }
 
-function ControlledField({ name, label, labelPlacement, control, RenderComponent, ...rest }: ControlledFieldProps): React.JSX.Element {
+function ControlledField({
+    name,
+    label,
+    labelPlacement,
+    control,
+    RenderComponent,
+    ...rest
+}: ControlledFieldProps): React.JSX.Element {
     return (
         <Controller
-            name={name as any}
+            name={name}
             control={control}
             render={({ field }) => (
                 <FormControlLabel
@@ -121,7 +126,7 @@ function ControlledDateField({ control, name, label }: ControlledDateFieldProps)
     return (
         <Controller
             control={control}
-            name={name as any}
+            name={name}
             defaultValue={null}
             render={({ field: { ref, onBlur, ...field }, fieldState }) => (
                 <DesktopDatePicker
@@ -146,12 +151,20 @@ function ControlledDateField({ control, name, label }: ControlledDateFieldProps)
     );
 }
 
-function ControlledTextField({ name, label, labelPlacement, control, rules, errorComponent, ...rest }: ControlledTextFieldProps): React.JSX.Element {
+function ControlledTextField({
+    name,
+    label,
+    labelPlacement,
+    control,
+    rules,
+    errorComponent,
+    ...rest
+}: ControlledTextFieldProps): React.JSX.Element {
     return (
         <div className="block mt-4">
             <Controller
                 rules={rules}
-                name={name as any}
+                name={name}
                 control={control}
                 render={({ field }) => <TextField fullWidth className="w-max" label={label} {...field} {...rest} />}
             />
@@ -169,28 +182,29 @@ function Error({ text }: ErrorProps): React.JSX.Element {
 }
 
 export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React.JSX.Element {
-    const manufacturers = useAppSelector((state) => state.discs.data?.manufacturers || []);
-    const materials = useAppSelector((state) => (state.discs.data?.materials as any[])?.map((material: any) => material.name) || []);
-    const saved = useAppSelector((state) => state.discs.saved);
-
-    // Because this is no longer used, any uploaded image is not automatically shown on the form
-    // I need to add the new images to the fieldArray somehow
-    const uploadedImages = useAppSelector((state) => state.images?.uploadedImages || []);
+    const { manufacturers, materials, fetchData } = useReferenceData();
+    const { saved, markSavedAsAcknowledged } = useDiscForm();
+    const { uploadedImages } = useImageUpload();
 
     const [isImageUploadVisible, setIsImageUploadVisible] = useState<boolean>(false);
     const [isDiscSavedDialogVisible, setIsDiscSavedDialogVisible] = useState<boolean>(false);
-
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
         setIsDiscSavedDialogVisible(saved);
     }, [saved]);
 
     useEffect(() => {
-        dispatch(fetchDiscDataAsync());
-    }, [dispatch]);
+        fetchData();
+    }, [fetchData]);
 
-    const defaultValues = disc?.name ? disc : (defaultDiscValues as unknown as Partial<DiscFormValues>);
+    const defaultValues: Partial<DiscFormValues> = (disc?.name
+        ? disc
+        : {
+              name: '',
+              type: '',
+              manufacturer: '',
+              image: [],
+          }) as Partial<DiscFormValues>;
 
     const {
         control,
@@ -204,8 +218,8 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
     });
 
     const { fields, append, remove, move } = useFieldArray({
-        control: control as any,
-        name: 'image',
+        control,
+        name: 'image' as FieldArrayPath<DiscFormValues>,
     });
 
     useEffect(() => {
@@ -231,7 +245,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
 
         const formatDate = (date: Date | string): string => format(new Date(date), 'dd.MM.yyyy');
 
-        clonedData.image = clonedData.image.map((image: DiscImage) => image.id) as any;
+        clonedData.image = clonedData.image.map((image: DiscImage) => image.id) as unknown as DiscImage[];
 
         if (clonedData.glide === '') {
             clonedData.glide = undefined;
@@ -265,7 +279,7 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                 open={isDiscSavedDialogVisible}
                 handleClose={() => {
                     setIsDiscSavedDialogVisible(false);
-                    dispatch(markSavedAsAcknowledged());
+                    markSavedAsAcknowledged();
 
                     if (onSuccess) {
                         onSuccess();

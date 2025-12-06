@@ -8,8 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
 
 import Button from '@mui/material/Button';
-import { uploadImageAsync } from '../ducks/images';
-import { useAppDispatch } from '../app/hooks';
+import { useImageUpload } from '../contexts';
 
 interface ImageUploadProps {
     handleClose: () => void;
@@ -24,7 +23,7 @@ export function ImageUpload({ handleClose, open }: ImageUploadProps): React.JSX.
     const { getIdTokenClaims } = useAuth0();
 
     const { register, handleSubmit } = useForm<ImageFormData>();
-    const dispatch = useAppDispatch();
+    const { uploadImage } = useImageUpload();
 
     const onSubmit = (data: ImageFormData): void => {
         (async () => {
@@ -39,7 +38,9 @@ export function ImageUpload({ handleClose, open }: ImageUploadProps): React.JSX.
                 formData.append('image', file, file.name);
             });
 
-            dispatch(uploadImageAsync({ formData, token }));
+            if (token) {
+                await uploadImage(formData, token);
+            }
         })();
     };
 

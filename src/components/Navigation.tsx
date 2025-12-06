@@ -35,7 +35,7 @@ interface DiscStats {
 }
 
 interface NavigationProps {
-    stats: DiscStats;
+    stats: DiscStats | null;
 }
 
 const StyledListItem = styled(ListItem)`
@@ -69,6 +69,7 @@ const Li = styled.li`
     display: inline-block;
     margin-right: 20px;
     line-height: 30px;
+
     a {
         color: #337ab7;
     }
@@ -78,7 +79,7 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
     const showSideNav = useMediaQuery('(min-width:600px)');
     const { isAuthenticated } = useAuth0();
 
-    const getStats = (key: keyof DiscStats): number | null => (stats[key] ? stats[key] ?? null : null);
+    const getStats = (key: keyof DiscStats): number | null => (stats && stats[key] ? stats[key] ?? null : null);
 
     const spentMoney = getStats('spentMoney');
 
@@ -168,9 +169,11 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
                         <StyledListItem>
                             <Link to="/gallery?latest=true">Latest (10)</Link>
                         </StyledListItem>
-                        {isAuthenticated && spentMoney > 0 && <StyledListItem>{currency(spentMoney)}</StyledListItem>}
+                        {isAuthenticated && spentMoney !== null && spentMoney > 0 && (
+                            <StyledListItem>{currency(spentMoney)}</StyledListItem>
+                        )}
 
-                        {isAuthenticated && sales > 0 && (
+                        {isAuthenticated && sales !== null && sales > 0 && (
                             <StyledListItem>
                                 {currency(sales)}
                                 <span style={{ paddingLeft: 5 }}> </span>
@@ -221,8 +224,10 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
                                 <Li>
                                     <Link to="/gallery?latest=true">Latest (10)</Link>
                                 </Li>
-                                {isAuthenticated && spentMoney > 0 && <Li>{currency(spentMoney)}</Li>}
-                                {isAuthenticated && sales > 0 && <Li>{currency(sales)} (sales)</Li>}
+                                {isAuthenticated && spentMoney !== null && spentMoney > 0 && (
+                                    <Li>{currency(spentMoney)}</Li>
+                                )}
+                                {isAuthenticated && sales !== null && sales > 0 && <Li>{currency(sales)} (sales)</Li>}
                             </Ul>
                         </Toolbar>
                     </AppBar>

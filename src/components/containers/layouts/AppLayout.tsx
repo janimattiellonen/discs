@@ -3,21 +3,21 @@ import React, { ReactNode, useEffect } from 'react';
 import NoSsr from '@mui/base/NoSsr';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Navigation } from '../../Navigation';
+import { useReferenceData } from '../../../contexts';
 
 interface AppLayoutProps {
     children: ReactNode;
-    stats: any;
-    fetchDiscStats: () => void;
 }
 
-function AppLayout({ children, stats, fetchDiscStats }: AppLayoutProps): React.JSX.Element {
+function AppLayout({ children }: AppLayoutProps): React.JSX.Element {
     const showSideNav = useMediaQuery('(min-width:600px)');
+    const { stats, fetchStats } = useReferenceData();
 
     const drawerWidth = showSideNav ? 220 : 0;
 
     useEffect(() => {
-        fetchDiscStats();
-    }, [fetchDiscStats]);
+        fetchStats();
+    }, [fetchStats]);
 
     return (
         <NoSsr>

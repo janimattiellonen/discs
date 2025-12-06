@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -41,5 +43,3 @@
         transform: translateY(0px);
     }
 }
-
-

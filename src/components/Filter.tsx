@@ -18,7 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 
 import Paper from '@mui/material/Paper';
-import { useAppSelector } from '../app/hooks';
+import { useReferenceData } from '../contexts';
 
 interface FilterFormValues {
     type: string;
@@ -73,7 +73,6 @@ interface ControlledTextFieldProps {
     labelPlacement: string;
     control: Control<FilterFormValues>;
     handleOnChange: () => void;
-    variant?: 'outlined' | 'filled' | 'standard';
 }
 
 const SearchField = styled(TextField)({
@@ -136,11 +135,11 @@ function ControlledTextField({
                 <SearchField
                     label={label}
                     {...field}
-                    onChange={(data: any) => {
+                    onChange={(data: React.ChangeEvent<HTMLInputElement>) => {
                         field.onChange(data);
                         handleOnChange();
                     }}
-                    {...(rest as any)}
+                    {...rest}
                 />
             )}
         />
@@ -173,23 +172,23 @@ const mapTermType = (params?: FilterParams): string | null => {
 export function Filter({ handleChange, params }: FilterProps): React.JSX.Element {
     const isExtraMarginNeeded = useMediaQuery('(max-width:444px)');
 
-    const manufacturers = useAppSelector((state) => state.discs.data?.manufacturers || []);
+    const { manufacturers } = useReferenceData();
 
     const { control, getValues, setValue } = useForm<FilterFormValues>({
         defaultValues: {
             type: params?.type || '',
             manufacturer: params?.manufacturer || '',
-            collection: '',
-            forSale: '',
-            holeInOne: '',
-            ownStamp: '',
-            donated: '',
-            lost: '',
-            missing: '',
+            collection: false,
+            forSale: false,
+            holeInOne: false,
+            ownStamp: false,
+            donated: false,
+            lost: false,
+            missing: false,
             name: '',
-            favourite: '',
-            glow: '',
-            huk: '',
+            favourite: false,
+            glow: false,
+            huk: false,
             termType: mapTermType(params),
         },
     });
@@ -239,7 +238,6 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
         <div>
             <form>
                 <ControlledTextField
-                    variant="outlined"
                     name="name"
                     label=""
                     labelPlacement="start"

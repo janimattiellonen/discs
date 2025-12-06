@@ -13,10 +13,8 @@ import DiscGallery from './DiscGallery';
 
 import { Filter } from './Filter';
 
-import { fetchDiscsAsync } from '../ducks/discs';
-
 import { theme } from '../util/theme';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useDiscs, useReferenceData } from '../contexts';
 
 const MorePanel = styled('div')({
     width: '50%',
@@ -49,18 +47,12 @@ const CenterP = styled.p({
 
 const showMoreButton = (discCount: number, total: number): boolean => discCount < total;
 
-interface DiscGalleryPageProps {
-    fetchDiscData: () => void;
-    loadingDiscs: boolean;
-}
-
-export function DiscGalleryPage({ fetchDiscData, loadingDiscs }: DiscGalleryPageProps): React.JSX.Element | null {
+export function DiscGalleryPage(): React.JSX.Element | null {
     const { getAccessTokenSilently } = useAuth0();
-    const dispatch = useAppDispatch();
+    const { discs, pagination, fetchDiscs, loading } = useDiscs();
+    const { fetchData } = useReferenceData();
 
-    const discsState = useAppSelector((state) => state.discs);
-
-    const { count, discs, skip, total } = discsState;
+    const { count, skip, total } = pagination;
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -69,23 +61,25 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }: DiscGalleryPage
 
     const limit = Number(queryParams.limit) || 25;
     const offset = Number(queryParams.offset) || 0;
-    const type = queryParams.type as string | null || null;
+    const type = (Array.isArray(queryParams.type) ? queryParams.type[0] : queryParams.type) || null;
 
-    const available = queryParams.available || null;
-    const missing = queryParams.missing || null;
-    const sold = queryParams.sold || null;
-    const forSale = queryParams.forSale || null;
-    const broken = queryParams.broken || null;
-    const donated = queryParams.donated || null;
-    const collection = queryParams.collection || null;
-    const ownStamp = queryParams.ownStamp || null;
-    const holeInOne = queryParams.holeInOne || null;
-    const latest = queryParams.latest || null;
-    const name = queryParams.name || null;
-    const manufacturer = queryParams.manufacturer || null;
-    const favourite = queryParams.favourite || null;
-    const glow = queryParams.glow || null;
-    const huk = queryParams.huk || null;
+    const available = (Array.isArray(queryParams.available) ? queryParams.available[0] : queryParams.available) || null;
+    const missing = (Array.isArray(queryParams.missing) ? queryParams.missing[0] : queryParams.missing) || null;
+    const sold = (Array.isArray(queryParams.sold) ? queryParams.sold[0] : queryParams.sold) || null;
+    const forSale = (Array.isArray(queryParams.forSale) ? queryParams.forSale[0] : queryParams.forSale) || null;
+    const broken = (Array.isArray(queryParams.broken) ? queryParams.broken[0] : queryParams.broken) || null;
+    const donated = (Array.isArray(queryParams.donated) ? queryParams.donated[0] : queryParams.donated) || null;
+    const collection =
+        (Array.isArray(queryParams.collection) ? queryParams.collection[0] : queryParams.collection) || null;
+    const ownStamp = (Array.isArray(queryParams.ownStamp) ? queryParams.ownStamp[0] : queryParams.ownStamp) || null;
+    const holeInOne = (Array.isArray(queryParams.holeInOne) ? queryParams.holeInOne[0] : queryParams.holeInOne) || null;
+    const latest = (Array.isArray(queryParams.latest) ? queryParams.latest[0] : queryParams.latest) || null;
+    const name = (Array.isArray(queryParams.name) ? queryParams.name[0] : queryParams.name) || null;
+    const manufacturer =
+        (Array.isArray(queryParams.manufacturer) ? queryParams.manufacturer[0] : queryParams.manufacturer) || null;
+    const favourite = (Array.isArray(queryParams.favourite) ? queryParams.favourite[0] : queryParams.favourite) || null;
+    const glow = (Array.isArray(queryParams.glow) ? queryParams.glow[0] : queryParams.glow) || null;
+    const huk = (Array.isArray(queryParams.huk) ? queryParams.huk[0] : queryParams.huk) || null;
 
     const loadMore = () => {
         navigate(
@@ -114,35 +108,33 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }: DiscGalleryPage
     };
 
     useEffect(() => {
-        fetchDiscData();
-    }, [fetchDiscData]);
+        fetchData();
+    }, [fetchData]);
 
     useEffect(() => {
         (async () => {
-            dispatch(
-                fetchDiscsAsync({
-                    query: {
-                        type,
-                        available,
-                        missing,
-                        sold,
-                        forSale,
-                        broken,
-                        donated,
-                        collection,
-                        ownStamp,
-                        holeInOne,
-                        latest,
-                        name,
-                        manufacturer,
-                        favourite,
-                        glow,
-                        huk,
-                    },
-                    limit,
-                    offset,
-                }),
-            );
+            await fetchDiscs({
+                query: {
+                    type,
+                    available,
+                    missing,
+                    sold,
+                    forSale,
+                    broken,
+                    donated,
+                    collection,
+                    ownStamp,
+                    holeInOne,
+                    latest,
+                    name,
+                    manufacturer,
+                    favourite,
+                    glow,
+                    huk,
+                },
+                limit,
+                offset,
+            });
         })();
     }, [
         limit,
@@ -164,7 +156,7 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }: DiscGalleryPage
         glow,
         huk,
         getAccessTokenSilently,
-        dispatch,
+        fetchDiscs,
     ]);
 
     const handleChange = (value: string): void => {
@@ -198,9 +190,9 @@ export function DiscGalleryPage({ fetchDiscData, loadingDiscs }: DiscGalleryPage
                             variant="contained"
                             color="primary"
                             onClick={() => loadMore()}
-                            disabled={loadingDiscs}
+                            disabled={loading}
                         >
-                            {loadingDiscs ? 'Loading...' : 'More...'}
+                            {loading ? 'Loading...' : 'More...'}
                         </MoreButton>
                     </div>
                 </MorePanel>

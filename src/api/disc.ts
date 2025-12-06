@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 import { createQueryString } from '../util/restDbQuery';
-import { Disc, DiscFormData } from '../types';
+import { Disc } from '../types';
 
 import { removeImage } from './image';
 
@@ -51,7 +51,7 @@ export default {
         return axios.get('https://www-testdb-8e20.restdb.io/data').then((res) => res.data);
     },
 
-    addDisc(data: DiscFormData, token: string): Promise<AxiosResponse<Disc>> {
+    addDisc(data: Record<string, unknown>, token: string): Promise<AxiosResponse<Disc>> {
         return axios.post<Disc>('https://testdb-8e20.restdb.io/rest/discs', data, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ export default {
         });
     },
 
-    updateDisc(id: string, data: Partial<DiscFormData>, token: string): Promise<AxiosResponse<Disc>> {
+    updateDisc(id: string, data: Record<string, unknown>, token: string): Promise<AxiosResponse<Disc>> {
         return axios.put<Disc>(`https://testdb-8e20.restdb.io/rest/discs/${id}`, data, {
             headers: {
                 Authorization: `Bearer ${token}`,

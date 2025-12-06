@@ -99,7 +99,14 @@ interface ErrorProps {
     text: string;
 }
 
-function ControlledField({ name, label, labelPlacement, control, RenderComponent, ...rest }: ControlledFieldProps): React.JSX.Element {
+function ControlledField({
+    name,
+    label,
+    labelPlacement,
+    control,
+    RenderComponent,
+    ...rest
+}: ControlledFieldProps): React.JSX.Element {
     return (
         <Controller
             name={name as any}
@@ -144,7 +151,15 @@ function ControlledDateField({ control, name, label }: ControlledDateFieldProps)
     );
 }
 
-function ControlledTextField({ name, label, labelPlacement, control, rules, errorComponent, ...rest }: ControlledTextFieldProps): React.JSX.Element {
+function ControlledTextField({
+    name,
+    label,
+    labelPlacement,
+    control,
+    rules,
+    errorComponent,
+    ...rest
+}: ControlledTextFieldProps): React.JSX.Element {
     return (
         <div className="block mt-4">
             <Controller

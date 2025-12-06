@@ -49,7 +49,7 @@ export function ReferenceDataProvider({ children }: ReferenceDataProviderProps):
                 JSON.stringify({
                     created: new Date().toISOString(),
                     stats: response,
-                })
+                }),
             );
             setStats(response as DiscStats);
         }
@@ -108,7 +108,7 @@ export function ReferenceDataProvider({ children }: ReferenceDataProviderProps):
                 JSON.stringify({
                     created: new Date().toISOString(),
                     data: dataToCache,
-                })
+                }),
             );
 
             setManufacturers(dataToCache.manufacturers);
@@ -129,7 +129,7 @@ export function ReferenceDataProvider({ children }: ReferenceDataProviderProps):
             fetchData,
             invalidateCache,
         }),
-        [stats, manufacturers, materials, types, loading, error, fetchStats, fetchData, invalidateCache]
+        [stats, manufacturers, materials, types, loading, error, fetchStats, fetchData, invalidateCache],
     );
 
     return <ReferenceDataContext.Provider value={value}>{children}</ReferenceDataContext.Provider>;

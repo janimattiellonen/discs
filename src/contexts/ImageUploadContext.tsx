@@ -31,7 +31,7 @@ export function ImageUploadProvider({ children }: ImageUploadProviderProps): Rea
                 setUploadedImages((prev) => [...prev, ...result.ids!]);
             }
         },
-        [execute]
+        [execute],
     );
 
     // Clear uploaded images list (e.g., after form submission)
@@ -47,7 +47,7 @@ export function ImageUploadProvider({ children }: ImageUploadProviderProps): Rea
             uploadImage,
             clearUploadedImages,
         }),
-        [uploadedImages, uploading, error, uploadImage, clearUploadedImages]
+        [uploadedImages, uploading, error, uploadImage, clearUploadedImages],
     );
 
     return <ImageUploadContext.Provider value={value}>{children}</ImageUploadContext.Provider>;

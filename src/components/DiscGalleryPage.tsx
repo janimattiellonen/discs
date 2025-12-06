@@ -69,12 +69,14 @@ export function DiscGalleryPage(): React.JSX.Element | null {
     const forSale = (Array.isArray(queryParams.forSale) ? queryParams.forSale[0] : queryParams.forSale) || null;
     const broken = (Array.isArray(queryParams.broken) ? queryParams.broken[0] : queryParams.broken) || null;
     const donated = (Array.isArray(queryParams.donated) ? queryParams.donated[0] : queryParams.donated) || null;
-    const collection = (Array.isArray(queryParams.collection) ? queryParams.collection[0] : queryParams.collection) || null;
+    const collection =
+        (Array.isArray(queryParams.collection) ? queryParams.collection[0] : queryParams.collection) || null;
     const ownStamp = (Array.isArray(queryParams.ownStamp) ? queryParams.ownStamp[0] : queryParams.ownStamp) || null;
     const holeInOne = (Array.isArray(queryParams.holeInOne) ? queryParams.holeInOne[0] : queryParams.holeInOne) || null;
     const latest = (Array.isArray(queryParams.latest) ? queryParams.latest[0] : queryParams.latest) || null;
     const name = (Array.isArray(queryParams.name) ? queryParams.name[0] : queryParams.name) || null;
-    const manufacturer = (Array.isArray(queryParams.manufacturer) ? queryParams.manufacturer[0] : queryParams.manufacturer) || null;
+    const manufacturer =
+        (Array.isArray(queryParams.manufacturer) ? queryParams.manufacturer[0] : queryParams.manufacturer) || null;
     const favourite = (Array.isArray(queryParams.favourite) ? queryParams.favourite[0] : queryParams.favourite) || null;
     const glow = (Array.isArray(queryParams.glow) ? queryParams.glow[0] : queryParams.glow) || null;
     const huk = (Array.isArray(queryParams.huk) ? queryParams.huk[0] : queryParams.huk) || null;

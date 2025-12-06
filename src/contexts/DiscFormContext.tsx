@@ -95,7 +95,7 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
                 setDisc(buildObj);
             }
         },
-        [execute]
+        [execute],
     );
 
     // Add new disc
@@ -115,7 +115,7 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
                 setSaved(true);
             }
         },
-        [execute]
+        [execute],
     );
 
     // Update existing disc
@@ -131,7 +131,7 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
 
             setSaved(true);
         },
-        [execute]
+        [execute],
     );
 
     // Remove image from disc
@@ -139,7 +139,7 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
         async (id: string, imageId: string, token: string): Promise<void> => {
             await executeImageRemoval(() => discApi.removeImageFromDisc(id, imageId, token));
         },
-        [executeImageRemoval]
+        [executeImageRemoval],
     );
 
     // Reset disc to default values
@@ -168,7 +168,19 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
             resetDisc,
             markSavedAsAcknowledged,
         }),
-        [disc, savedDiscId, saved, loading, error, fetchDisc, addNewDisc, updateDisc, removeDiscImage, resetDisc, markSavedAsAcknowledged]
+        [
+            disc,
+            savedDiscId,
+            saved,
+            loading,
+            error,
+            fetchDisc,
+            addNewDisc,
+            updateDisc,
+            removeDiscImage,
+            resetDisc,
+            markSavedAsAcknowledged,
+        ],
     );
 
     return <DiscFormContext.Provider value={value}>{children}</DiscFormContext.Provider>;

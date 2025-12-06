@@ -58,7 +58,7 @@ export function DiscsProvider({ children }: DiscsProviderProps): React.JSX.Eleme
                 });
             }
         },
-        [execute]
+        [execute],
     );
 
     const value = useMemo(
@@ -69,7 +69,7 @@ export function DiscsProvider({ children }: DiscsProviderProps): React.JSX.Eleme
             error,
             fetchDiscs,
         }),
-        [discs, pagination, loading, error, fetchDiscs]
+        [discs, pagination, loading, error, fetchDiscs],
     );
 
     return <DiscsContext.Provider value={value}>{children}</DiscsContext.Provider>;

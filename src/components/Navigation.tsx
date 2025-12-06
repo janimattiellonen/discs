@@ -169,7 +169,9 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
                         <StyledListItem>
                             <Link to="/gallery?latest=true">Latest (10)</Link>
                         </StyledListItem>
-                        {isAuthenticated && spentMoney !== null && spentMoney > 0 && <StyledListItem>{currency(spentMoney)}</StyledListItem>}
+                        {isAuthenticated && spentMoney !== null && spentMoney > 0 && (
+                            <StyledListItem>{currency(spentMoney)}</StyledListItem>
+                        )}
 
                         {isAuthenticated && sales !== null && sales > 0 && (
                             <StyledListItem>
@@ -222,7 +224,9 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
                                 <Li>
                                     <Link to="/gallery?latest=true">Latest (10)</Link>
                                 </Li>
-                                {isAuthenticated && spentMoney !== null && spentMoney > 0 && <Li>{currency(spentMoney)}</Li>}
+                                {isAuthenticated && spentMoney !== null && spentMoney > 0 && (
+                                    <Li>{currency(spentMoney)}</Li>
+                                )}
                                 {isAuthenticated && sales !== null && sales > 0 && <Li>{currency(sales)} (sales)</Li>}
                             </Ul>
                         </Toolbar>

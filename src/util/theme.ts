@@ -9,5 +9,7 @@ const breakpoints: Record<BreakpointKey, number> = {
 
 export const theme = {
     mq: (breakpoint: BreakpointKey | number, type: MediaQueryType = 'min'): string =>
-        `@media (${type}-width: ${typeof breakpoint === 'string' && breakpoints[breakpoint] ? breakpoints[breakpoint] : breakpoint}px)`,
+        `@media (${type}-width: ${
+            typeof breakpoint === 'string' && breakpoints[breakpoint] ? breakpoints[breakpoint] : breakpoint
+        }px)`,
 };

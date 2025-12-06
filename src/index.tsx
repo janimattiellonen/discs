@@ -5,12 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import {
-    DiscsProvider,
-    DiscFormProvider,
-    ReferenceDataProvider,
-    ImageUploadProvider,
-} from './contexts';
+import { DiscsProvider, DiscFormProvider, ReferenceDataProvider, ImageUploadProvider } from './contexts';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 

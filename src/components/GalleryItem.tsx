@@ -166,10 +166,7 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
         }
 
         const tooltip = (
-            <Tooltip
-                title={disc.missing_description || disc['Donation description'] || ''}
-                placement="bottom"
-            >
+            <Tooltip title={disc.missing_description || disc['Donation description'] || ''} placement="bottom">
                 <span>{disc.missing_description || disc['Donation description']}</span>
             </Tooltip>
         );
@@ -209,9 +206,7 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
 
             element = (
                 <>
-                    {Array.isArray(disc.image) && disc.image.length > 1 && (
-                        <DiscImageCopy src={copySrc} alt="" />
-                    )}
+                    {Array.isArray(disc.image) && disc.image.length > 1 && <DiscImageCopy src={copySrc} alt="" />}
 
                     <DiscImage src={src} alt="" />
                 </>

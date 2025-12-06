@@ -15,14 +15,14 @@ export function AddDiscPage(): React.JSX.Element {
         resetDisc();
     }, [resetDisc]);
 
-    const saveHandler = async (data: any): Promise<void> => {
+    const saveHandler = async (data: Record<string, unknown>): Promise<void> => {
         const tokenData = await getIdTokenClaims();
 
         // eslint-disable-next-line no-underscore-dangle
         const token = tokenData?.__raw;
 
         if (token) {
-            await addNewDisc(data, token);
+            await addNewDisc(data as any, token);
         }
     };
     return (

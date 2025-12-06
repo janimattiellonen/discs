@@ -22,14 +22,14 @@ export function EditDiscPage(): React.JSX.Element {
         return <div>LOADING...</div>;
     }
 
-    const saveHandler = async (data: any): Promise<void> => {
+    const saveHandler = async (data: Record<string, unknown>): Promise<void> => {
         const tokenData = await getIdTokenClaims();
 
         // eslint-disable-next-line no-underscore-dangle
         const token = tokenData?.__raw;
 
         if (token && id) {
-            await updateDisc(id, data, token);
+            await updateDisc(id, data as any, token);
         }
     };
 

@@ -23,7 +23,7 @@ interface GetDiscsResponse {
 export default {
     getDisc(id: string): Promise<AxiosResponse<Disc>> {
         return axios.get<Disc>(
-            `https://testdb-8e20.restdb.io/rest/discs/${id}?metafields=true&apikey=${process.env.REACT_APP_RESTDB_API_KEY}`,
+            `https://testdb-8e20.restdb.io/rest/discs/${id}?metafields=true&apikey=${import.meta.env.VITE_RESTDB_API_KEY}`,
         );
     },
     getDiscs({ query, limit, offset, order }: GetDiscsParams): Promise<GetDiscsResponse> {
@@ -36,7 +36,7 @@ export default {
 
         return axios
             .get<GetDiscsResponse>(
-                `https://testdb-8e20.restdb.io/rest/discs?metafields=true&apikey=${process.env.REACT_APP_RESTDB_API_KEY}&${queryString}`,
+                `https://testdb-8e20.restdb.io/rest/discs?metafields=true&apikey=${import.meta.env.VITE_RESTDB_API_KEY}&${queryString}`,
             )
             .then((res) => res.data);
     },

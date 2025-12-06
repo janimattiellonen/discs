@@ -147,7 +147,7 @@ function ControlledDateField({
         <Controller
             control={control}
             name={name}
-            defaultValue={null as any}
+            defaultValue={null}
             render={({ field: { ref, onBlur, value, ...field }, fieldState }) => (
                 <DesktopDatePicker
                     {...field}
@@ -159,8 +159,8 @@ function ControlledDateField({
                         textField: {
                             fullWidth: true,
                             style: { width: '15em' },
-                            onBlur: onBlur,
-                            name: name,
+                            onBlur,
+                            name,
                             error: !!fieldState.error,
                             helperText: fieldState.error?.message,
                         },

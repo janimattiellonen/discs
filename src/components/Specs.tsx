@@ -4,7 +4,8 @@ import { Attribute } from './Attribute';
 import { Disc } from '../types';
 import { number } from '../util/numbers';
 
-const renderAttribute = (attribute: number | string): string => number(attribute);
+const renderAttribute = (attribute: number | string): string =>
+    number(attribute);
 
 interface SpecsProps {
     disc?: Partial<Disc> & {

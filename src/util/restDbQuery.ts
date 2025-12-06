@@ -42,7 +42,12 @@ const mapType = (type: string): string => {
     return types[type as DiscTypeKey] ? types[type as DiscTypeKey] : '';
 };
 
-export const createQueryString = ({ query, limit, offset, order }: QueryStringParams): string => {
+export const createQueryString = ({
+    query,
+    limit,
+    offset,
+    order,
+}: QueryStringParams): string => {
     const output: string[] = [];
 
     let limitValue = limit;
@@ -142,5 +147,7 @@ export const createQueryString = ({ query, limit, offset, order }: QueryStringPa
         }
     }
 
-    return `max=${limitValue}&skip=${offset}&q={${queryParams.join(',')}}&h={${hints.join(',')}}&totals=true`;
+    return `max=${limitValue}&skip=${offset}&q={${queryParams.join(
+        ',',
+    )}}&h={${hints.join(',')}}&totals=true`;
 };

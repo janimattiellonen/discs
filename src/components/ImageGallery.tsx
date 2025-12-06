@@ -34,7 +34,8 @@ export const wrap = (min: number, max: number, v: number): number => {
  * just distance thresholds and velocity > 0.
  */
 const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number): number => Math.abs(offset) * velocity;
+const swipePower = (offset: number, velocity: number): number =>
+    Math.abs(offset) * velocity;
 
 interface ImageGalleryProps {
     images: string[];
@@ -74,7 +75,10 @@ export function ImageGallery({ images }: ImageGalleryProps): React.JSX.Element {
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={1}
-                    onDragEnd={(_e: MouseEvent | TouchEvent | PointerEvent, { offset, velocity }: PanInfo) => {
+                    onDragEnd={(
+                        _e: MouseEvent | TouchEvent | PointerEvent,
+                        { offset, velocity }: PanInfo,
+                    ) => {
                         const swipe = swipePower(offset.x, velocity.x);
 
                         if (swipe < -swipeConfidenceThreshold) {

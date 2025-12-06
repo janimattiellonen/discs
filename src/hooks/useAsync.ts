@@ -32,21 +32,27 @@ export function useAsync<T>(): UseAsyncReturn<T> {
         error: null,
     });
 
-    const execute = useCallback(async (asyncFunction: () => Promise<T>): Promise<T | null> => {
-        setState({ data: null, loading: true, error: null });
+    const execute = useCallback(
+        async (asyncFunction: () => Promise<T>): Promise<T | null> => {
+            setState({ data: null, loading: true, error: null });
 
-        try {
-            const data = await asyncFunction();
-            setState({ data, loading: false, error: null });
-            return data;
-        } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-            setState({ data: null, loading: false, error: errorMessage });
-            // eslint-disable-next-line no-console
-            console.error('useAsync error:', error);
-            return null;
-        }
-    }, []);
+            try {
+                const data = await asyncFunction();
+                setState({ data, loading: false, error: null });
+                return data;
+            } catch (error) {
+                const errorMessage =
+                    error instanceof Error
+                        ? error.message
+                        : 'An unknown error occurred';
+                setState({ data: null, loading: false, error: errorMessage });
+                // eslint-disable-next-line no-console
+                console.error('useAsync error:', error);
+                return null;
+            }
+        },
+        [],
+    );
 
     const reset = useCallback(() => {
         setState({ data: null, loading: false, error: null });

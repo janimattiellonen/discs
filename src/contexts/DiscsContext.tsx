@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useState,
+    useCallback,
+    ReactNode,
+    useMemo,
+} from 'react';
 import { Disc } from '../types';
 import { DiscsContextType, FetchDiscsParams, PaginationState } from './types';
 import { useAsync } from '../hooks/useAsync';
@@ -10,7 +17,9 @@ interface DiscsProviderProps {
     children: ReactNode;
 }
 
-export function DiscsProvider({ children }: DiscsProviderProps): React.JSX.Element {
+export function DiscsProvider({
+    children,
+}: DiscsProviderProps): React.JSX.Element {
     const [discs, setDiscs] = useState<Disc[]>([]);
     const [pagination, setPagination] = useState<PaginationState>({
         limit: 25,
@@ -72,7 +81,9 @@ export function DiscsProvider({ children }: DiscsProviderProps): React.JSX.Eleme
         [discs, pagination, loading, error, fetchDiscs],
     );
 
-    return <DiscsContext.Provider value={value}>{children}</DiscsContext.Provider>;
+    return (
+        <DiscsContext.Provider value={value}>{children}</DiscsContext.Provider>
+    );
 }
 
 export function useDiscs(): DiscsContextType {

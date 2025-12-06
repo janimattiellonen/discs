@@ -20,7 +20,10 @@ interface AnimatedProps {
     keyValue: string | number;
 }
 
-export const Animated = function ({ children, keyValue }: AnimatedProps): React.JSX.Element {
+export const Animated = function ({
+    children,
+    keyValue,
+}: AnimatedProps): React.JSX.Element {
     const [, updateState] = useState<Record<string, never>>();
     const forceUpdate = useCallback(() => updateState({}), []);
 

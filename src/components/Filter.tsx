@@ -169,7 +169,10 @@ const mapTermType = (params?: FilterParams): string | null => {
     return null;
 };
 
-export function Filter({ handleChange, params }: FilterProps): React.JSX.Element {
+export function Filter({
+    handleChange,
+    params,
+}: FilterProps): React.JSX.Element {
     const isExtraMarginNeeded = useMediaQuery('(max-width:444px)');
 
     const { manufacturers } = useReferenceData();
@@ -214,12 +217,16 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
         () =>
             debounce((nextValue) => {
                 const filtered = Object.entries(nextValue).filter(
-                    ([, value]) => value !== false && value !== '' && value !== null,
+                    ([, value]) =>
+                        value !== false && value !== '' && value !== null,
                 );
 
                 const asObjects = Object.fromEntries(filtered);
 
-                if (asObjects.termType && typeof asObjects.termType === 'string') {
+                if (
+                    asObjects.termType &&
+                    typeof asObjects.termType === 'string'
+                ) {
                     asObjects[asObjects.termType as string] = true;
                     delete asObjects.termType;
                 }
@@ -261,15 +268,21 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
                         <Controller
                             name="type"
                             control={control}
-                            render={({ field: { onChange, onBlur, name, value } }) => (
+                            render={({
+                                field: { onChange, onBlur, name, value },
+                            }) => (
                                 <FormControl
                                     style={{
                                         width: '150px',
                                         marginRight: '60px',
-                                        marginBottom: isExtraMarginNeeded ? '10px' : 0,
+                                        marginBottom: isExtraMarginNeeded
+                                            ? '10px'
+                                            : 0,
                                     }}
                                 >
-                                    <InputLabel id="demo-simple-select-label">Disc type</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">
+                                        Disc type
+                                    </InputLabel>
                                     <Select
                                         name={name}
                                         label="Disc type"
@@ -281,10 +294,18 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
                                         }}
                                     >
                                         <MenuItem value="">Select...</MenuItem>
-                                        <MenuItem value="putter">Putters</MenuItem>
-                                        <MenuItem value="midrange">Midranges</MenuItem>
-                                        <MenuItem value="fairwayDriver">Fairway drivers</MenuItem>
-                                        <MenuItem value="distanceDriver">Distance drivers</MenuItem>
+                                        <MenuItem value="putter">
+                                            Putters
+                                        </MenuItem>
+                                        <MenuItem value="midrange">
+                                            Midranges
+                                        </MenuItem>
+                                        <MenuItem value="fairwayDriver">
+                                            Fairway drivers
+                                        </MenuItem>
+                                        <MenuItem value="distanceDriver">
+                                            Distance drivers
+                                        </MenuItem>
                                     </Select>
                                 </FormControl>
                             )}
@@ -293,9 +314,13 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
                         <Controller
                             name="manufacturer"
                             control={control}
-                            render={({ field: { onChange, onBlur, name, value } }) => (
+                            render={({
+                                field: { onChange, onBlur, name, value },
+                            }) => (
                                 <FormControl style={{ width: '150px' }}>
-                                    <InputLabel id="demo-simple-select-label">Manufacturer</InputLabel>
+                                    <InputLabel id="demo-simple-select-label">
+                                        Manufacturer
+                                    </InputLabel>
                                     <Select
                                         name={name}
                                         label="Manufacturer"
@@ -308,7 +333,10 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
                                     >
                                         <MenuItem value="">Select...</MenuItem>
                                         {manufacturers.map((manufacturer) => (
-                                            <MenuItem key={`manufacturer-${manufacturer}`} value={manufacturer}>
+                                            <MenuItem
+                                                key={`manufacturer-${manufacturer}`}
+                                                value={manufacturer}
+                                            >
                                                 {manufacturer}
                                             </MenuItem>
                                         ))}
@@ -329,7 +357,9 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
                             <Controller
                                 name="termType"
                                 control={control}
-                                render={({ field: { onChange, onBlur, value } }) => (
+                                render={({
+                                    field: { onChange, onBlur, value },
+                                }) => (
                                     <RadioGroup
                                         style={{ display: 'inline' }}
                                         row
@@ -340,11 +370,31 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
                                             handleOnChange();
                                         }}
                                     >
-                                        <FormControlLabel value="available" control={<Radio />} label="Available" />
-                                        <FormControlLabel value="missing" control={<Radio />} label="Lost" />
-                                        <FormControlLabel value="donated" control={<Radio />} label="Donated" />{' '}
-                                        <FormControlLabel value="sold" control={<Radio />} label="Sold" />
-                                        <FormControlLabel value="forSale" control={<Radio />} label="For sale" />{' '}
+                                        <FormControlLabel
+                                            value="available"
+                                            control={<Radio />}
+                                            label="Available"
+                                        />
+                                        <FormControlLabel
+                                            value="missing"
+                                            control={<Radio />}
+                                            label="Lost"
+                                        />
+                                        <FormControlLabel
+                                            value="donated"
+                                            control={<Radio />}
+                                            label="Donated"
+                                        />{' '}
+                                        <FormControlLabel
+                                            value="sold"
+                                            control={<Radio />}
+                                            label="Sold"
+                                        />
+                                        <FormControlLabel
+                                            value="forSale"
+                                            control={<Radio />}
+                                            label="For sale"
+                                        />{' '}
                                     </RadioGroup>
                                 )}
                             />

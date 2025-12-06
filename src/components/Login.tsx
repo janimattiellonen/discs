@@ -7,7 +7,9 @@ export function Login(): React.JSX.Element {
 
     return (
         <div>
-            {isAuthenticated && <Button onClick={() => logout()}>Sign out</Button>}
+            {isAuthenticated && (
+                <Button onClick={() => logout()}>Sign out</Button>
+            )}
 
             {!isAuthenticated && (
                 <Button

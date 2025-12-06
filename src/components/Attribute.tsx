@@ -60,7 +60,11 @@ interface AttributeProps {
     children: ReactNode;
 }
 
-export function Attribute({ title, type, children }: AttributeProps): React.JSX.Element {
+export function Attribute({
+    title,
+    type,
+    children,
+}: AttributeProps): React.JSX.Element {
     return (
         <StyledAttribute type={type}>
             <h3 className="text-base text-center">{title}</h3>

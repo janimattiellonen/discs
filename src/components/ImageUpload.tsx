@@ -19,7 +19,10 @@ interface ImageFormData {
     image?: FileList;
 }
 
-export function ImageUpload({ handleClose, open }: ImageUploadProps): React.JSX.Element {
+export function ImageUpload({
+    handleClose,
+    open,
+}: ImageUploadProps): React.JSX.Element {
     const { getIdTokenClaims } = useAuth0();
 
     const { register, handleSubmit } = useForm<ImageFormData>();

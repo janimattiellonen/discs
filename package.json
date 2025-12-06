@@ -2,6 +2,10 @@
     "name": "discs-v2",
     "version": "0.1.0",
     "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=22.12.0"
+    },
     "dependencies": {
         "@auth0/auth0-react": "1.12.0",
         "@emotion/react": "^11.9.0",
@@ -29,10 +33,11 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "PORT=9092 react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "test": "vitest",
+        "test:ui": "vitest --ui",
+        "preview": "vite preview",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
         "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
         "type-check": "tsc --noEmit",
@@ -65,6 +70,8 @@
         "@types/react-router-dom": "^5.3.3",
         "@typescript-eslint/eslint-plugin": "^8.48.1",
         "@typescript-eslint/parser": "^8.48.1",
+        "@vitejs/plugin-react": "^4.7.0",
+        "@vitest/ui": "^4.0.15",
         "autoprefixer": "^10.4.7",
         "eslint": "^8.57.1",
         "eslint-config-airbnb": "19.0.4",
@@ -74,9 +81,13 @@
         "eslint-plugin-react": "7.31.11",
         "eslint-plugin-react-hooks": "4.6.0",
         "fork-ts-checker-webpack-plugin": "^9.1.0",
+        "jsdom": "^27.0.1",
         "postcss": "^8.4.14",
         "prettier": "^2.8.8",
         "tailwindcss": "^3.0.24",
-        "typescript": "^5.9.3"
+        "typescript": "^5.9.3",
+        "vite": "^7.2.6",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^4.0.15"
     }
 }

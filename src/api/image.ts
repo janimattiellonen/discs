@@ -19,20 +19,30 @@ interface UploadImageResponse {
     [key: string]: unknown; // TODO: Type properly - additional response fields
 }
 
-export const uploadImage = (formData: FormData, token: string): Promise<UploadImageResponse> => {
+export const uploadImage = (
+    formData: FormData,
+    token: string,
+): Promise<UploadImageResponse> => {
     const response = axios
-        .post<UploadImageResponse>('https://testdb-8e20.restdb.io/media', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`,
+        .post<UploadImageResponse>(
+            'https://testdb-8e20.restdb.io/media',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                },
             },
-        })
+        )
         .then((res) => res.data);
 
     return response;
 };
 
-export const removeImage = (id: string, token: string): Promise<AxiosResponse> =>
+export const removeImage = (
+    id: string,
+    token: string,
+): Promise<AxiosResponse> =>
     axios.delete(`https://testdb-8e20.restdb.io/rest/discs/${id}`, {
         headers: {
             Authorization: `Bearer ${token}`,

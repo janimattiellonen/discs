@@ -1,7 +1,15 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Reorder } from 'framer-motion';
-import { Controller, Control, useFieldArray, useForm, RegisterOptions, Path, FieldArrayPath } from 'react-hook-form';
+import {
+    Controller,
+    Control,
+    useFieldArray,
+    useForm,
+    RegisterOptions,
+    Path,
+    FieldArrayPath,
+} from 'react-hook-form';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -67,7 +75,9 @@ interface DiscFormValues {
 
 interface DiscFormProps {
     disc?: Partial<DiscFormValues> | Record<string, unknown>;
-    saveHandler: (data: Partial<DiscFormValues> | Record<string, unknown>) => void;
+    saveHandler: (
+        data: Partial<DiscFormValues> | Record<string, unknown>,
+    ) => void;
     onSuccess?: () => void;
 }
 
@@ -113,7 +123,13 @@ function ControlledField({
             control={control}
             render={({ field }) => (
                 <FormControlLabel
-                    control={<RenderComponent {...field} {...rest} checked={field.value as boolean} />}
+                    control={
+                        <RenderComponent
+                            {...field}
+                            {...rest}
+                            checked={field.value as boolean}
+                        />
+                    }
                     label={label}
                     labelPlacement={labelPlacement || 'end'}
                 />
@@ -122,7 +138,11 @@ function ControlledField({
     );
 }
 
-function ControlledDateField({ control, name, label }: ControlledDateFieldProps): React.JSX.Element {
+function ControlledDateField({
+    control,
+    name,
+    label,
+}: ControlledDateFieldProps): React.JSX.Element {
     return (
         <Controller
             control={control}
@@ -166,7 +186,15 @@ function ControlledTextField({
                 rules={rules}
                 name={name}
                 control={control}
-                render={({ field }) => <TextField fullWidth className="w-max" label={label} {...field} {...rest} />}
+                render={({ field }) => (
+                    <TextField
+                        fullWidth
+                        className="w-max"
+                        label={label}
+                        {...field}
+                        {...rest}
+                    />
+                )}
             />
             {errorComponent}
         </div>
@@ -181,13 +209,19 @@ function Error({ text }: ErrorProps): React.JSX.Element {
     );
 }
 
-export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React.JSX.Element {
+export function DiscForm({
+    disc,
+    saveHandler,
+    onSuccess,
+}: DiscFormProps): React.JSX.Element {
     const { manufacturers, materials, fetchData } = useReferenceData();
     const { saved, markSavedAsAcknowledged } = useDiscForm();
     const { uploadedImages } = useImageUpload();
 
-    const [isImageUploadVisible, setIsImageUploadVisible] = useState<boolean>(false);
-    const [isDiscSavedDialogVisible, setIsDiscSavedDialogVisible] = useState<boolean>(false);
+    const [isImageUploadVisible, setIsImageUploadVisible] =
+        useState<boolean>(false);
+    const [isDiscSavedDialogVisible, setIsDiscSavedDialogVisible] =
+        useState<boolean>(false);
 
     useEffect(() => {
         setIsDiscSavedDialogVisible(saved);
@@ -197,14 +231,16 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
         fetchData();
     }, [fetchData]);
 
-    const defaultValues: Partial<DiscFormValues> = (disc?.name
-        ? disc
-        : {
-              name: '',
-              type: '',
-              manufacturer: '',
-              image: [],
-          }) as Partial<DiscFormValues>;
+    const defaultValues: Partial<DiscFormValues> = (
+        disc?.name
+            ? disc
+            : {
+                  name: '',
+                  type: '',
+                  manufacturer: '',
+                  image: [],
+              }
+    ) as Partial<DiscFormValues>;
 
     const {
         control,
@@ -240,12 +276,16 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
         const keys = Object.keys(clonedData);
 
         keys.forEach((key) => {
-            clonedData[key] = clonedData[key] === '' ? undefined : clonedData[key];
+            clonedData[key] =
+                clonedData[key] === '' ? undefined : clonedData[key];
         });
 
-        const formatDate = (date: Date | string): string => format(new Date(date), 'dd.MM.yyyy');
+        const formatDate = (date: Date | string): string =>
+            format(new Date(date), 'dd.MM.yyyy');
 
-        clonedData.image = clonedData.image.map((image: DiscImage) => image.id) as unknown as DiscImage[];
+        clonedData.image = clonedData.image.map(
+            (image: DiscImage) => image.id,
+        ) as unknown as DiscImage[];
 
         if (clonedData.glide === '') {
             clonedData.glide = undefined;
@@ -293,7 +333,9 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                     labelPlacement="start"
                     control={control}
                     rules={{ required: 'Name is required' }}
-                    errorComponent={errors.name && <Error text={errors.name?.message} />}
+                    errorComponent={
+                        errors.name && <Error text={errors.name?.message} />
+                    }
                 />
 
                 <div className="mt-4">
@@ -301,15 +343,29 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         name="type"
                         control={control}
                         rules={{ required: 'Type is required' }}
-                        render={({ field: { onChange, onBlur, name, value } }) => (
+                        render={({
+                            field: { onChange, onBlur, name, value },
+                        }) => (
                             <FormControl fullWidth>
                                 <InputLabel>Disc type</InputLabel>
-                                <Select name={name} label="Disc type" value={value} onBlur={onBlur} onChange={onChange}>
+                                <Select
+                                    name={name}
+                                    label="Disc type"
+                                    value={value}
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                >
                                     <MenuItem value="">Select...</MenuItem>
                                     <MenuItem value="Putter">Putters</MenuItem>
-                                    <MenuItem value="Mid-range">Midranges</MenuItem>
-                                    <MenuItem value="Fairway driver">Fairway drivers</MenuItem>
-                                    <MenuItem value="Distance driver">Distance drivers</MenuItem>
+                                    <MenuItem value="Mid-range">
+                                        Midranges
+                                    </MenuItem>
+                                    <MenuItem value="Fairway driver">
+                                        Fairway drivers
+                                    </MenuItem>
+                                    <MenuItem value="Distance driver">
+                                        Distance drivers
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         )}
@@ -322,7 +378,9 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         name="manufacturer"
                         control={control}
                         rules={{ required: 'Manufacturer is required' }}
-                        render={({ field: { onChange, onBlur, name, value } }) => (
+                        render={({
+                            field: { onChange, onBlur, name, value },
+                        }) => (
                             <FormControl fullWidth>
                                 <InputLabel>Manufacturer</InputLabel>
                                 <Select
@@ -334,7 +392,10 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                                 >
                                     <MenuItem value="">Select...</MenuItem>
                                     {manufacturers.map((manufacturer) => (
-                                        <MenuItem key={`manufacturer-${manufacturer}`} value={manufacturer}>
+                                        <MenuItem
+                                            key={`manufacturer-${manufacturer}`}
+                                            value={manufacturer}
+                                        >
                                             {manufacturer}
                                         </MenuItem>
                                     ))}
@@ -342,7 +403,9 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                             </FormControl>
                         )}
                     />
-                    {errors.manufacturer && <Error text={errors.manufacturer?.message} />}
+                    {errors.manufacturer && (
+                        <Error text={errors.manufacturer?.message} />
+                    )}
                 </div>
 
                 <div className="mt-4 mb-4">
@@ -351,15 +414,23 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         axis="y"
                         onReorder={(values) => {
                             const foundItem = values.find((item) => {
-                                const valueIndex = values.findIndex((valueItem) => valueItem.id === item.id);
-                                const fieldIndex = fields.findIndex((fieldItem) => fieldItem.id === item.id);
+                                const valueIndex = values.findIndex(
+                                    (valueItem) => valueItem.id === item.id,
+                                );
+                                const fieldIndex = fields.findIndex(
+                                    (fieldItem) => fieldItem.id === item.id,
+                                );
 
                                 return valueIndex !== fieldIndex;
                             });
 
                             if (foundItem) {
-                                const valIndex = values.findIndex((item) => item.id === foundItem.id);
-                                const fieldIndex = fields.findIndex((item) => item.id === foundItem.id);
+                                const valIndex = values.findIndex(
+                                    (item) => item.id === foundItem.id,
+                                );
+                                const fieldIndex = fields.findIndex(
+                                    (item) => item.id === foundItem.id,
+                                );
 
                                 move(fieldIndex, valIndex);
                             }
@@ -367,11 +438,21 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         values={fields}
                     >
                         {fields.map((field, index) => (
-                            <Reorder.Item key={field.id} value={field} id={field.id}>
-                                <input key={field.id} {...register(`image.${index}.id`)} type="hidden" />
+                            <Reorder.Item
+                                key={field.id}
+                                value={field}
+                                id={field.id}
+                            >
+                                <input
+                                    key={field.id}
+                                    {...register(`image.${index}.id`)}
+                                    type="hidden"
+                                />
 
                                 <DraggableImage
-                                    url={`url(https://testdb-8e20.restdb.io/media/${getValues(`image.${index}.id`)}`}
+                                    url={`url(https://testdb-8e20.restdb.io/media/${getValues(
+                                        `image.${index}.id`,
+                                    )}`}
                                     onRemove={() => {
                                         remove(index);
                                     }}
@@ -380,12 +461,19 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         ))}
                     </Reorder.Group>
 
-                    <Box className="mt-4" sx={{ p: 4, border: '1px dashed grey' }}>
+                    <Box
+                        className="mt-4"
+                        sx={{ p: 4, border: '1px dashed grey' }}
+                    >
                         <div className="m-auto w-fit block">
                             <Button
                                 type="button"
                                 variant="contained"
-                                onClick={() => setIsImageUploadVisible(!isImageUploadVisible)}
+                                onClick={() =>
+                                    setIsImageUploadVisible(
+                                        !isImageUploadVisible,
+                                    )
+                                }
                             >
                                 Upload
                             </Button>
@@ -393,17 +481,27 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                     </Box>
 
                     <div>
-                        <ImageUpload open={isImageUploadVisible} handleClose={() => setIsImageUploadVisible(false)} />
+                        <ImageUpload
+                            open={isImageUploadVisible}
+                            handleClose={() => setIsImageUploadVisible(false)}
+                        />
                     </div>
                 </div>
 
-                <ControlledTextField name="color" label="Colour" labelPlacement="start" control={control} />
+                <ControlledTextField
+                    name="color"
+                    label="Colour"
+                    labelPlacement="start"
+                    control={control}
+                />
 
                 <div className="mt-4">
                     <Controller
                         name="material"
                         control={control}
-                        render={({ field: { onChange, onBlur, name, value } }) => (
+                        render={({
+                            field: { onChange, onBlur, name, value },
+                        }) => (
                             <FormControl fullWidth>
                                 <InputLabel>Material</InputLabel>
                                 <Select
@@ -415,7 +513,10 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                                 >
                                     <MenuItem value="">Select...</MenuItem>
                                     {materials.map((material) => (
-                                        <MenuItem key={`material-${material}`} value={material}>
+                                        <MenuItem
+                                            key={`material-${material}`}
+                                            value={material}
+                                        >
                                             {material}
                                         </MenuItem>
                                     ))}
@@ -433,7 +534,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         labelPlacement="start"
                         control={control}
                         rules={{ min: 1, max: 16 }}
-                        errorComponent={errors.speed && <Error text="Invalid value. Must be between 1 and 16" />}
+                        errorComponent={
+                            errors.speed && (
+                                <Error text="Invalid value. Must be between 1 and 16" />
+                            )
+                        }
                     />
                     <ControlledTextField
                         type="number"
@@ -442,7 +547,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         labelPlacement="start"
                         control={control}
                         rules={{ min: 1, max: 7 }}
-                        errorComponent={errors.glide && <Error text="Invalid value. Must be between 1 and 7" />}
+                        errorComponent={
+                            errors.glide && (
+                                <Error text="Invalid value. Must be between 1 and 7" />
+                            )
+                        }
                     />
                     <ControlledTextField
                         type="number"
@@ -451,7 +560,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         labelPlacement="start"
                         control={control}
                         rules={{ min: -5, max: 1 }}
-                        errorComponent={errors.stability && <Error text="Invalid value. Must be between -5 and 1" />}
+                        errorComponent={
+                            errors.stability && (
+                                <Error text="Invalid value. Must be between -5 and 1" />
+                            )
+                        }
                     />
                     <ControlledTextField
                         type="number"
@@ -460,10 +573,19 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                         labelPlacement="start"
                         control={control}
                         rules={{ min: 0, max: 5 }}
-                        errorComponent={errors.fade && <Error text="Invalid value. Must be between 0 and 5" />}
+                        errorComponent={
+                            errors.fade && (
+                                <Error text="Invalid value. Must be between 0 and 5" />
+                            )
+                        }
                     />
                 </div>
-                <ControlledTextField name="additional" label="Additional" labelPlacement="start" control={control} />
+                <ControlledTextField
+                    name="additional"
+                    label="Additional"
+                    labelPlacement="start"
+                    control={control}
+                />
 
                 <ControlledTextField
                     type="number"
@@ -472,7 +594,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                     labelPlacement="start"
                     control={control}
                     rules={{ min: 0 }}
-                    errorComponent={errors.weight && <Error text="Invalid value. Must be at least 0" />}
+                    errorComponent={
+                        errors.weight && (
+                            <Error text="Invalid value. Must be at least 0" />
+                        )
+                    }
                 />
 
                 <ControlledTextField
@@ -482,7 +608,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                     labelPlacement="start"
                     control={control}
                     rules={{ min: 0 }}
-                    errorComponent={errors.price && <Error text="Invalid value. Must be at least 0" />}
+                    errorComponent={
+                        errors.price && (
+                            <Error text="Invalid value. Must be at least 0" />
+                        )
+                    }
                 />
 
                 <div className="mt-4">
@@ -506,7 +636,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
 
                     {watchShowSoldFields && (
                         <div className="mt-4">
-                            <ControlledDateField control={control} name="sold_at" label="Sold at" />
+                            <ControlledDateField
+                                control={control}
+                                name="sold_at"
+                                label="Sold at"
+                            />
 
                             <ControlledTextField
                                 type="number"
@@ -515,7 +649,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
                                 labelPlacement="start"
                                 control={control}
                                 rules={{ min: 0 }}
-                                errorComponent={errors.sold_for && <Error text="Invalid value. Must be at least 0" />}
+                                errorComponent={
+                                    errors.sold_for && (
+                                        <Error text="Invalid value. Must be at least 0" />
+                                    )
+                                }
                             />
                             <ControlledTextField
                                 name="sold_to"
@@ -596,7 +734,11 @@ export function DiscForm({ disc, saveHandler, onSuccess }: DiscFormProps): React
 
                     {watchShowHIOFields && (
                         <div className="mt-4">
-                            <ControlledDateField control={control} name="HIO date" label="HIO date" />
+                            <ControlledDateField
+                                control={control}
+                                name="HIO date"
+                                label="HIO date"
+                            />
 
                             <ControlledTextField
                                 name="HIO description"

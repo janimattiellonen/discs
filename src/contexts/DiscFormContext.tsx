@@ -70,6 +70,7 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
     const [saved, setSaved] = useState<boolean>(false);
 
     const { loading, error, execute } = useAsync<AxiosResponse<Disc>>();
+    const { execute: executeImageRemoval } = useAsync<AxiosResponse | null>();
 
     // Fetch single disc by ID
     const fetchDisc = useCallback(
@@ -136,9 +137,9 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
     // Remove image from disc
     const removeDiscImage = useCallback(
         async (id: string, imageId: string, token: string): Promise<void> => {
-            await execute(() => discApi.removeImageFromDisc(id, imageId, token) as Promise<AxiosResponse<Disc>>);
+            await executeImageRemoval(() => discApi.removeImageFromDisc(id, imageId, token));
         },
-        [execute]
+        [executeImageRemoval]
     );
 
     // Reset disc to default values

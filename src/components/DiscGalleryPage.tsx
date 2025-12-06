@@ -219,7 +219,7 @@ export function DiscGalleryPage(): React.JSX.Element | null {
     return (
         <div>
             <Grid container>
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <Filter
                         params={queryParams}
                         handleChange={(url) => handleChange(url)}

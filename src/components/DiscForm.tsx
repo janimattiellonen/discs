@@ -147,24 +147,24 @@ function ControlledDateField({
         <Controller
             control={control}
             name={name}
-            defaultValue={null}
-            render={({ field: { ref, onBlur, ...field }, fieldState }) => (
+            defaultValue={null as any}
+            render={({ field: { ref, onBlur, value, ...field }, fieldState }) => (
                 <DesktopDatePicker
                     {...field}
+                    value={(value as Date) || null}
                     inputRef={ref}
-                    inputFormat="dd.MM.yyyy"
+                    format="dd.MM.yyyy"
                     label={label}
-                    renderInput={(inputProps) => (
-                        <TextField
-                            fullWidth
-                            style={{ width: '15em' }}
-                            {...inputProps}
-                            onBlur={onBlur}
-                            name={name}
-                            error={!!fieldState.error}
-                            helperText={fieldState.error?.message}
-                        />
-                    )}
+                    slotProps={{
+                        textField: {
+                            fullWidth: true,
+                            style: { width: '15em' },
+                            onBlur: onBlur,
+                            name: name,
+                            error: !!fieldState.error,
+                            helperText: fieldState.error?.message,
+                        },
+                    }}
                 />
             )}
         />

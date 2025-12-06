@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 
-import NoSsr from '@mui/base/NoSsr';
+import NoSsr from '@mui/material/NoSsr';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Navigation } from '../../Navigation';
 import { useReferenceData } from '../../../contexts';

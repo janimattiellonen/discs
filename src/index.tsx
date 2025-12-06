@@ -31,12 +31,14 @@ root.render(
                     <DiscFormProvider>
                         <ImageUploadProvider>
                             <Auth0Provider
-                                scope="write:discs"
                                 cacheLocation="localstorage"
                                 domain="mydiscs.eu.auth0.com"
                                 clientId="8tOrpYhNEzrgkEWZMiPcW3KTXal3tfyD"
-                                redirectUri={window.location.origin}
-                                audience="my-discs"
+                                authorizationParams={{
+                                    redirect_uri: window.location.origin,
+                                    audience: "my-discs",
+                                    scope: "write:discs"
+                                }}
                             >
                                 <Suspense fallback={<div>Loading...</div>}>
                                     <Router>

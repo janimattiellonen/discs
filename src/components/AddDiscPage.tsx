@@ -15,7 +15,9 @@ export function AddDiscPage(): React.JSX.Element {
         resetDisc();
     }, [resetDisc]);
 
-    const saveHandler = async (data: Record<string, unknown>): Promise<void> => {
+    const saveHandler = async (
+        data: Record<string, unknown>,
+    ): Promise<void> => {
         const tokenData = await getIdTokenClaims();
 
         // eslint-disable-next-line no-underscore-dangle

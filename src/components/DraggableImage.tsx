@@ -32,14 +32,20 @@ interface DraggableImageProps {
     onRemove: () => void;
 }
 
-export function DraggableImage({ url, onRemove }: DraggableImageProps): React.JSX.Element {
+export function DraggableImage({
+    url,
+    onRemove,
+}: DraggableImageProps): React.JSX.Element {
     return (
         <Image
             style={{
                 backgroundImage: url,
             }}
         >
-            <RemoveCircle titleAccess="Remove image from disc" onClick={() => onRemove()} />
+            <RemoveCircle
+                titleAccess="Remove image from disc"
+                onClick={() => onRemove()}
+            />
         </Image>
     );
 }

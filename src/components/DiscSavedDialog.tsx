@@ -10,7 +10,10 @@ interface DiscSavedDialogProps {
     open: boolean;
 }
 
-export function DiscSavedDialog({ handleClose, open }: DiscSavedDialogProps): React.JSX.Element {
+export function DiscSavedDialog({
+    handleClose,
+    open,
+}: DiscSavedDialogProps): React.JSX.Element {
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Disc saved</DialogTitle>

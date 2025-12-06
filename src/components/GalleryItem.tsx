@@ -133,7 +133,10 @@ const Indicator = styled.div({
     zIndex: 5,
 });
 
-function SelectedImageIndicator({ imageCount, selectedImage }: SelectedImageIndicatorProps): React.JSX.Element {
+function SelectedImageIndicator({
+    imageCount,
+    selectedImage,
+}: SelectedImageIndicatorProps): React.JSX.Element {
     const range = [...Array(imageCount).keys()];
 
     return (
@@ -153,21 +156,36 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
     const { isAuthenticated } = useAuth0();
     const [selectedImage, setSelectedImage] = useState<number>(0);
 
-    const renderWeight = (): string => (disc.weight && disc.weight > 0 ? `, ${disc.weight}g` : '');
+    const renderWeight = (): string =>
+        disc.weight && disc.weight > 0 ? `, ${disc.weight}g` : '';
 
-    const renderOverlayTrigger = (_tooltip: ReactNode, element: ReactNode): ReactNode => element;
+    const renderOverlayTrigger = (
+        _tooltip: ReactNode,
+        element: ReactNode,
+    ): ReactNode => element;
 
     const renderTooltip = (element: ReactNode): ReactNode => {
         if (
-            (!disc.missing_description || disc.missing_description.length === 0) &&
-            (!disc['Donation description'] || disc['Donation description'].length === 0)
+            (!disc.missing_description ||
+                disc.missing_description.length === 0) &&
+            (!disc['Donation description'] ||
+                disc['Donation description'].length === 0)
         ) {
             return element;
         }
 
         const tooltip = (
-            <Tooltip title={disc.missing_description || disc['Donation description'] || ''} placement="bottom">
-                <span>{disc.missing_description || disc['Donation description']}</span>
+            <Tooltip
+                title={
+                    disc.missing_description ||
+                    disc['Donation description'] ||
+                    ''
+                }
+                placement="bottom"
+            >
+                <span>
+                    {disc.missing_description || disc['Donation description']}
+                </span>
             </Tooltip>
         );
 
@@ -195,10 +213,13 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
             element = <DiscImage src={unknown} alt="?" />;
         } else {
             const src = `https://testdb-8e20.restdb.io/media/${
-                Array.isArray(disc.image) ? disc.image[selectedImage] : disc.image
+                Array.isArray(disc.image)
+                    ? disc.image[selectedImage]
+                    : disc.image
             }`;
 
-            const nextIndex = selectedImage < disc.image.length ? selectedImage + 1 : 0;
+            const nextIndex =
+                selectedImage < disc.image.length ? selectedImage + 1 : 0;
 
             const copySrc = `https://testdb-8e20.restdb.io/media/${
                 Array.isArray(disc.image) ? disc.image[nextIndex] : disc.image
@@ -206,7 +227,9 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
 
             element = (
                 <>
-                    {Array.isArray(disc.image) && disc.image.length > 1 && <DiscImageCopy src={copySrc} alt="" />}
+                    {Array.isArray(disc.image) && disc.image.length > 1 && (
+                        <DiscImageCopy src={copySrc} alt="" />
+                    )}
 
                     <DiscImage src={src} alt="" />
                 </>
@@ -245,7 +268,10 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
                                 <ArrowForwardIosIcon />
                             </ImageIndex>
                         </RightBar>
-                        <SelectedImageIndicator imageCount={disc.image.length} selectedImage={selectedImage} />
+                        <SelectedImageIndicator
+                            imageCount={disc.image.length}
+                            selectedImage={selectedImage}
+                        />
                     </>
                 )}
             </>
@@ -272,7 +298,11 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
         if (disc.sold) {
             return renderTooltip(
                 <DiscStatus
-                    label={`Sold ${!!disc.sold_for && disc.sold_for > 0 ? ` (${number(disc.sold_for)}€)` : ''}`}
+                    label={`Sold ${
+                        !!disc.sold_for && disc.sold_for > 0
+                            ? ` (${number(disc.sold_for)}€)`
+                            : ''
+                    }`}
                 />,
             );
         }
@@ -337,11 +367,18 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
                         <span>{disc.name}</span>
                         {isAuthenticated && (
                             <Link to={`/disc/${disc._id}/edit`}>
-                                <EditIcon style={{ color: '#337ab7', marginLeft: '8px' }} />
+                                <EditIcon
+                                    style={{
+                                        color: '#337ab7',
+                                        marginLeft: '8px',
+                                    }}
+                                />
                             </Link>
                         )}
                     </span>
-                    {disc.collection_item && <CollectionItem>Collection item</CollectionItem>}
+                    {disc.collection_item && (
+                        <CollectionItem>Collection item</CollectionItem>
+                    )}
                 </DiscName>
 
                 <div className="flex justify-between">

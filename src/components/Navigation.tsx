@@ -79,7 +79,8 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
     const showSideNav = useMediaQuery('(min-width:600px)');
     const { isAuthenticated } = useAuth0();
 
-    const getStats = (key: keyof DiscStats): number | null => (stats && stats[key] ? stats[key] ?? null : null);
+    const getStats = (key: keyof DiscStats): number | null =>
+        stats && stats[key] ? stats[key] ?? null : null;
 
     const spentMoney = getStats('spentMoney');
 
@@ -87,11 +88,13 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
 
     const getFavouriteCount = (): number | null => getStats('favouriteCount');
 
-    const getDistanceDriverCount = (): number | null => getStats('distanceDriverCount');
+    const getDistanceDriverCount = (): number | null =>
+        getStats('distanceDriverCount');
 
     const getAvailableCount = (): number | null => getStats('availableCount');
 
-    const getFairwayDriverCount = (): number | null => getStats('fairwayDriverCount');
+    const getFairwayDriverCount = (): number | null =>
+        getStats('fairwayDriverCount');
 
     const getMidrangeCount = (): number | null => getStats('midrangeCount');
 
@@ -105,7 +108,8 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
 
     const getDonatedDiscCount = (): number | null => getStats('donatedCount');
 
-    const getCollectibleCount = (): number | null => getStats('collectionCount');
+    const getCollectibleCount = (): number | null =>
+        getStats('collectionCount');
 
     const getOwnStampCount = (): number | null => getStats('ownStampCount');
 
@@ -125,53 +129,83 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
                         </StyledListItem>
 
                         <StyledListItem>
-                            <Link to="/gallery?favourite=true">Favourites ({getFavouriteCount()})</Link>
+                            <Link to="/gallery?favourite=true">
+                                Favourites ({getFavouriteCount()})
+                            </Link>
                         </StyledListItem>
                         <StyledListItem>
-                            <Link to="/gallery?type=distanceDriver">Distance drivers ({getDistanceDriverCount()})</Link>
-                        </StyledListItem>
-
-                        <StyledListItem>
-                            <Link to="/gallery?type=fairwayDriver">Fairway drivers ({getFairwayDriverCount()})</Link>
-                        </StyledListItem>
-                        <StyledListItem>
-                            <Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link>
-                        </StyledListItem>
-                        <StyledListItem>
-                            <Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link>
-                        </StyledListItem>
-                        <StyledListItem>
-                            <Link to="/gallery?available=true">Available ({getAvailableCount()})</Link>
-                        </StyledListItem>
-                        <StyledListItem>
-                            <Link to="/gallery?missing=true">Lost ({getLostDiscCount()})</Link>
-                        </StyledListItem>
-                        <StyledListItem>
-                            <Link to="/gallery?sold=true">Sold ({getSoldDiscCount()})</Link>
+                            <Link to="/gallery?type=distanceDriver">
+                                Distance drivers ({getDistanceDriverCount()})
+                            </Link>
                         </StyledListItem>
 
                         <StyledListItem>
-                            <Link to="/gallery?forSale=true">For sale ({forSaleCount})</Link>
+                            <Link to="/gallery?type=fairwayDriver">
+                                Fairway drivers ({getFairwayDriverCount()})
+                            </Link>
+                        </StyledListItem>
+                        <StyledListItem>
+                            <Link to="/gallery?type=midrange">
+                                Midrange ({getMidrangeCount()})
+                            </Link>
+                        </StyledListItem>
+                        <StyledListItem>
+                            <Link to="/gallery?type=putter">
+                                Putters ({getPutterCount()})
+                            </Link>
+                        </StyledListItem>
+                        <StyledListItem>
+                            <Link to="/gallery?available=true">
+                                Available ({getAvailableCount()})
+                            </Link>
+                        </StyledListItem>
+                        <StyledListItem>
+                            <Link to="/gallery?missing=true">
+                                Lost ({getLostDiscCount()})
+                            </Link>
+                        </StyledListItem>
+                        <StyledListItem>
+                            <Link to="/gallery?sold=true">
+                                Sold ({getSoldDiscCount()})
+                            </Link>
                         </StyledListItem>
 
                         <StyledListItem>
-                            <Link to="/gallery?donated=true">Donated ({getDonatedDiscCount()})</Link>
+                            <Link to="/gallery?forSale=true">
+                                For sale ({forSaleCount})
+                            </Link>
+                        </StyledListItem>
+
+                        <StyledListItem>
+                            <Link to="/gallery?donated=true">
+                                Donated ({getDonatedDiscCount()})
+                            </Link>
                         </StyledListItem>
                         <StyledListItem>
-                            <Link to="/gallery?collection=true">Collection ({getCollectibleCount()})</Link>
+                            <Link to="/gallery?collection=true">
+                                Collection ({getCollectibleCount()})
+                            </Link>
                         </StyledListItem>
                         <StyledListItem>
-                            <Link to="/gallery?ownStamp=true">Own stamp ({getOwnStampCount()})</Link>
+                            <Link to="/gallery?ownStamp=true">
+                                Own stamp ({getOwnStampCount()})
+                            </Link>
                         </StyledListItem>
                         <StyledListItem>
-                            <Link to="/gallery?holeInOne=true">Hole in one ({getHoleInOneCount()})</Link>
+                            <Link to="/gallery?holeInOne=true">
+                                Hole in one ({getHoleInOneCount()})
+                            </Link>
                         </StyledListItem>
                         <StyledListItem>
                             <Link to="/gallery?latest=true">Latest (10)</Link>
                         </StyledListItem>
-                        {isAuthenticated && spentMoney !== null && spentMoney > 0 && (
-                            <StyledListItem>{currency(spentMoney)}</StyledListItem>
-                        )}
+                        {isAuthenticated &&
+                            spentMoney !== null &&
+                            spentMoney > 0 && (
+                                <StyledListItem>
+                                    {currency(spentMoney)}
+                                </StyledListItem>
+                            )}
 
                         {isAuthenticated && sales !== null && sales > 0 && (
                             <StyledListItem>
@@ -197,37 +231,57 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
                         <Toolbar>
                             <Ul>
                                 <Li>
-                                    <Link to="/gallery">All ({getDiscCount()})</Link>
+                                    <Link to="/gallery">
+                                        All ({getDiscCount()})
+                                    </Link>
                                 </Li>
                                 <Li>
-                                    <Link to="/gallery?favourite=true">Favourites ({getFavouriteCount()})</Link>
+                                    <Link to="/gallery?favourite=true">
+                                        Favourites ({getFavouriteCount()})
+                                    </Link>
                                 </Li>
                                 <Li>
                                     <Link to="/gallery?type=distanceDriver">
-                                        Distance drivers ({getDistanceDriverCount()})
+                                        Distance drivers (
+                                        {getDistanceDriverCount()})
                                     </Link>
                                 </Li>
                                 <Li>
                                     <Link to="/gallery?type=fairwayDriver">
-                                        Fairway drivers ({getFairwayDriverCount()})
+                                        Fairway drivers (
+                                        {getFairwayDriverCount()})
                                     </Link>
                                 </Li>
                                 <Li>
-                                    <Link to="/gallery?type=midrange">Midrange ({getMidrangeCount()})</Link>
+                                    <Link to="/gallery?type=midrange">
+                                        Midrange ({getMidrangeCount()})
+                                    </Link>
                                 </Li>
                                 <Li>
-                                    <Link to="/gallery?type=putter">Putters ({getPutterCount()})</Link>
+                                    <Link to="/gallery?type=putter">
+                                        Putters ({getPutterCount()})
+                                    </Link>
                                 </Li>
                                 <Li>
-                                    <Link to="/gallery?available=true">Available ({getAvailableCount()})</Link>
+                                    <Link to="/gallery?available=true">
+                                        Available ({getAvailableCount()})
+                                    </Link>
                                 </Li>
                                 <Li>
-                                    <Link to="/gallery?latest=true">Latest (10)</Link>
+                                    <Link to="/gallery?latest=true">
+                                        Latest (10)
+                                    </Link>
                                 </Li>
-                                {isAuthenticated && spentMoney !== null && spentMoney > 0 && (
-                                    <Li>{currency(spentMoney)}</Li>
-                                )}
-                                {isAuthenticated && sales !== null && sales > 0 && <Li>{currency(sales)} (sales)</Li>}
+                                {isAuthenticated &&
+                                    spentMoney !== null &&
+                                    spentMoney > 0 && (
+                                        <Li>{currency(spentMoney)}</Li>
+                                    )}
+                                {isAuthenticated &&
+                                    sales !== null &&
+                                    sales > 0 && (
+                                        <Li>{currency(sales)} (sales)</Li>
+                                    )}
                             </Ul>
                         </Toolbar>
                     </AppBar>

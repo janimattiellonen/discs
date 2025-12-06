@@ -98,9 +98,20 @@ export interface DiscFormContextType {
     loading: boolean;
     error: string | null;
     fetchDisc: (id: string) => Promise<void>;
-    addNewDisc: (data: ExtendedDiscFormData | Record<string, unknown>, token: string) => Promise<void>;
-    updateDisc: (id: string, data: Partial<ExtendedDiscFormData> | Record<string, unknown>, token: string) => Promise<void>;
-    removeDiscImage: (id: string, imageId: string, token: string) => Promise<void>;
+    addNewDisc: (
+        data: ExtendedDiscFormData | Record<string, unknown>,
+        token: string,
+    ) => Promise<void>;
+    updateDisc: (
+        id: string,
+        data: Partial<ExtendedDiscFormData> | Record<string, unknown>,
+        token: string,
+    ) => Promise<void>;
+    removeDiscImage: (
+        id: string,
+        imageId: string,
+        token: string,
+    ) => Promise<void>;
     resetDisc: () => void;
     markSavedAsAcknowledged: () => void;
 }

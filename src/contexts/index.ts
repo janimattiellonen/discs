@@ -1,7 +1,10 @@
 // Context providers
 export { DiscsProvider, useDiscs } from './DiscsContext';
 export { DiscFormProvider, useDiscForm } from './DiscFormContext';
-export { ReferenceDataProvider, useReferenceData } from './ReferenceDataContext';
+export {
+    ReferenceDataProvider,
+    useReferenceData,
+} from './ReferenceDataContext';
 export { ImageUploadProvider, useImageUpload } from './ImageUploadContext';
 
 // Types

@@ -45,7 +45,8 @@ const CenterP = styled.p({
     justifyContent: 'center',
 });
 
-const showMoreButton = (discCount: number, total: number): boolean => discCount < total;
+const showMoreButton = (discCount: number, total: number): boolean =>
+    discCount < total;
 
 export function DiscGalleryPage(): React.JSX.Element | null {
     const { getAccessTokenSilently } = useAuth0();
@@ -61,25 +62,71 @@ export function DiscGalleryPage(): React.JSX.Element | null {
 
     const limit = Number(queryParams.limit) || 25;
     const offset = Number(queryParams.offset) || 0;
-    const type = (Array.isArray(queryParams.type) ? queryParams.type[0] : queryParams.type) || null;
+    const type =
+        (Array.isArray(queryParams.type)
+            ? queryParams.type[0]
+            : queryParams.type) || null;
 
-    const available = (Array.isArray(queryParams.available) ? queryParams.available[0] : queryParams.available) || null;
-    const missing = (Array.isArray(queryParams.missing) ? queryParams.missing[0] : queryParams.missing) || null;
-    const sold = (Array.isArray(queryParams.sold) ? queryParams.sold[0] : queryParams.sold) || null;
-    const forSale = (Array.isArray(queryParams.forSale) ? queryParams.forSale[0] : queryParams.forSale) || null;
-    const broken = (Array.isArray(queryParams.broken) ? queryParams.broken[0] : queryParams.broken) || null;
-    const donated = (Array.isArray(queryParams.donated) ? queryParams.donated[0] : queryParams.donated) || null;
+    const available =
+        (Array.isArray(queryParams.available)
+            ? queryParams.available[0]
+            : queryParams.available) || null;
+    const missing =
+        (Array.isArray(queryParams.missing)
+            ? queryParams.missing[0]
+            : queryParams.missing) || null;
+    const sold =
+        (Array.isArray(queryParams.sold)
+            ? queryParams.sold[0]
+            : queryParams.sold) || null;
+    const forSale =
+        (Array.isArray(queryParams.forSale)
+            ? queryParams.forSale[0]
+            : queryParams.forSale) || null;
+    const broken =
+        (Array.isArray(queryParams.broken)
+            ? queryParams.broken[0]
+            : queryParams.broken) || null;
+    const donated =
+        (Array.isArray(queryParams.donated)
+            ? queryParams.donated[0]
+            : queryParams.donated) || null;
     const collection =
-        (Array.isArray(queryParams.collection) ? queryParams.collection[0] : queryParams.collection) || null;
-    const ownStamp = (Array.isArray(queryParams.ownStamp) ? queryParams.ownStamp[0] : queryParams.ownStamp) || null;
-    const holeInOne = (Array.isArray(queryParams.holeInOne) ? queryParams.holeInOne[0] : queryParams.holeInOne) || null;
-    const latest = (Array.isArray(queryParams.latest) ? queryParams.latest[0] : queryParams.latest) || null;
-    const name = (Array.isArray(queryParams.name) ? queryParams.name[0] : queryParams.name) || null;
+        (Array.isArray(queryParams.collection)
+            ? queryParams.collection[0]
+            : queryParams.collection) || null;
+    const ownStamp =
+        (Array.isArray(queryParams.ownStamp)
+            ? queryParams.ownStamp[0]
+            : queryParams.ownStamp) || null;
+    const holeInOne =
+        (Array.isArray(queryParams.holeInOne)
+            ? queryParams.holeInOne[0]
+            : queryParams.holeInOne) || null;
+    const latest =
+        (Array.isArray(queryParams.latest)
+            ? queryParams.latest[0]
+            : queryParams.latest) || null;
+    const name =
+        (Array.isArray(queryParams.name)
+            ? queryParams.name[0]
+            : queryParams.name) || null;
     const manufacturer =
-        (Array.isArray(queryParams.manufacturer) ? queryParams.manufacturer[0] : queryParams.manufacturer) || null;
-    const favourite = (Array.isArray(queryParams.favourite) ? queryParams.favourite[0] : queryParams.favourite) || null;
-    const glow = (Array.isArray(queryParams.glow) ? queryParams.glow[0] : queryParams.glow) || null;
-    const huk = (Array.isArray(queryParams.huk) ? queryParams.huk[0] : queryParams.huk) || null;
+        (Array.isArray(queryParams.manufacturer)
+            ? queryParams.manufacturer[0]
+            : queryParams.manufacturer) || null;
+    const favourite =
+        (Array.isArray(queryParams.favourite)
+            ? queryParams.favourite[0]
+            : queryParams.favourite) || null;
+    const glow =
+        (Array.isArray(queryParams.glow)
+            ? queryParams.glow[0]
+            : queryParams.glow) || null;
+    const huk =
+        (Array.isArray(queryParams.huk)
+            ? queryParams.huk[0]
+            : queryParams.huk) || null;
 
     const loadMore = () => {
         navigate(
@@ -173,7 +220,10 @@ export function DiscGalleryPage(): React.JSX.Element | null {
         <div>
             <Grid container>
                 <Grid item xs={12}>
-                    <Filter params={queryParams} handleChange={(url) => handleChange(url)} />
+                    <Filter
+                        params={queryParams}
+                        handleChange={(url) => handleChange(url)}
+                    />
                 </Grid>
             </Grid>
             <DiscsPanel className="disc-gallery-page discs" ref={pageEndRef}>

@@ -5,7 +5,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import { DiscsProvider, DiscFormProvider, ReferenceDataProvider, ImageUploadProvider } from './contexts';
+import {
+    DiscsProvider,
+    DiscFormProvider,
+    ReferenceDataProvider,
+    ImageUploadProvider,
+} from './contexts';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
@@ -37,10 +42,26 @@ root.render(
                                     <Router>
                                         <AppLayout>
                                             <Routes>
-                                                <Route path="/" element={<DiscGalleryPage />} />
-                                                <Route path="/gallery" element={<DiscGalleryPage />} />
-                                                <Route path="/disc/new" element={<AddDiscPage />} />
-                                                <Route path="/disc/:id/edit" element={<EditDiscPage />} />
+                                                <Route
+                                                    path="/"
+                                                    element={
+                                                        <DiscGalleryPage />
+                                                    }
+                                                />
+                                                <Route
+                                                    path="/gallery"
+                                                    element={
+                                                        <DiscGalleryPage />
+                                                    }
+                                                />
+                                                <Route
+                                                    path="/disc/new"
+                                                    element={<AddDiscPage />}
+                                                />
+                                                <Route
+                                                    path="/disc/:id/edit"
+                                                    element={<EditDiscPage />}
+                                                />
                                             </Routes>
                                         </AppLayout>
                                     </Router>

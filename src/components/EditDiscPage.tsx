@@ -22,7 +22,9 @@ export function EditDiscPage(): React.JSX.Element {
         return <div>LOADING...</div>;
     }
 
-    const saveHandler = async (data: Record<string, unknown>): Promise<void> => {
+    const saveHandler = async (
+        data: Record<string, unknown>,
+    ): Promise<void> => {
         const tokenData = await getIdTokenClaims();
 
         // eslint-disable-next-line no-underscore-dangle
@@ -37,7 +39,10 @@ export function EditDiscPage(): React.JSX.Element {
         <div className="mt-10 m-auto px-4 [max-width:800px]">
             <h1 className="mb-5">Edit disc {disc ? `(${disc.name})` : ''}</h1>
 
-            <DiscForm disc={disc as Record<string, unknown>} saveHandler={saveHandler} />
+            <DiscForm
+                disc={disc as Record<string, unknown>}
+                saveHandler={saveHandler}
+            />
         </div>
     );
 }

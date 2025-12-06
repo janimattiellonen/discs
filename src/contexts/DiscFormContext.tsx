@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useState,
+    useCallback,
+    ReactNode,
+    useMemo,
+} from 'react';
 import { AxiosResponse } from 'axios';
 
 import { Disc } from '../types';
@@ -6,7 +13,9 @@ import { DiscFormContextType, ExtendedDiscFormData } from './types';
 import { useAsync } from '../hooks/useAsync';
 import discApi from '../api/disc';
 
-const DiscFormContext = createContext<DiscFormContextType | undefined>(undefined);
+const DiscFormContext = createContext<DiscFormContextType | undefined>(
+    undefined,
+);
 
 interface DiscFormProviderProps {
     children: ReactNode;
@@ -48,13 +57,17 @@ const defaultDiscValues: ExtendedDiscFormData = {
 };
 
 // Build disc form data from API response (copied from Redux slice)
-const buildFromResponse = (responseData: Partial<Disc>): ExtendedDiscFormData => {
+const buildFromResponse = (
+    responseData: Partial<Disc>,
+): ExtendedDiscFormData => {
     const obj: ExtendedDiscFormData = {};
     const acceptedKeys = Object.keys(defaultDiscValues);
 
     acceptedKeys.forEach((key) => {
         if ((responseData as Record<string, unknown>)[key]) {
-            (obj as Record<string, unknown>)[key] = (responseData as Record<string, unknown>)[key];
+            (obj as Record<string, unknown>)[key] = (
+                responseData as Record<string, unknown>
+            )[key];
         } else {
             (obj as Record<string, unknown>)[key] = '';
         }
@@ -66,7 +79,9 @@ const buildFromResponse = (responseData: Partial<Disc>): ExtendedDiscFormData =>
 // Map ExtendedDiscFormData to the API payload format
 // This handles the type conversion between the form data and API expectations
 // Returns Record type that the API endpoint accepts (it's flexible enough to accept any fields)
-const mapToApiPayload = (data: Partial<ExtendedDiscFormData> | Record<string, unknown>): Record<string, unknown> => {
+const mapToApiPayload = (
+    data: Partial<ExtendedDiscFormData> | Record<string, unknown>,
+): Record<string, unknown> => {
     // The API accepts any field, so we can pass the data as-is
     // but we filter out undefined values
     const payload: Record<string, unknown> = {};
@@ -79,7 +94,9 @@ const mapToApiPayload = (data: Partial<ExtendedDiscFormData> | Record<string, un
     return payload;
 };
 
-export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX.Element {
+export function DiscFormProvider({
+    children,
+}: DiscFormProviderProps): React.JSX.Element {
     const [disc, setDisc] = useState<ExtendedDiscFormData>(defaultDiscValues);
     const [savedDiscId, setSavedDiscId] = useState<string | null>(null);
     const [saved, setSaved] = useState<boolean>(false);
@@ -102,9 +119,11 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
                 }
 
                 if (buildObj.image && Array.isArray(buildObj.image)) {
-                    buildObj.image = (buildObj.image as string[]).map((image: string) => ({
-                        id: image,
-                    }));
+                    buildObj.image = (buildObj.image as string[]).map(
+                        (image: string) => ({
+                            id: image,
+                        }),
+                    );
                 }
 
                 setDisc(buildObj);
@@ -115,7 +134,10 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
 
     // Add new disc
     const addNewDisc = useCallback(
-        async (data: ExtendedDiscFormData | Record<string, unknown>, token: string): Promise<void> => {
+        async (
+            data: ExtendedDiscFormData | Record<string, unknown>,
+            token: string,
+        ): Promise<void> => {
             setSaved(false);
 
             const payload = mapToApiPayload(data);
@@ -136,7 +158,11 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
 
     // Update existing disc
     const updateDisc = useCallback(
-        async (id: string, data: Partial<ExtendedDiscFormData> | Record<string, unknown>, token: string): Promise<void> => {
+        async (
+            id: string,
+            data: Partial<ExtendedDiscFormData> | Record<string, unknown>,
+            token: string,
+        ): Promise<void> => {
             setSaved(false);
 
             const payload = mapToApiPayload(data);
@@ -154,7 +180,9 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
     // Remove image from disc
     const removeDiscImage = useCallback(
         async (id: string, imageId: string, token: string): Promise<void> => {
-            await executeImageRemoval(() => discApi.removeImageFromDisc(id, imageId, token));
+            await executeImageRemoval(() =>
+                discApi.removeImageFromDisc(id, imageId, token),
+            );
         },
         [executeImageRemoval],
     );
@@ -200,7 +228,11 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
         ],
     );
 
-    return <DiscFormContext.Provider value={value}>{children}</DiscFormContext.Provider>;
+    return (
+        <DiscFormContext.Provider value={value}>
+            {children}
+        </DiscFormContext.Provider>
+    );
 }
 
 export function useDiscForm(): DiscFormContextType {

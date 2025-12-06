@@ -22,7 +22,7 @@ export function AddDiscPage(): React.JSX.Element {
         const token = tokenData?.__raw;
 
         if (token) {
-            await addNewDisc(data as any, token);
+            await addNewDisc(data, token);
         }
     };
     return (

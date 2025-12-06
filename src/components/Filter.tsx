@@ -73,7 +73,6 @@ interface ControlledTextFieldProps {
     labelPlacement: string;
     control: Control<FilterFormValues>;
     handleOnChange: () => void;
-    variant?: 'outlined' | 'filled' | 'standard';
 }
 
 const SearchField = styled(TextField)({
@@ -136,11 +135,11 @@ function ControlledTextField({
                 <SearchField
                     label={label}
                     {...field}
-                    onChange={(data: any) => {
+                    onChange={(data: React.ChangeEvent<HTMLInputElement>) => {
                         field.onChange(data);
                         handleOnChange();
                     }}
-                    {...(rest as any)}
+                    {...rest}
                 />
             )}
         />
@@ -239,7 +238,6 @@ export function Filter({ handleChange, params }: FilterProps): React.JSX.Element
         <div>
             <form>
                 <ControlledTextField
-                    variant="outlined"
                     name="name"
                     label=""
                     labelPlacement="start"

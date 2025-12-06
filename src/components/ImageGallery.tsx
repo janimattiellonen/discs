@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 
 const variants = {
     enter: (direction: number) => ({
@@ -53,7 +53,7 @@ export function ImageGallery({ images }: ImageGalleryProps): React.JSX.Element {
         setPage([page + newDirection, newDirection]);
     };
 
-    const MotionImg = motion.img as any;
+    const MotionImg = motion.img;
 
     return (
         <>
@@ -74,7 +74,7 @@ export function ImageGallery({ images }: ImageGalleryProps): React.JSX.Element {
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={1}
-                    onDragEnd={(e: any, { offset, velocity }: any) => {
+                    onDragEnd={(_e: MouseEvent | TouchEvent | PointerEvent, { offset, velocity }: PanInfo) => {
                         const swipe = swipePower(offset.x, velocity.x);
 
                         if (swipe < -swipeConfidenceThreshold) {

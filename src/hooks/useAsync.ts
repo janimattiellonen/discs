@@ -42,6 +42,7 @@ export function useAsync<T>(): UseAsyncReturn<T> {
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
             setState({ data: null, loading: false, error: errorMessage });
+            // eslint-disable-next-line no-console
             console.error('useAsync error:', error);
             return null;
         }

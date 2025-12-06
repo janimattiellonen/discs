@@ -29,7 +29,7 @@ export function EditDiscPage(): React.JSX.Element {
         const token = tokenData?.__raw;
 
         if (token && id) {
-            await updateDisc(id, data as any, token);
+            await updateDisc(id, data, token);
         }
     };
 
@@ -37,7 +37,7 @@ export function EditDiscPage(): React.JSX.Element {
         <div className="mt-10 m-auto px-4 [max-width:800px]">
             <h1 className="mb-5">Edit disc {disc ? `(${disc.name})` : ''}</h1>
 
-            <DiscForm disc={disc as any} saveHandler={saveHandler} />
+            <DiscForm disc={disc as Record<string, unknown>} saveHandler={saveHandler} />
         </div>
     );
 }

@@ -53,7 +53,6 @@ const buildFromResponse = (responseData: Partial<Disc>): ExtendedDiscFormData =>
     const acceptedKeys = Object.keys(defaultDiscValues);
 
     acceptedKeys.forEach((key) => {
-        const typedKey = key as keyof ExtendedDiscFormData;
         if ((responseData as Record<string, unknown>)[key]) {
             (obj as Record<string, unknown>)[key] = (responseData as Record<string, unknown>)[key];
         } else {
@@ -62,6 +61,22 @@ const buildFromResponse = (responseData: Partial<Disc>): ExtendedDiscFormData =>
     });
 
     return obj;
+};
+
+// Map ExtendedDiscFormData to the API payload format
+// This handles the type conversion between the form data and API expectations
+// Returns Record type that the API endpoint accepts (it's flexible enough to accept any fields)
+const mapToApiPayload = (data: Partial<ExtendedDiscFormData> | Record<string, unknown>): Record<string, unknown> => {
+    // The API accepts any field, so we can pass the data as-is
+    // but we filter out undefined values
+    const payload: Record<string, unknown> = {};
+    Object.keys(data).forEach((key) => {
+        const value = (data as Record<string, unknown>)[key];
+        if (value !== undefined) {
+            payload[key] = value;
+        }
+    });
+    return payload;
 };
 
 export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX.Element {
@@ -100,10 +115,11 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
 
     // Add new disc
     const addNewDisc = useCallback(
-        async (data: ExtendedDiscFormData, token: string): Promise<void> => {
+        async (data: ExtendedDiscFormData | Record<string, unknown>, token: string): Promise<void> => {
             setSaved(false);
 
-            const result = await execute(() => discApi.addDisc(data as any, token));
+            const payload = mapToApiPayload(data);
+            const result = await execute(() => discApi.addDisc(payload, token));
 
             if (result) {
                 // Invalidate localStorage cache
@@ -120,10 +136,11 @@ export function DiscFormProvider({ children }: DiscFormProviderProps): React.JSX
 
     // Update existing disc
     const updateDisc = useCallback(
-        async (id: string, data: Partial<ExtendedDiscFormData>, token: string): Promise<void> => {
+        async (id: string, data: Partial<ExtendedDiscFormData> | Record<string, unknown>, token: string): Promise<void> => {
             setSaved(false);
 
-            await execute(() => discApi.updateDisc(id, data as any, token));
+            const payload = mapToApiPayload(data);
+            await execute(() => discApi.updateDisc(id, payload, token));
 
             // Invalidate localStorage cache
             localStorage.removeItem('data');

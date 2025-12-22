@@ -1,10 +1,24 @@
 import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import styled from '@emotion/styled';
 
 import { useNavigate } from 'react-router-dom';
 
 import { DiscForm } from './DiscForm';
 import { useDiscForm } from '../contexts';
+
+const Container = styled.div`
+    margin-top: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 800px;
+`;
+
+const Title = styled.h1`
+    margin-bottom: 1.25rem;
+`;
 
 export function AddDiscPage(): React.JSX.Element {
     const navigate = useNavigate();
@@ -28,8 +42,8 @@ export function AddDiscPage(): React.JSX.Element {
         }
     };
     return (
-        <div className="mt-10 m-auto px-4 [max-width:800px]">
-            <h1 className="mb-5">Add new disc</h1>
+        <Container>
+            <Title>Add new disc</Title>
 
             <DiscForm
                 saveHandler={saveHandler}
@@ -37,6 +51,6 @@ export function AddDiscPage(): React.JSX.Element {
                     navigate(`/disc/${savedDiscId}/edit`, { replace: true });
                 }}
             />
-        </div>
+        </Container>
     );
 }

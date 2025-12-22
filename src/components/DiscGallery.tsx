@@ -23,13 +23,10 @@ function DiscGallery({ discs }: DiscGalleryProps): React.JSX.Element | null {
         <Animated keyValue={`foppa-${discs.length}`}>
             <Grid container spacing={2}>
                 {discs.map((disc) => (
-                    // eslint-disable-next-line no-underscore-dangle
                     <StyledGrid
-                        item
+                        // eslint-disable-next-line no-underscore-dangle
                         key={`col-${disc._id}`}
-                        xs={12}
-                        sm={6}
-                        lg={4}
+                        size={{ xs: 12, sm: 6, lg: 4 }}
                     >
                         <GalleryItem disc={disc} />
                     </StyledGrid>

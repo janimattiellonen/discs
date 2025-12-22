@@ -133,6 +133,17 @@ const Indicator = styled.div({
     zIndex: 5,
 });
 
+const ImageContainer = styled.div({
+    display: 'flex',
+    width: 'auto',
+    position: 'relative',
+});
+
+const InfoContainer = styled.div({
+    display: 'flex',
+    justifyContent: 'space-between',
+});
+
 function SelectedImageIndicator({
     imageCount,
     selectedImage,
@@ -347,7 +358,7 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
 
     return (
         <>
-            <div className="flex w-auto relative">
+            <ImageContainer>
                 {renderImage()}
 
                 {renderLostDisc()}
@@ -359,7 +370,7 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
                 {renderBrokenDisc()}
 
                 {renderHioDisc()}
-            </div>
+            </ImageContainer>
 
             <div>
                 <DiscName>
@@ -381,7 +392,7 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
                     )}
                 </DiscName>
 
-                <div className="flex justify-between">
+                <InfoContainer>
                     <div>
                         <p className="manufacturer">
                             {disc.manufacturer} {disc.material}
@@ -392,7 +403,7 @@ export function GalleryItem({ disc }: GalleryItemProps): React.JSX.Element {
                     </div>
 
                     <Price>{renderPrice()}</Price>
-                </div>
+                </InfoContainer>
 
                 <Specs disc={disc} />
             </div>

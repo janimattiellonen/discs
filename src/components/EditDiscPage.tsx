@@ -1,10 +1,24 @@
 import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import styled from '@emotion/styled';
 
 import { useParams } from 'react-router';
 
 import { DiscForm } from './DiscForm';
 import { useDiscForm } from '../contexts';
+
+const Container = styled.div`
+    margin-top: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 800px;
+`;
+
+const Title = styled.h1`
+    margin-bottom: 1.25rem;
+`;
 
 export function EditDiscPage(): React.JSX.Element {
     const { id } = useParams<{ id: string }>();
@@ -36,13 +50,13 @@ export function EditDiscPage(): React.JSX.Element {
     };
 
     return (
-        <div className="mt-10 m-auto px-4 [max-width:800px]">
-            <h1 className="mb-5">Edit disc {disc ? `(${disc.name})` : ''}</h1>
+        <Container>
+            <Title>Edit disc {disc ? `(${disc.name})` : ''}</Title>
 
             <DiscForm
                 disc={disc as Record<string, unknown>}
                 saveHandler={saveHandler}
             />
-        </div>
+        </Container>
     );
 }

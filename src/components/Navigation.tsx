@@ -80,7 +80,7 @@ export function Navigation({ stats }: NavigationProps): React.JSX.Element {
     const { isAuthenticated } = useAuth0();
 
     const getStats = (key: keyof DiscStats): number | null =>
-        stats && stats[key] ? stats[key] ?? null : null;
+        stats && stats[key] ? (stats[key] ?? null) : null;
 
     const spentMoney = getStats('spentMoney');
 

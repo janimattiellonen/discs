@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from '@emotion/styled';
 
 import { Attribute } from './Attribute';
 import { Disc } from '../types';
@@ -6,6 +7,12 @@ import { number } from '../util/numbers';
 
 const renderAttribute = (attribute: number | string): string =>
     number(attribute);
+
+const SpecsContainer = styled.div`
+    float: left;
+    width: 100%;
+    margin-top: 0.125rem;
+`;
 
 interface SpecsProps {
     disc?: Partial<Disc> & {
@@ -22,7 +29,7 @@ export function Specs({ disc }: SpecsProps): React.JSX.Element | null {
     }
 
     return (
-        <div className="float-left w-full mt-0.5">
+        <SpecsContainer>
             <Attribute title="Speed" type="speed">
                 {renderAttribute(disc.speed || 0)}
             </Attribute>
@@ -38,6 +45,6 @@ export function Specs({ disc }: SpecsProps): React.JSX.Element | null {
             <Attribute title="Fade" type="fade">
                 {renderAttribute(disc.fade || 0)}
             </Attribute>
-        </div>
+        </SpecsContainer>
     );
 }

@@ -15,10 +15,13 @@ const StyledAttribute = styled.div<StyledAttributeProps>(
         height: '35%',
         h3: {
             padding: '10px 10px 5px 10px',
+            fontSize: '1rem',
+            textAlign: 'center',
         },
         p: {
             fontSize: '2em',
             padding: '10px',
+            textAlign: 'center',
         },
     },
     (props) => {
@@ -67,8 +70,8 @@ export function Attribute({
 }: AttributeProps): React.JSX.Element {
     return (
         <StyledAttribute type={type}>
-            <h3 className="text-base text-center">{title}</h3>
-            <p className="text-center">{children}</p>
+            <h3>{title}</h3>
+            <p>{children}</p>
         </StyledAttribute>
     );
 }

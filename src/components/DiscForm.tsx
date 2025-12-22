@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Reorder } from 'framer-motion';
+import styled from '@emotion/styled';
 import {
     Controller,
     Control,
@@ -109,6 +110,71 @@ interface ErrorProps {
     text: string;
 }
 
+const Container = styled.div`
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 10rem;
+`;
+
+const StyledForm = styled.form`
+    width: 100%;
+`;
+
+const FieldWrapper = styled.div`
+    display: block;
+    margin-top: 1rem;
+`;
+
+const StyledTextField = styled(TextField)`
+    width: max-content;
+`;
+
+const StyledAlert = styled(Alert)`
+    width: fit-content;
+    margin-top: 0.375rem;
+`;
+
+const SpacedDiv = styled.div`
+    margin-top: 1rem;
+`;
+
+const GridLayout = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1rem;
+`;
+
+const ImageSection = styled.div`
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+`;
+
+const ImageSectionTitle = styled.h2`
+    margin-bottom: 1rem;
+`;
+
+const StyledBox = styled(Box)`
+    margin-top: 1rem;
+`;
+
+const UploadButtonWrapper = styled.div`
+    margin: auto;
+    width: fit-content;
+    display: block;
+`;
+
+const SubmitButtonWrapper = styled.div`
+    margin-top: 2.5rem;
+`;
+
+const StyledAccordion = styled(Accordion)`
+    margin-top: 1rem;
+`;
+
+const AccordionContent = styled.div`
+    margin-top: 1rem;
+`;
+
 function ControlledField({
     name,
     label,
@@ -184,15 +250,14 @@ function ControlledTextField({
     ...rest
 }: ControlledTextFieldProps): React.JSX.Element {
     return (
-        <div className="block mt-4">
+        <FieldWrapper>
             <Controller
                 rules={rules}
                 name={name}
                 control={control}
                 render={({ field }) => (
-                    <TextField
+                    <StyledTextField
                         fullWidth
-                        className="w-max"
                         label={label}
                         {...field}
                         {...rest}
@@ -200,16 +265,12 @@ function ControlledTextField({
                 )}
             />
             {errorComponent}
-        </div>
+        </FieldWrapper>
     );
 }
 
 function Error({ text }: ErrorProps): React.JSX.Element {
-    return (
-        <Alert className="w-fit mt-1.5" severity="error">
-            {text}
-        </Alert>
-    );
+    return <StyledAlert severity="error">{text}</StyledAlert>;
 }
 
 export function DiscForm({
@@ -317,7 +378,7 @@ export function DiscForm({
     }
 
     return (
-        <div className="flex gap-4 mb-40">
+        <Container>
             <DiscSavedDialog
                 open={isDiscSavedDialogVisible}
                 handleClose={() => {
@@ -329,7 +390,7 @@ export function DiscForm({
                     }
                 }}
             />
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <StyledForm onSubmit={handleSubmit(onSubmit)}>
                 <ControlledTextField
                     name="name"
                     label="Name"
@@ -341,7 +402,7 @@ export function DiscForm({
                     }
                 />
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <Controller
                         name="type"
                         control={control}
@@ -374,9 +435,9 @@ export function DiscForm({
                         )}
                     />
                     {errors.type && <Error text={errors.type?.message} />}
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <Controller
                         name="manufacturer"
                         control={control}
@@ -409,10 +470,10 @@ export function DiscForm({
                     {errors.manufacturer && (
                         <Error text={errors.manufacturer?.message} />
                     )}
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4 mb-4">
-                    <h2 className="mb-4">Image</h2>
+                <ImageSection>
+                    <ImageSectionTitle>Image</ImageSectionTitle>
                     <Reorder.Group
                         axis="y"
                         onReorder={(values) => {
@@ -464,11 +525,8 @@ export function DiscForm({
                         ))}
                     </Reorder.Group>
 
-                    <Box
-                        className="mt-4"
-                        sx={{ p: 4, border: '1px dashed grey' }}
-                    >
-                        <div className="m-auto w-fit block">
+                    <StyledBox sx={{ p: 4, border: '1px dashed grey' }}>
+                        <UploadButtonWrapper>
                             <Button
                                 type="button"
                                 variant="contained"
@@ -480,8 +538,8 @@ export function DiscForm({
                             >
                                 Upload
                             </Button>
-                        </div>
-                    </Box>
+                        </UploadButtonWrapper>
+                    </StyledBox>
 
                     <div>
                         <ImageUpload
@@ -489,7 +547,7 @@ export function DiscForm({
                             handleClose={() => setIsImageUploadVisible(false)}
                         />
                     </div>
-                </div>
+                </ImageSection>
 
                 <ControlledTextField
                     name="color"
@@ -498,7 +556,7 @@ export function DiscForm({
                     control={control}
                 />
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <Controller
                         name="material"
                         control={control}
@@ -527,9 +585,9 @@ export function DiscForm({
                             </FormControl>
                         )}
                     />
-                </div>
+                </SpacedDiv>
 
-                <div className="grid grid-cols-2 gap-x-4">
+                <GridLayout>
                     <ControlledTextField
                         type="number"
                         name="speed"
@@ -582,7 +640,7 @@ export function DiscForm({
                             )
                         }
                     />
-                </div>
+                </GridLayout>
                 <ControlledTextField
                     name="additional"
                     label="Additional"
@@ -618,7 +676,7 @@ export function DiscForm({
                     }
                 />
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <ControlledField
                         name="for_sale"
                         label="For sale"
@@ -626,9 +684,9 @@ export function DiscForm({
                         control={control}
                         RenderComponent={Checkbox}
                     />
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <ControlledField
                         name="sold"
                         label="Sold"
@@ -638,7 +696,7 @@ export function DiscForm({
                     />
 
                     {watchShowSoldFields && (
-                        <div className="mt-4">
+                        <SpacedDiv>
                             <ControlledDateField
                                 control={control}
                                 name="sold_at"
@@ -664,11 +722,11 @@ export function DiscForm({
                                 labelPlacement="start"
                                 control={control}
                             />
-                        </div>
+                        </SpacedDiv>
                     )}
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <ControlledField
                         name="collection_item"
                         label="Collection item"
@@ -676,9 +734,9 @@ export function DiscForm({
                         control={control}
                         RenderComponent={Checkbox}
                     />
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <ControlledField
                         name="own_stamp"
                         label="Own stamp"
@@ -686,9 +744,9 @@ export function DiscForm({
                         control={control}
                         RenderComponent={Checkbox}
                     />
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <ControlledField
                         name="donated"
                         label="Donated"
@@ -705,9 +763,9 @@ export function DiscForm({
                             control={control}
                         />
                     )}
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <ControlledField
                         name="missing"
                         label="Lost"
@@ -724,9 +782,9 @@ export function DiscForm({
                             control={control}
                         />
                     )}
-                </div>
+                </SpacedDiv>
 
-                <div className="mt-4">
+                <SpacedDiv>
                     <ControlledField
                         name="hole_in_one"
                         label="Hole in one"
@@ -736,7 +794,7 @@ export function DiscForm({
                     />
 
                     {watchShowHIOFields && (
-                        <div className="mt-4">
+                        <SpacedDiv>
                             <ControlledDateField
                                 control={control}
                                 name="HIO date"
@@ -749,11 +807,11 @@ export function DiscForm({
                                 labelPlacement="start"
                                 control={control}
                             />
-                        </div>
+                        </SpacedDiv>
                     )}
-                </div>
+                </SpacedDiv>
 
-                <Accordion className="mt-4">
+                <StyledAccordion>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -762,7 +820,7 @@ export function DiscForm({
                         <Typography>Additional settings</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <div className="mt-4">
+                        <AccordionContent>
                             <ControlledField
                                 name="glow"
                                 label="Glow"
@@ -770,9 +828,9 @@ export function DiscForm({
                                 control={control}
                                 RenderComponent={Checkbox}
                             />
-                        </div>
+                        </AccordionContent>
 
-                        <div className="mt-4">
+                        <AccordionContent>
                             <ControlledField
                                 name="huk"
                                 label="Huk Lab stamp"
@@ -780,9 +838,9 @@ export function DiscForm({
                                 control={control}
                                 RenderComponent={Checkbox}
                             />
-                        </div>
+                        </AccordionContent>
 
-                        <div className="mt-4">
+                        <AccordionContent>
                             <ControlledField
                                 name="favourite"
                                 label="Favourite"
@@ -790,9 +848,9 @@ export function DiscForm({
                                 control={control}
                                 RenderComponent={Checkbox}
                             />
-                        </div>
+                        </AccordionContent>
 
-                        <div className="mt-4">
+                        <AccordionContent>
                             <ControlledField
                                 name="in_the_bag"
                                 label="In the bag"
@@ -800,9 +858,9 @@ export function DiscForm({
                                 control={control}
                                 RenderComponent={Checkbox}
                             />
-                        </div>
+                        </AccordionContent>
 
-                        <div className="mt-4">
+                        <AccordionContent>
                             <ControlledField
                                 name="broken"
                                 label="Broken"
@@ -810,16 +868,16 @@ export function DiscForm({
                                 control={control}
                                 RenderComponent={Checkbox}
                             />
-                        </div>
+                        </AccordionContent>
                     </AccordionDetails>
-                </Accordion>
+                </StyledAccordion>
 
-                <div className="mt-10">
+                <SubmitButtonWrapper>
                     <Button variant="contained" type="submit">
                         Submit
                     </Button>
-                </div>
-            </form>
-        </div>
+                </SubmitButtonWrapper>
+            </StyledForm>
+        </Container>
     );
 }
